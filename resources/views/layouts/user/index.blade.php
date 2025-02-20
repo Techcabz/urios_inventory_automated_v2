@@ -13,7 +13,7 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="{{ asset('assets/images/smcc-logo.png') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('/images/logo-clear.png') }}">
     <meta name="theme-color" content="#120d4f">
     <script src="https://kit.fontawesome.com/5b408a851a.js" crossorigin="anonymous"></script>
     <link id="rtl-link" rel="stylesheet" type="text/css" href="{{ asset('assets_users/css/vendors/bootstrap.css') }}">

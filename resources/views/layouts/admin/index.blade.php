@@ -8,10 +8,10 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'SMCC') }}</title>
+    <title>{{ config('app.name', 'FUAMI') }}</title>
 
     <!-- Fonts -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('assets/images/smcc-logo.png') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('/images/logo-clear.png') }}">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
     <!-- Nucleo Icons -->
     <link href="{{ asset('assets_admin/css/nucleo-icons.css') }}" rel="stylesheet" />
