@@ -234,7 +234,13 @@
 
         document.addEventListener('livewire:init', () => {
 
-           
+            Livewire.on('messageModal', (event) => {
+                loadScript('{{ asset('assets_users/js/slick/custom_slick.js') }}', function() {
+                    alertSwift(event.status, event.position, event.message);
+                    $(event.modal).modal('hide');
+                });
+
+            });
 
 
 

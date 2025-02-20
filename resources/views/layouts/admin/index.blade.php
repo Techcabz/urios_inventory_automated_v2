@@ -137,7 +137,44 @@
 
         document.addEventListener('livewire:init', () => {
 
-            
+            Livewire.on('closeModal', (event) => {
+                loadScript('{{ asset('assets_admin/js/datatable/table.js') }}');
+            });
+
+            Livewire.on('editModal', (event) => {
+                loadScript('{{ asset('assets_admin/js/datatable/table.js') }}');
+            });
+
+            Livewire.on('saveModal', (event) => {
+                loadScript('{{ asset('assets_admin/js/datatable/table.js') }}', function() {
+                    if (event.status == 'success') {
+                        alertSwift(event.status, event.position, event.message);
+                    }
+                    if (event.status == 'warning') {
+                        alertSwift(event.status, event.position, event.message);
+                    }
+                });
+            });
+
+            Livewire.on('destroyModal', (event) => {
+                loadScript('{{ asset('assets_admin/js/datatable/table.js') }}', function() {
+                    alertSwift(event.status, event.position, event.message);
+
+                    $(event.modal).modal('hide');
+                });
+            });
+
+            Livewire.on('updateModal', (event) => {
+                loadScript('{{ asset('assets_admin/js/datatable/table.js') }}', function() {
+                    alertSwift(event.status, event.position, event.message);
+                });
+            });
+
+            Livewire.on('messageModal', (event) => {
+                loadScript('{{ asset('assets_admin/js/datatable/table.js') }}', function() {
+                    alertSwift(event.status, event.position, event.message);
+                });
+            });
 
             function loadScript(url, callback) {
                 var script = document.createElement('script');
