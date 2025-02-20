@@ -14,44 +14,12 @@ class DashboardController extends Controller
     {
 
         $userPending = User::where('user_status', 1)->count();
-        $reservTotal = Reservation::where('status', 1)->count();
-        $reservCompleted = Reservation::where('status', 3)->count();
-        $reservCancel = Reservation::where('status', 2)->count();
-        $travelTotal = TravelOrder::where('status','!=', 0)->count();
-        $travelApproved = TravelOrder::where('status', 0)->count();
+    
         return view('admin.dashboard', [
-            'reservTotal' => $reservTotal,
-            'reservCompleted' => $reservCompleted,
-            'reservCancel' => $reservCancel,
-            'userPending' => $userPending,
-            'travelTotal' => $travelTotal,
-            'travelApproved' => $travelApproved
+           
+            'userPending' => $userPending
         ]);
     }
 
-    public function department()
-    {
-        return view('admin.department.index');
-    }
-
-    public function position()
-    {
-        return view('admin.position.index');
-    }
-
-
-    public function venue()
-    {
-        return view('admin.venue.index');
-    }
-
-    public function item()
-    {
-        return view('admin.item.index');
-    }
-
-    public function travel()
-    {
-        return view('admin.travel.index');
-    }
+ 
 }
