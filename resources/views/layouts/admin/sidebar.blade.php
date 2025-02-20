@@ -108,7 +108,7 @@
            
              <li class="nav-item">
                  <a class="nav-link  {{ Request::is('admin/category') ? 'active' : '' }}"
-                     href="{{ route('dashboard') }}">
+                     href="{{ route('category') }}">
                      <div
                          class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                          <svg width="12px" height="12px" viewBox="0 0 45 40" version="1.1"
@@ -136,7 +136,7 @@
            
     
              <li class="nav-item">
-                 <a class="nav-link  {{ Request::is('admin/category') ? 'active' : '' }}"
+                 <a class="nav-link  {{ Request::is('admin/item') ? 'active' : '' }}"
                      href="{{ route('dashboard') }}">
                      <div
                          class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
