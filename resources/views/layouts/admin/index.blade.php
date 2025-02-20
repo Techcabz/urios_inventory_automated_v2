@@ -35,7 +35,7 @@
     <link href="{{ asset('assets_admin/css/app.css') }}" rel="stylesheet" />
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-   
+
     <style>
         .nav-tabs .nav-linkx.active,
         .nav-tabs .nav-item.show .nav-linkx {
@@ -114,82 +114,79 @@
 
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
     <script src="{{ asset('assets_admin/js/datatable/table.js') }}"></script>
-    {{-- <script src="{{ asset('assets_admin/js/app.js') }}"></script> --}}
+    <!-- <script src="{{ asset('assets_admin/js/app.js') }}"></script> -->
     <script>
-        function alertSwift(icon, position, title) {
-            const Toast = Swal.mixin({
-                toast: true,
-                position: position,
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-            })
+    // Define the asset URL in a Blade section
+    var tableScriptUrl = "{{ asset('assets_admin/js/datatable/table.js') }}";
 
-            Toast.fire({
-                icon: icon,
-                title: title
-            })
-        }
-
-        document.addEventListener('livewire:init', () => {
-
-            Livewire.on('closeModal', (event) => {
-                loadScript('{{ asset('assets_admin/js/datatable/table.js') }}');
-            });
-
-            Livewire.on('editModal', (event) => {
-                loadScript('{{ asset('assets_admin/js/datatable/table.js') }}');
-            });
-
-            Livewire.on('saveModal', (event) => {
-                loadScript('{{ asset('assets_admin/js/datatable/table.js') }}', function() {
-                    if (event.status == 'success') {
-                        alertSwift(event.status, event.position, event.message);
-                    }
-                    if (event.status == 'warning') {
-                        alertSwift(event.status, event.position, event.message);
-                    }
-                });
-            });
-
-            Livewire.on('destroyModal', (event) => {
-                loadScript('{{ asset('assets_admin/js/datatable/table.js') }}', function() {
-                    alertSwift(event.status, event.position, event.message);
-
-                    $(event.modal).modal('hide');
-                });
-            });
-
-            Livewire.on('updateModal', (event) => {
-                loadScript('{{ asset('assets_admin/js/datatable/table.js') }}', function() {
-                    alertSwift(event.status, event.position, event.message);
-                });
-            });
-
-            Livewire.on('messageModal', (event) => {
-                loadScript('{{ asset('assets_admin/js/datatable/table.js') }}', function() {
-                    alertSwift(event.status, event.position, event.message);
-                });
-            });
-
-            function loadScript(url, callback) {
-                var script = document.createElement('script');
-                script.type = 'text/javascript';
-                script.src = url;
-
-                script.onload = function() {
-                    if (callback) callback();
-                };
-                document.body.appendChild(script);
+    function alertSwift(icon, position, title) {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: position,
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
             }
-
-
         });
-    </script>
+
+        Toast.fire({
+            icon: icon,
+            title: title
+        });
+    }
+
+    document.addEventListener('livewire:init', () => {
+        Livewire.on('closeModal', (event) => {
+            loadScript(tableScriptUrl);
+        });
+
+        Livewire.on('editModal', (event) => {
+            loadScript(tableScriptUrl);
+        });
+
+        Livewire.on('saveModal', (event) => {
+            loadScript(tableScriptUrl, function() {
+                if (event.status === 'success' || event.status === 'warning') {
+                    alertSwift(event.status, event.position, event.message);
+                }
+            });
+        });
+
+        Livewire.on('destroyModal', (event) => {
+            loadScript(tableScriptUrl, function() {
+                alertSwift(event.status, event.position, event.message);
+                $(event.modal).modal('hide');
+            });
+        });
+
+        Livewire.on('updateModal', (event) => {
+            loadScript(tableScriptUrl, function() {
+                alertSwift(event.status, event.position, event.message);
+            });
+        });
+
+        Livewire.on('messageModal', (event) => {
+            loadScript(tableScriptUrl, function() {
+                alertSwift(event.status, event.position, event.message);
+            });
+        });
+
+        function loadScript(url, callback) {
+            var script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = url;
+
+            script.onload = function() {
+                if (callback) callback();
+            };
+            document.body.appendChild(script);
+        }
+    });
+</script>
+
 </body>
 
 </html>

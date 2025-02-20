@@ -21,5 +21,8 @@ class DashboardController extends Controller
         ]);
     }
 
- 
+    public function category()
+    {
+        return view('admin.category');
+    }
 }

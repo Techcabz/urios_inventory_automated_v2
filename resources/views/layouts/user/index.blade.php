@@ -71,7 +71,7 @@
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
-   
+
     @livewireStyles
 </head>
 
@@ -212,6 +212,9 @@
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
 
     <script>
+        var tableScriptUrl = '{{ asset("assets_users/js/datatable/table.js") }}';
+        var custom_slickScriptUrl = '{{ asset("assets_users/js/slick/custom_slick.js") }}';
+
         function alertSwift(icon, position, title) {
             const Toast = Swal.mixin({
                 toast: true,
@@ -235,10 +238,11 @@
         document.addEventListener('livewire:init', () => {
 
             Livewire.on('messageModal', (event) => {
-                loadScript('{{ asset('assets_users/js/slick/custom_slick.js') }}', function() {
-                    alertSwift(event.status, event.position, event.message);
-                    $(event.modal).modal('hide');
-                });
+                loadScript(custom_slickScriptUrl,
+                    function() {
+                        alertSwift(event.status, event.position, event.message);
+                        $(event.modal).modal('hide');
+                    });
 
             });
 
