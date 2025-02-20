@@ -25,4 +25,9 @@ class DashboardController extends Controller
     {
         return view('admin.category.index');
     }
+
+    public function items()
+    {
+        return view('admin.items.index');
+    }
 }

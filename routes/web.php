@@ -56,6 +56,7 @@ Route::middleware(['auth'])->group(function () {
 Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('category', [DashboardController::class, 'category'])->name('category');
+    Route::get('items', [DashboardController::class, 'items'])->name('items');
     Route::prefix('users')->group(function () {
         Route::get('pending', [UsersController::class, 'pending'])->name('users.pending');
         Route::get('management', [UsersController::class, 'management'])->name('users.management');
