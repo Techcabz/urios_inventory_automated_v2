@@ -7,7 +7,7 @@
                         <div class="menu-left">
                             <div class="brand-logo">
                                 <a href="{{ url('/') }}" class="d-flex  align-items-center justify-content-evenly">
-                                    <img src="{{ asset('assets/images/logo-clear.png') }}"
+                                    <img src="{{ asset('images/logo-clear.png') }}"
                                         class="h-logo img-fluid blur-up lazyload" alt="logo">
                                     <h3 class="text-white">&nbsp; FR. URIOS ACADEMY OF MAGALLANES INC</h3>
                                 </a>
