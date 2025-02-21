@@ -12,9 +12,9 @@ class NavbarHello extends Component
         $user = UserDetails::where('users_id',  auth()->user()->id)->first();
         $name_str = "";
         $pos_str = "";
-        if (!empty($user->positionDetails->position_name)) {
+        if (!empty($user->firstname)) {
             $name = ucfirst(strtolower($user->firstname));
-            $pos_str = ucfirst(strtolower($user->positionDetails->position_name));
+            
             // if (!empty($user->middlename)) {
             //     $name .= " " . ucfirst($user->middlename);
             // }
@@ -22,6 +22,6 @@ class NavbarHello extends Component
             $name_str =  $name;
 
         }
-        return view('livewire.frontend.navbar-hello', ['name_str' => $name_str, 'pos_str' => $pos_str]);
+        return view('livewire.frontend.navbar-hello', ['name_str' => $name_str]);
     }
 }

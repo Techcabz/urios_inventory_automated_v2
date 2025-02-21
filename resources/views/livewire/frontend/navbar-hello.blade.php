@@ -1,6 +1,6 @@
 <div class="text-white mt-2 mx-3 d-flex justify-content-end align-items-center">
 
-    @if ($name_str != '' && $pos_str != '')
+    @if ($name_str != '')
         <a href="{{ route('myaccount.dashboard') }}" class="text-white">
             <div class=" row">
                 <div class="col-sm-12">

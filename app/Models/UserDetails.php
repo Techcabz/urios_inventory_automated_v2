@@ -17,8 +17,8 @@ class UserDetails extends Model
         'firstname',
         'lastname',
         'middlename',
-        'department',
-        'position',
+        'sex',
+        'grade',
         'address',
         'contact',
     ];
@@ -29,13 +29,5 @@ class UserDetails extends Model
         return $this->belongsTo(User::class, 'users_id', 'id');
     }
 
-    public function positionDetails()
-    {
-        return $this->belongsTo(Position::class, 'position', 'id');
-    }
-
-    public function departmentDetails()
-    {
-        return $this->belongsTo(Department::class, 'department', 'id');
-    }
+   
 }

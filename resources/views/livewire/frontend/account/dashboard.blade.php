@@ -27,8 +27,8 @@
                                 <img src="{{ asset('assets_users/images/svg/sent1.png') }}"
                                     class="img-fluid blur-up lazyload" alt="">
                                 <div>
-                                    <h5 class="font-light">total reservation</h5>
-                                    <h3>{{ $reservTotal }}</h3>
+                                    <h5 class="font-light">total borrowing</h5>
+                                    <h3></h3>
                                 </div>
                             </div>
                         </div>
@@ -46,8 +46,8 @@
                                     class="img-fluid blur-up lazyload" alt="">
 
                                 <div>
-                                    <h5 class="font-light">cancelled reservation</h5>
-                                    <h3>{{ $reservPending }}</h3>
+                                    <h5 class="font-light">cancelled borrowed</h5>
+                                    <h3></h3>
                                 </div>
                             </div>
                         </div>

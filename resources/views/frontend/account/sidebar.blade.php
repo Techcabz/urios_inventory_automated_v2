@@ -6,15 +6,7 @@
                     class="fas fa-angle-right"></i>Dashboard</a>
         </li>
 
-        <li class="nav-item mb-2">
-            <a class="nav-link font-light {{ Route::is('myaccount/reservation') ? 'active' : '' }}" href="{{ route('myaccount.reservation') }}"><i
-                    class="fas fa-angle-right"></i>Reservation History</a>
-        </li>
-
-        <li class="nav-item mb-2">
-            <a class="nav-link font-light {{ Request::is('myaccount/travel') ? 'active' : '' }}" href="{{ route('myaccount.travel') }}"><i
-                    class="fas fa-angle-right"></i>Travel Order History</a>
-        </li>
+       
         <li class="nav-item mb-2">
             <a class="nav-link font-light {{ Request::is('myaccount/profile') ? 'active' : '' }}" href="{{ route('myaccount.profile') }}"><i
                     class="fas fa-angle-right"></i>Profile</a>

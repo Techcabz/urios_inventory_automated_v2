@@ -30,22 +30,8 @@
                 </div>
             </li>
 
-            <li>
-                <div class="left">
-                    <h6 class="font-light">Position</h6>
-                </div>
-                <div class="right">
-                    <h6>{{ Str::ucfirst($users->positionDetails->position_name ?? '?') }}</h6>
-                </div>
-            </li>
-            <li>
-                <div class="left">
-                    <h6 class="font-light">Department</h6>
-                </div>
-                <div class="right">
-                    <h6>{{ Str::ucfirst($users->departmentDetails->department_name ?? '?') }}</h6>
-                </div>
-            </li>
+           
+            
             <li>
                 <div class="left">
                     <h6 class="font-light">Contact #</h6>
@@ -157,42 +143,7 @@
 
 
                         </div>
-                        <div class="row">
-                            <div class="col">
-                                <div class="mb-3">
-                                    <label for="firstname" class="form-label">Department <span
-                                            class="text-danger">*</span></label>
-                                    <select class="form-control" wire:model="department_id" id="department_id">
-                                        <option value="" selected></option>
-                                        @foreach ($departments as $item)
-                                            <option value="{{ $item->id }}">{{ ucfirst($item->department_name) }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    @error('department_id')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="mb-3">
-                                    <label for="position" class="form-label">Position <span
-                                            class="text-danger">*</span></label>
-                                    <select class="form-control" wire:model="position_id" id="position_id">
-                                        <option value="" selected></option>
-                                        @foreach ($positions as $item)
-                                            <option value="{{ $item->id }}">{{ ucfirst($item->position_name) }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    @error('position_id')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-
-                                </div>
-                            </div>
-                        </div>
+                       
                         <div class="mb-3">
                             <label for="contact" class="form-label">Contact # <span
                                     class="text-danger">*</span></label>

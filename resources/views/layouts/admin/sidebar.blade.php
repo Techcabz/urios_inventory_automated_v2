@@ -45,9 +45,9 @@
              </li>
            
              <li class="nav-item">
-                 <a class="nav-link {{ Request::is('admin/users/*') ? 'active' : '' }}" data-bs-toggle="collapse"
-                     href="#users" aria-expanded="{{ Request::is('admin/users/*') ? 'true' : 'false' }}"
-                     aria-controls="users">
+                 <a class="nav-link {{ Request::is('admin/borrowing/*') ? 'active' : '' }}" data-bs-toggle="collapse"
+                     href="#borrowing" aria-expanded="{{ Request::is('admin/users/*') ? 'true' : 'false' }}"
+                     aria-controls="borrowing">
                      <div
                          class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                          <svg width="12px" height="12px" viewBox="0 0 45 40" version="1.1"
@@ -72,7 +72,7 @@
                      <span class="nav-link-text ms-1">Borrowing</span>
                      <i class="menu-arrow"></i>
                  </a>
-                 <div class="collapse  {{ Request::is('admin/users/*') ? 'show' : '' }}" id="users">
+                 <div class="collapse  {{ Request::is('admin/users/*') ? 'show' : '' }}" id="borrowing">
                      <ul class="nav flex-column sub-menu">
 
                          <li class="nav-item">
@@ -80,7 +80,7 @@
                                  <div
                                      class="icon icon-shape icon-sm  border-radius-md text-center  d-flex align-items-center justify-content-center">
                                  </div>
-                                 <span class="nav-link-text ms-1 text-dark">Borrowing Pending</span>
+                                 <span class="nav-link-text ms-1 text-dark">Pending List</span>
                              </a>
                          </li>
                          <li class="nav-item">
@@ -88,7 +88,7 @@
                                  <div
                                      class="icon icon-shape icon-sm  border-radius-md text-center  d-flex align-items-center justify-content-center">
                                  </div>
-                                 <span class="nav-link-text ms-1 text-dark">Borrowing Approved</span>
+                                 <span class="nav-link-text ms-1 text-dark">Approved List</span>
                              </a>
                          </li>
                          <li class="nav-item">
@@ -96,7 +96,7 @@
                                  <div
                                      class="icon icon-shape icon-sm  border-radius-md text-center  d-flex align-items-center justify-content-center">
                                  </div>
-                                 <span class="nav-link-text ms-1 text-dark">Borrowing Cancel</span>
+                                 <span class="nav-link-text ms-1 text-dark">Cancel List</span>
                              </a>
                          </li>
                          <li class="nav-item">
@@ -104,7 +104,7 @@
                                  <div
                                      class="icon icon-shape icon-sm  border-radius-md text-center  d-flex align-items-center justify-content-center">
                                  </div>
-                                 <span class="nav-link-text ms-1 text-dark">Borrowing Completed</span>
+                                 <span class="nav-link-text ms-1 text-dark">Completed List</span>
                              </a>
                          </li>
                      </ul>

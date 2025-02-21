@@ -16,31 +16,26 @@ class Profile extends Component
 
     public function render()
     {
-        $departments = Department::orderBy('created_at', 'DESC')->get();
-        $positions = Position::orderBy('created_at', 'DESC')->get();
+       
         $users = UserDetails::where('users_id', auth()->user()->id)->first();
 
         // If UserDetails for the current user doesn't exist, use User model
         if (!$users) {
             $users = auth()->user();
         }
-        return view('livewire.frontend.account.profile', compact('departments', 'positions', 'users'));
+        return view('livewire.frontend.account.profile', compact('users'));
     }
 
     public function saveUserdetails()
     {
         if (Auth::check()) {
             $this->validate([
-                'department_id' => 'required|integer',
-                'position_id' => 'required|integer',
                 'firstname' => 'required|string|min:2',
                 'lastname' => 'required|string|min:2',
                 'middlename' => 'nullable|string|min:2',
                 'address' => 'required|string|min:10',
                 'contact' => ['required', 'string', 'min:10', 'regex:/^(09|\+639)\d{9}$/'],
             ], [
-                'department_id.required' => 'The department field is required.',
-                'position_id.required' => 'The position field is required.',
                 'firstname.required' => 'The first name field is required.',
                 'lastname.required' => 'The last name field is required.',
                 'address.required' => 'Please enter your complete address.',
@@ -56,8 +51,6 @@ class Profile extends Component
                     'firstname' => $this->firstname,
                     'lastname' => $this->lastname,
                     'middlename' => $this->middlename,
-                    'department' => $this->department_id,
-                    'position' => $this->position_id,
                     'contact' => $this->contact,
                     'address' => $this->address,
                 ]);
@@ -69,8 +62,6 @@ class Profile extends Component
                     'firstname' => $this->firstname,
                     'lastname' => $this->lastname,
                     'middlename' => $this->middlename,
-                    'department' => $this->department_id,
-                    'position' => $this->position_id,
                     'contact' => $this->contact,
                     'address' => $this->address,
                 ]);
@@ -133,9 +124,7 @@ class Profile extends Component
             $this->lastname = $users->lastname  ?? '';
             $this->middlename = $users->middlename  ?? '';
             $this->address = $users->address  ?? '';
-            $this->position_id = $users->positionDetails->id  ?? 0;
-            $this->department_id = $users->departmentDetails->id  ?? 0;
-
+          
             $this->contact = $users->contact  ?? '';
 
             $this->dispatch('editModal');
