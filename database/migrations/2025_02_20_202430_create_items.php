@@ -13,16 +13,16 @@ return new class extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->string('reference');
             $table->string('name');
-            $table->tinyInteger('status')->default(0)->comment('1=hidden,0=visible');
+            $table->string('barcode')->unique();
+            $table->tinyInteger('status')->default(0)->comment('0=available,1=borrowed,2=damaged');
             $table->integer('quantity')->default(0);
             $table->foreignId('category_id')->unsigned()->constrained('categories')->onDelete('cascade');
             $table->date('purchase_date')->nullable();
             $table->decimal('purchase_price', 10, 2)->nullable();
             $table->date('warranty_expiry')->nullable();
             $table->text('description')->nullable();
-            $table->uuid('uuid')->unique()->nullable(false);
+            $table->uuid('uuid')->unique()->nullable();
             $table->string('assigned_to')->nullable();
             $table->string('image_path')->nullable();
             $table->softDeletes();

@@ -18,6 +18,10 @@ function updateSlug() {
     });
 }
 
+
+
 document.addEventListener('DOMContentLoaded', function () {
     updateSlug();
+
+    
 });

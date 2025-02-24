@@ -116,76 +116,82 @@
     <script src="{{ asset('assets_admin/js/datatable/table.js') }}"></script>
     <!-- <script src="{{ asset('assets_admin/js/app.js') }}"></script> -->
     <script>
-    // Define the asset URL in a Blade section
-    var tableScriptUrl = "{{ asset('assets_admin/js/datatable/table.js') }}";
+        // Define the asset URL in a Blade section
+        var tableScriptUrl = "{{ asset('assets_admin/js/datatable/table.js') }}";
 
-    function alertSwift(icon, position, title) {
-        const Toast = Swal.mixin({
-            toast: true,
-            position: position,
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer);
-                toast.addEventListener('mouseleave', Swal.resumeTimer);
-            }
-        });
+      
 
-        Toast.fire({
-            icon: icon,
-            title: title
-        });
-    }
+        function triggerFileInput() {
+            document.getElementById('fileInput').click();
+        }
 
-    document.addEventListener('livewire:init', () => {
-        Livewire.on('closeModal', (event) => {
-            loadScript(tableScriptUrl);
-        });
-
-        Livewire.on('editModal', (event) => {
-            loadScript(tableScriptUrl);
-        });
-
-        Livewire.on('saveModal', (event) => {
-            loadScript(tableScriptUrl, function() {
-                if (event.status === 'success' || event.status === 'warning') {
-                    alertSwift(event.status, event.position, event.message);
+        function alertSwift(icon, position, title) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: position,
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer);
+                    toast.addEventListener('mouseleave', Swal.resumeTimer);
                 }
             });
-        });
 
-        Livewire.on('destroyModal', (event) => {
-            loadScript(tableScriptUrl, function() {
-                alertSwift(event.status, event.position, event.message);
-                $(event.modal).modal('hide');
+            Toast.fire({
+                icon: icon,
+                title: title
             });
-        });
-
-        Livewire.on('updateModal', (event) => {
-            loadScript(tableScriptUrl, function() {
-                alertSwift(event.status, event.position, event.message);
-            });
-        });
-
-        Livewire.on('messageModal', (event) => {
-            loadScript(tableScriptUrl, function() {
-                alertSwift(event.status, event.position, event.message);
-            });
-        });
-
-        function loadScript(url, callback) {
-            var script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.src = url;
-
-            script.onload = function() {
-                if (callback) callback();
-            };
-            document.body.appendChild(script);
         }
-    });
-</script>
+
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('closeModal', (event) => {
+                loadScript(tableScriptUrl);
+            });
+
+            Livewire.on('editModal', (event) => {
+                loadScript(tableScriptUrl);
+            });
+
+            Livewire.on('saveModal', (event) => {
+                loadScript(tableScriptUrl, function() {
+                    if (event.status === 'success' || event.status === 'warning') {
+                        alertSwift(event.status, event.position, event.message);
+                    }
+                });
+            });
+
+            Livewire.on('destroyModal', (event) => {
+                loadScript(tableScriptUrl, function() {
+                    alertSwift(event.status, event.position, event.message);
+                    $(event.modal).modal('hide');
+                });
+            });
+
+            Livewire.on('updateModal', (event) => {
+                loadScript(tableScriptUrl, function() {
+                    alertSwift(event.status, event.position, event.message);
+                });
+            });
+
+            Livewire.on('messageModal', (event) => {
+                loadScript(tableScriptUrl, function() {
+                    alertSwift(event.status, event.position, event.message);
+                });
+            });
+
+            function loadScript(url, callback) {
+                var script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.src = url;
+
+                script.onload = function() {
+                    if (callback) callback();
+                };
+                document.body.appendChild(script);
+            }
+        });
+    </script>
 
 </body>
 

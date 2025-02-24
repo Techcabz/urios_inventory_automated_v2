@@ -1,4 +1,4 @@
-<div class="col-xl-12 col-sm-6 mb-xl-0 mb-4">
+<div class="col-xl-12 col-md-12 col-sm-6 mb-xl-0 mb-4">
     @include('shared.offline')
     <div class="card">
         @include('livewire.admin.categories.modal')

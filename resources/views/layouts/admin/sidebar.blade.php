@@ -144,7 +144,7 @@
            
     
              <li class="nav-item">
-                 <a class="nav-link  {{ Request::is('admin/item') ? 'active' : '' }}"
+                 <a class="nav-link  {{ Request::is('admin/items') ? 'active' : '' }}"
                      href="{{ route('items') }}">
                      <div
                          class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">

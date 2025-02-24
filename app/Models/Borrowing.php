@@ -7,32 +7,31 @@ use Illuminate\Database\Eloquent\Model;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Support\Str; 
 
-class Item extends Model
+class Borrowing extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'uuid',
-        'barcode',
-        'name',
+        'reference',
+        'user_id',
         'status',
         'quantity',
-        'category_id',
-        'purchase_date',
-        'purchase_price',
-        'warranty_expiry',
-        'description',
-        'assigned_to',
-        'image_path',
+        'item_id'
     ];
 
-    public function category()
+
+    public function users()
     {
-        return $this->belongsTo(Category::class, 'category_id', 'id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
+    public function items()
+    {
+        return $this->belongsTo(Item::class, 'item_id', 'id');
+    }
 
-    /**
+     /**
      * The "booting" method of the model.
      *
      * @return void
@@ -44,12 +43,13 @@ class Item extends Model
         static::creating(function ($item) {
             // Generate a UUID before creating the item
             $item->uuid = Str::uuid();
-
-            $item->barcode = IdGenerator::generate([
+    
+            // Generate a unique reference number
+            $item->reference = IdGenerator::generate([
                 'table' => 'items',
-                'field' => 'barcode',
-                'length' => 6,
-                'prefix' => 'I',
+                'field' => 'reference',
+                'length' => 10,
+                'prefix' => 'BOR-',
             ]);
         });
     }
