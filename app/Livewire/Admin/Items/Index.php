@@ -6,12 +6,15 @@ use App\Models\Category;
 use App\Models\Item;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Milon\Barcode\DNS1D;
+use Livewire\TemporaryUploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 class Index extends Component
 {
-    use WithFileUploads; 
+    use WithFileUploads;
 
-    public $imagePath,$item_name, $item_image, $item_price, $item_warranty, $item_purchase, $item_qty, $item_description, $category_id, $i_id;
+    public $imageBarcode, $imagePath, $item_name, $item_image, $item_imageu, $item_imageu_tmp, $item_price, $item_warranty, $item_purchase, $item_qty, $item_description, $category_id, $i_id;
 
     public function render()
     {
@@ -19,7 +22,12 @@ class Index extends Component
         $categories = Category::orderBy('created_at', 'DESC')->get();
         return view('livewire.admin.items.index', compact('categories', 'items'));
     }
-
+    public function updatedItemImageu()
+    {
+        if ($this->item_imageu) {
+            $this->item_imageu_tmp = null;
+        }
+    }
     public function saveItem()
     {
         // Validate input fields
@@ -31,7 +39,7 @@ class Index extends Component
             'item_purchase' => 'required|date',
             'item_warranty' => 'nullable|date',
             'item_price' => 'required|numeric|min:0',
-            'item_image' => 'nullable|image|max:2048', 
+            'item_image' => 'nullable|image|max:2048',
         ]);
 
         // Check if item already exists in the database (prevent duplicates)
@@ -53,12 +61,12 @@ class Index extends Component
 
         Item::create([
             'name' => $validatedData['item_name'],
-            'description' => $validatedData['item_description'], 
-            'category_id' => $validatedData['category_id'], 
-            'quantity' => $validatedData['item_qty'], 
-            'purchase_date' =>$validatedData['item_purchase'], 
-            'warranty_expiry' => $validatedData['item_warranty'], 
-            'purchase_price' => $validatedData['item_price'], 
+            'description' => $validatedData['item_description'],
+            'category_id' => $validatedData['category_id'],
+            'quantity' => $validatedData['item_qty'],
+            'purchase_date' => $validatedData['item_purchase'],
+            'warranty_expiry' => $validatedData['item_warranty'],
+            'purchase_price' => $validatedData['item_price'],
             'image_path' => $imagePath,
         ]);
 
@@ -66,7 +74,102 @@ class Index extends Component
         $this->dispatch('saveModal', status: 'success',  position: 'top', message: 'Item save successfully.');
     }
 
-    
+    public function editItem(int $id)
+    {
+
+        $item = Item::find($id);
+        if ($item) {
+            $this->i_id = $item->id;
+            $this->item_name = $item->name;
+            $this->item_description = $item->description;
+            $this->category_id = $item->category_id;
+            $this->item_qty = $item->quantity;
+            $this->item_purchase = $item->purchase_date;
+            $this->item_warranty = $item->warranty_expiry;
+            $this->item_price = $item->purchase_price;
+            $this->item_imageu_tmp = $item->image_path;
+            $this->item_imageu = null;
+            $this->imageBarcode = $item->barcode;
+            $this->dispatch('editModal');
+        } else {
+            $this->redirect('/admin/item');
+        }
+    }
+
+    public function updateItem()
+    {
+        $validatedData = $this->validate([
+            'item_name' => 'required|string|max:255',
+            'item_description' => 'nullable|string',
+            'category_id' => 'required|exists:categories,id',
+            'item_qty' => 'required|integer|min:1',
+            'item_purchase' => 'nullable|date',
+            'item_warranty' => 'nullable|date',
+            'item_price' => 'nullable|numeric|min:0',
+            'item_imageu' => 'sometimes|nullable',
+        ]);
+
+        $item = Item::find($this->i_id);
+        if (!$item) {
+            $this->dispatch('saveModal', status: 'warning', position: 'top', message: 'Item not found.');
+            return;
+        }
+
+        $imagePath = $item->image_path;
+
+        if ($this->item_imageu) {
+            // Delete the old image if it exists
+            if ($item->image_path && Storage::disk('public')->exists($item->image_path)) {
+                Storage::disk('public')->delete($item->image_path);
+            }
+
+            // Upload the new image
+            $imagePath = $this->item_imageu->store('items', 'public');
+        }
+
+        $item->update([
+            'name' => $validatedData['item_name'],
+            'description' => $validatedData['item_description'],
+            'category_id' => $validatedData['category_id'],
+            'quantity' => $validatedData['item_qty'],
+            'purchase_date' => $validatedData['item_purchase'],
+            'warranty_expiry' => $validatedData['item_warranty'],
+            'purchase_price' => $validatedData['item_price'],
+            'image_path' =>  $imagePath,
+        ]);
+        $this->dispatch('updateModal', status: 'success',  position: 'top', message: 'Item update successfully.');
+    }
+
+    public function deleteCategory(int $id)
+    {
+        $this->i_id = $id;
+        $this->dispatch('editModal');
+    }
+
+
+    public function destroyCategory()
+    {
+
+        $checker = Category::find($this->c_id);
+
+        if (!$checker) {
+            $this->dispatch('destroyModal', status: 'warning', position: 'top', message: 'Category not found!', modal: '#deleteCategoryModal');
+            return;
+        }
+
+        $count = Category::count();
+        if ($count === 1) {
+            $this->dispatch('destroyModal', status: 'warning', position: 'top', message: 'You can only edit, but you cannot delete the only remaining category.', modal: '#deleteCategoryModal');
+            return;
+        }
+
+        // Delete the category
+        $checker->delete();
+
+        $this->dispatch('destroyModal', status: 'warning',  position: 'top', message: 'Category delete successfully.', modal: '#deleteCategoryModal');
+    }
+
+
     public function closeModal()
     {
         $this->resetInput();
@@ -78,5 +181,63 @@ class Index extends Component
         $this->reset(['item_name', 'item_image', 'item_price', 'item_warranty', 'item_purchase', 'item_qty', 'item_description', 'category_id']);
     }
 
+    public function downloadBarcode()
+    {
+        if (!$this->imageBarcode || !$this->item_name) {
+            $this->dispatch('saveModal', status: 'warning', position: 'top', message: 'No barcode available to download.');
+            return;
+        }
+    
+        $barcode = new DNS1D();
+        $barcodeData = base64_decode($barcode->getBarcodePNG($this->imageBarcode, 'C39'));
+    
+        $width = 400;
+        $height = 200;
+        $image = imagecreatetruecolor($width, $height);
+        $white = imagecolorallocate($image, 255, 255, 255);
+        $black = imagecolorallocate($image, 0, 0, 0);
+    
+       
+        imagefilledrectangle($image, 0, 0, $width, $height, $white);
+    
+        // Load Barcode Image
+        $barcodeImage = imagecreatefromstring($barcodeData);
+        $barcodeWidth = imagesx($barcodeImage);
+        $barcodeHeight = imagesy($barcodeImage);
+    
+      
+        $barcodeX = ($width - $barcodeWidth) / 2;
+        $barcodeY = ($height - $barcodeHeight) / 3;
+    
+        // Draw Border Around Barcode
+        $borderPadding = 5;
+        imagerectangle(
+            $image,
+            $barcodeX - $borderPadding,
+            $barcodeY - $borderPadding, 
+            $barcodeX + $barcodeWidth + $borderPadding, 
+            $barcodeY + $barcodeHeight + $borderPadding, 
+            $black
+        );
+    
+        
+        imagecopy($image, $barcodeImage, $barcodeX, $barcodeY, 0, 0, $barcodeWidth, $barcodeHeight);
+    
+        // Add Item Name at Bottom
+        $fontSize = 5;
+        $textWidth = imagefontwidth($fontSize) * strlen($this->item_name);
+        $textX = ($width - $textWidth) / 2;
+        $textY = $height - 25;
+    
+        imagestring($image, $fontSize, $textX, $textY, $this->item_name, $black);
+    
+        // Output Image as a Download
+        $fileName = 'barcode_' . $this->imageBarcode . '.png';
+        $filePath = storage_path('app/public/' . $fileName);
+        imagepng($image, $filePath);
+        imagedestroy($image);
+    
+        return response()->download($filePath)->deleteFileAfterSend();
+    }
     
 }

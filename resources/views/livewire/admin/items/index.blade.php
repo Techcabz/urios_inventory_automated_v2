@@ -30,7 +30,7 @@
                             <tr>
                                 <td> {{ $loop->index+1 }}</td>
                                 <td>
-                                    <img src="{{ $item->image_path ? asset('storage/' . $item->image_path) : asset('images/no-image.png') }}"
+                                    <img src="{{ $item->image_path ? asset('storage/' . $item->image_path) : asset('images/no-image.webp') }}"
                                         alt="{{ $item->name }}" class="img-thumbnail" style="max-width: 100px;">
                                 </td>
                                 <td>
@@ -75,13 +75,13 @@
                                             <div class="dropdown-item">
                                                 <div class="d-flex align-items-center gap-3">
                                                     <button type="button"
-                                                        wire:click="editCategory({{ $item->id }})"
-                                                        data-bs-toggle="modal" data-bs-target="#updateCategoryModal"
+                                                        wire:click="editItem({{ $item->id }})"
+                                                        data-bs-toggle="modal" data-bs-target="#updateItemModal"
                                                         class="btn btn-sm btn-warning "><i
                                                             class="fa fa-pencil-square-o"></i></button>
                                                     <button data-bs-toggle="modal"
-                                                        data-bs-target="#deleteCategoryModal"
-                                                        wire:click="deleteCategory({{ $item->id }})"
+                                                        data-bs-target="#deleteItemModal"
+                                                        wire:click="deleteItem({{ $item->id }})"
                                                         class="btn btn-sm btn-danger"><i
                                                             class="fa fa-trash-o"></i></button>
                                                 </div>
