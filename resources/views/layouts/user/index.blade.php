@@ -70,7 +70,17 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-
+    <style>
+        .poster-section {
+            height: 600px;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)),url('{{ asset("images/17973908.jpg") }}');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+        }
+    </style>
 
     @livewireStyles
 </head>

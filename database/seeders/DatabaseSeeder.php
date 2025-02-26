@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@admin.com',
             'status' => "completed",
             'role_as' => 1,
-            'user_status' => 0,
+            'status' => 0,
             'password' => Hash::make('admin123'),
         ]);
 

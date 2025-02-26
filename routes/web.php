@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Frontend\AccountController;
 use App\Http\Controllers\Auth\CustomLoginController;
 use App\Http\Controllers\Auth\CustomRegistrationController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\Frontend\FrontendController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
@@ -50,7 +51,8 @@ Route::prefix('myaccount')->middleware(['auth'])->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-// 
+    Route::get('cart', [CartController::class, 'cart'])->name('cart');
+    
 });
 
 Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function () {

@@ -2,6 +2,6 @@
 
 @section('content')
 
-
+@include('frontend.hero.index')
 
 @endsection

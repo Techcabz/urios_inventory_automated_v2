@@ -28,7 +28,7 @@
                                                 </span>
                                             </div>
                                         </li>
-                                      
+
 
                                     </ul>
                                 </div>
@@ -37,78 +37,70 @@
                         <div class="menu-right">
 
                             <ul>
-                                @guest
 
-                                    <li><a href="{{ route('login.custom') }}" class="nav-link menu-title">Login</a>
-                                    </li>
-                                    <li><a href="{{ route('register.custom') }}" class="nav-link menu-title">Register</a>
-                                    </li>
-                                @endguest
-
-                                @auth
-                                    @livewire('frontend.navbar-hello')
-                                    @if (Route::has('logout'))
-                                        <li>
-                                            <a href="{{ route('logout') }}"
-                                                onclick="event.preventDefault();
-                           document.getElementById('logout-form').submit();"
-                                                class="d-block btn btn-sm btn-danger text-white">{{ __('Logout') }}</a>
-                                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                                class="d-none">
-                                                @csrf
-                                            </form>
-                                        </li>
-                                    @endif
-                                @endauth
-
-                                {{-- <li class="onhover-dropdown">
+                                <li>
+                                    <div class="search-box theme-bg-color">
+                                        <i data-feather="search"></i>
+                                    </div>
+                                </li>
+                                <li class="onhover-dropdown wislist-dropdown">
+                                    <div class="cart-media">
+                                        <a href="{{ route('cart') }}">
+                                            <i data-feather="shopping-cart"></i>
+                                            <span id="cart-count" class="label label-theme rounded-pill">
+                                                <livewire:frontend.cart-list.cart-count />
+                                            </span>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="onhover-dropdown">
                                     <div class="cart-media name-usr">
                                         <i data-feather="user"></i>
                                     </div>
                                     <div class="onhover-div profile-dropdown">
                                         @guest
-                                            <ul>
-                                                @if (Route::has('login.custom'))
-                                                    <li>
-                                                        <a href="{{ route('login.custom') }}"
-                                                            class="d-block">{{ __('Login') }}</a>
-                                                    </li>
-                                                @endif
-                                                @if (Route::has('register.custom'))
-                                                    <li>
-                                                        <a href="{{ route('register.custom') }}"
-                                                            class="d-block">{{ __('Register') }}</a>
-                                                    </li>
-                                                @endif
-                                            </ul>
+                                        <ul>
+                                            @if (Route::has('login.custom'))
+                                            <li>
+                                                <a href="{{ route('login.custom') }}"
+                                                    class="d-block">{{ __('Login') }}</a>
+                                            </li>
+                                            @endif
+                                            @if (Route::has('register.custom'))
+                                            <li>
+                                                <a href="{{ route('register.custom') }}"
+                                                    class="d-block">{{ __('Register') }}</a>
+                                            </li>
+                                            @endif
+                                        </ul>
                                         @else
-                                            <ul>
-                                                @if (Route::has('myaccount.dashboard') || Route::has('myaccount.reservation') || Route::has('myaccount.profile') || Route::has('myaccount.travel') || Route::has('myaccount.security'))
-                                                    <li>
-                                                        <a href="{{ route('myaccount.dashboard') }}"
-                                                            class="d-block">{{ __('My Account') }}</a>
-                                                    </li>
-                                                @endif
-                                                @if (Route::has('logout'))
-                                                    <li>
-                                                        <a href="{{ route('logout') }}"
-                                                            onclick="event.preventDefault();
+                                        <ul>
+                                            @if (Route::has('myaccount.dashboard') || Route::has('myaccount.reservation') || Route::has('myaccount.profile') || Route::has('myaccount.travel') || Route::has('myaccount.security'))
+                                            <li>
+                                                <a href="{{ route('myaccount.dashboard') }}"
+                                                    class="d-block">{{ __('My Account') }}</a>
+                                            </li>
+                                            @endif
+                                            @if (Route::has('logout'))
+                                            <li>
+                                                <a href="{{ route('logout') }}"
+                                                    onclick="event.preventDefault();
                                                         document.getElementById('logout-form').submit();"
-                                                            class="d-block text-danger">{{ __('Logout') }}</a>
-                                                        <form id="logout-form" action="{{ route('logout') }}"
-                                                            method="POST" class="d-none">
-                                                            @csrf
-                                                        </form>
-                                                    </li>
-                                                @endif
-                                            </ul>
+                                                    class="d-block text-danger">{{ __('Logout') }}</a>
+                                                <form id="logout-form" action="{{ route('logout') }}"
+                                                    method="POST" class="d-none">
+                                                    @csrf
+                                                </form>
+                                            </li>
+                                            @endif
+                                        </ul>
                                         @endguest
                                     </div>
-                                </li> --}}
+                                </li>
                             </ul>
                         </div>
                         {{-- search --}}
-                        {{-- @livewire('frontend.search.index'); --}}
+                        @livewire('frontend.search.index');
                     </div>
                 </div>
             </div>
