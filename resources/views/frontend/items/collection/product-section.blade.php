@@ -5,15 +5,11 @@
         <div class="product-box">
             <div class="img-wrapper">
                 <div class="front">
-                    {{-- <a
-                            href="{{ url('collection', urlencode($product->category->slug) . '/' . urlencode($product->slug)) }}">
-                    @if ($item->productImages->isNotEmpty())
-                    @php $firstImage = $product->productImages->first(); @endphp
-                    <img src="{{ asset('storage/' . $firstImage->image) }}" class="bg-img blur-up lazyload"
-                        alt="">
-                    @endif
-                    </a>
-                    --}}
+                   <a href="">
+                    <img src="{{ asset('storage/' . $item->image_path) }}" class="bg-img blur-up lazyload"
+                    alt="">
+                   </a>
+               
                 </div>
 
 
