@@ -16,7 +16,7 @@
                     <div class="accordion-body category-scroll">
                         <ul class="category-list">
                             <li>
-                                <a href="{{ url('collection') }}">
+                                <a href="{{ route('home') }}">
                                     <div class="form-check ps-0 custome-form-check">
 
                                         <label class="form-check-label">All Categories</label>
@@ -27,7 +27,7 @@
                             </li>
                             @foreach ($categories as $category)
                             <li>
-                                <a href="{{ url('collection', $category->slug) }}">
+                                <a href="{{ route('user.categories', ['slug' =>  $category->name]) }}">
                                     <div class="form-check ps-0 custome-form-check">
 
                                         <label class="form-check-label">{{ Str::ucfirst($category->name) }}</label>

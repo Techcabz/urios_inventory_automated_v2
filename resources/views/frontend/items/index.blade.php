@@ -1,9 +1,18 @@
+@php
+    $categoryName = request()->segment(2);
+@endphp
 <section class="ratio_asos overflow-hidden">
     <div class="container p-sm-0">
         <div class="row m-0">
             <div class="col-12 p-0">
                 <div class="title-3 text-center">
-                    <h2>Available for Borrowing</h2>
+                    <h2>
+                        @if ($categoryName)
+                        Available {{ ucfirst($categoryName) }} for Borrowing
+                        @else
+                            Available for Borrowing
+                        @endif
+                    </h2>
                     <h5 class="theme-color">Scroll Down</h5>
                 </div>
             </div>
@@ -41,8 +50,8 @@
             }
         </style>
         <div class="row g-sm-4 g-3">
-      
-            <livewire:frontend.item.general :items="$items" :categories="$categories"/>
+
+            <livewire:frontend.item.general :items="$items" :categories="$categories" />
         </div>
     </div>
 </section>

@@ -35,4 +35,13 @@ class AccountController extends Controller
     {
         return view('frontend.account.security');
     }
+
+    public function cart()
+    {
+        return view('frontend.account.security');
+    }
+    
+   
+
 }
+

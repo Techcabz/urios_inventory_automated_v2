@@ -21,14 +21,7 @@
                         </select>
                     </div>
                 </div>
-                {{-- <div class="dropdown select-featured">
-                    <select class="form-select" name="size" id="pagesize">
-                        <option value="12" selected="">12 Products Per Page</option>
-                        <option value="24">24 Products Per Page</option>
-                        <option value="52">52 Products Per Page</option>
-                        <option value="100">100 Products Per Page</option>
-                    </select>
-                </div> --}}
+               
             </div>
             <div class="grid-options d-sm-inline-block d-none">
                 <ul class="d-flex">

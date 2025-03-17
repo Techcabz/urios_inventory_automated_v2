@@ -1,4 +1,4 @@
-<section class="pt-0 poster-section">
+<section class="pt-0 poster-section" style="height: 350px">
 
 
     <div class="left-side-contain">

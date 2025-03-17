@@ -43,6 +43,8 @@ Route::post('/email/verification-notification', function (Request $request) {
 Route::get('register', [CustomRegistrationController::class, 'index'])->name('register.custom');
 Route::get('login', [CustomLoginController::class, 'index'])->name('login.custom');
 Route::get('/', [FrontendController::class, 'index'])->name('home');
+Route::get('item/{uuid}', [FrontendController::class, 'item'])->name('user.item');
+Route::get('categories/{slug}', [FrontendController::class, 'categories_base'])->name('user.categories');
 
 Route::prefix('myaccount')->middleware(['auth'])->group(function () {
     Route::get('dashboard', [AccountController::class, 'dashboard'])->name('myaccount.dashboard');
@@ -51,7 +53,8 @@ Route::prefix('myaccount')->middleware(['auth'])->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('cart', [CartController::class, 'cart'])->name('cart');
+    Route::get('cart', [FrontendController::class, 'cart'])->name('cart');
+   
     
 });
 

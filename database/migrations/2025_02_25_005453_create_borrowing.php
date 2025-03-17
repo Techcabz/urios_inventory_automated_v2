@@ -14,11 +14,14 @@ return new class extends Migration
         Schema::create('borrowing', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->unsigned()->constrained('users')->onDelete('cascade');
-            $table->foreignId('item_id')->unsigned()->constrained('items')->onDelete('cascade');
-            $table->string('reference');
+            $table->string('barcode_reference');
+            $table->dateTime('due_date')->nullable();
+            $table->dateTime('returned_at')->nullable();
+            $table->text('reason')->nullable();
+            $table->foreignId('approved_by')->nullable()->constrained('users')->onDelete('set null');
+            $table->text('notes')->nullable();
             $table->uuid('uuid')->unique()->nullable();
             $table->tinyInteger('status')->default(0)->comment('0=pending,1=accepted,2=cancelled,3=done');
-            $table->integer('quantity')->default(0);
             $table->timestamps();
         });
     }

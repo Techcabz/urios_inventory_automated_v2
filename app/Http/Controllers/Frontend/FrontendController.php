@@ -19,5 +19,23 @@ class FrontendController extends Controller
         return view('frontend.index', compact('categories', 'items'));
     }
 
-    public function items($category_slug) {}
+    public function item($uuid)
+    {
+        $item = Item::where('uuid', $uuid)->firstOrFail();
+
+        return view('frontend.items.single.index', compact('item'));
+  
+    }
+
+    public function categories_base($slug)
+    {
+        $categories = Category::orderBy('created_at', 'DESC')->get();
+        $category = Category::where('name', $slug)->firstOrFail();
+
+        $items = Item::where('category_id', $category->id)
+            ->where('status', '0')
+            ->orderBy('created_at', 'DESC')
+            ->get();
+            return view('frontend.index', compact('categories', 'items'));
+    }
 }

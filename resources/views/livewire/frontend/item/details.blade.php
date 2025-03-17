@@ -1,3 +1,5 @@
 <div>
-    {{-- Success is as dangerous as failure. --}}
+    
+    @include('frontend.items.single.single-section')
+
 </div>
