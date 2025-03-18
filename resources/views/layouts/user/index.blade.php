@@ -73,7 +73,7 @@
     <style>
         .poster-section {
             height: 600px;
-            background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)),url('{{ asset("images/17973908.jpg") }}');
+            background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)), url('{{ asset('images/17973908.jpg') }}');
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center;
@@ -222,8 +222,8 @@
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
 
     <script>
-        var tableScriptUrl = '{{ asset("assets_users/js/datatable/table.js") }}';
-        var custom_slickScriptUrl = '{{ asset("assets_users/js/slick/custom_slick.js") }}';
+        var tableScriptUrl = '{{ asset('assets_users/js/datatable/table.js') }}';
+        var custom_slickScriptUrl = '{{ asset('assets_users/js/slick/custom_slick.js') }}';
 
         function alertSwift(icon, position, title) {
             const Toast = Swal.mixin({
@@ -256,7 +256,11 @@
 
             });
 
-
+            Livewire.on('redirectWithDelay', (data) => {
+                setTimeout(() => {
+                    window.location.href = data.url;
+                }, data.delay);
+            });
 
             function loadScript(url, callback) {
                 var script = document.createElement('script');

@@ -53,7 +53,7 @@ Route::prefix('myaccount')->middleware(['auth'])->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('cart', [FrontendController::class, 'cart'])->name('cart');
+    Route::get('borrowing', [FrontendController::class, 'cart'])->name('cart');
    
     
 });

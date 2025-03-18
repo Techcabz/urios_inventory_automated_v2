@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Frontend;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Item;
+use Illuminate\Support\Facades\Auth;
+
 
 class FrontendController extends Controller
 {
@@ -24,7 +27,6 @@ class FrontendController extends Controller
         $item = Item::where('uuid', $uuid)->firstOrFail();
 
         return view('frontend.items.single.index', compact('item'));
-  
     }
 
     public function categories_base($slug)
@@ -36,6 +38,17 @@ class FrontendController extends Controller
             ->where('status', '0')
             ->orderBy('created_at', 'DESC')
             ->get();
-            return view('frontend.index', compact('categories', 'items'));
+        return view('frontend.index', compact('categories', 'items'));
+    }
+
+    public function cart()
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login.custom');
+        }
+        $cart =  Cart::where('user_id', auth()->user()->id)->orderBy('created_at', 'DESC')->get();
+        
+        return view('frontend.cart.index', compact('cart'));
+ 
     }
 }

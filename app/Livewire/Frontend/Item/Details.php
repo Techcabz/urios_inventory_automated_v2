@@ -26,6 +26,13 @@ class Details extends Component
             return redirect()->route('login.custom');
         }
 
+        $user = Auth::user();
+        if ($user->status == 'incompleted') {
+            $this->dispatch('messageModal', status: 'warning', position: 'top', message: 'Please complete your profile before borrowing items.');
+            $this->dispatch('redirectWithDelay', url: '/myaccount/profile', delay: 3000);
+            return;
+        }
+
         $cartItem = Cart::where('user_id', Auth::id())
             ->where('item_id', $this->items->id)
             ->first();

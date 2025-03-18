@@ -45,12 +45,20 @@
                                 </li>
                                 <li class="onhover-dropdown wislist-dropdown">
                                     <div class="cart-media">
-                                        <a href="{{ route('cart') }}">
-                                            <i data-feather="shopping-cart"></i>
-                                            <span id="cart-count" class="label label-theme rounded-pill">
-                                                <livewire:frontend.cart-list.cart-count />
-                                            </span>
-                                        </a>
+                                        @auth
+                                            <a href="{{ route('cart') }}">
+                                                <i data-feather="shopping-cart"></i>
+                                                <span id="cart-count" class="label label-theme rounded-pill">
+                                                    <livewire:frontend.cart-list.cart-count />
+                                                </span>
+                                            </a>
+                                        @else
+                                            <a href="{{ route('login.custom') }}">
+                                                <i data-feather="shopping-cart"></i>
+                                                <span class="label label-theme rounded-pill">0</span>
+                                            </a>
+                                        @endauth
+
                                     </div>
                                 </li>
                                 <li class="onhover-dropdown">
@@ -59,41 +67,45 @@
                                     </div>
                                     <div class="onhover-div profile-dropdown">
                                         @guest
-                                        <ul>
-                                            @if (Route::has('login.custom'))
-                                            <li>
-                                                <a href="{{ route('login.custom') }}"
-                                                    class="d-block">{{ __('Login') }}</a>
-                                            </li>
-                                            @endif
-                                            @if (Route::has('register.custom'))
-                                            <li>
-                                                <a href="{{ route('register.custom') }}"
-                                                    class="d-block">{{ __('Register') }}</a>
-                                            </li>
-                                            @endif
-                                        </ul>
+                                            <ul>
+                                                @if (Route::has('login.custom'))
+                                                    <li>
+                                                        <a href="{{ route('login.custom') }}"
+                                                            class="d-block">{{ __('Login') }}</a>
+                                                    </li>
+                                                @endif
+                                                @if (Route::has('register.custom'))
+                                                    <li>
+                                                        <a href="{{ route('register.custom') }}"
+                                                            class="d-block">{{ __('Register') }}</a>
+                                                    </li>
+                                                @endif
+                                            </ul>
                                         @else
-                                        <ul>
-                                            @if (Route::has('myaccount.dashboard') || Route::has('myaccount.reservation') || Route::has('myaccount.profile') || Route::has('myaccount.travel') || Route::has('myaccount.security'))
-                                            <li>
-                                                <a href="{{ route('myaccount.dashboard') }}"
-                                                    class="d-block">{{ __('My Account') }}</a>
-                                            </li>
-                                            @endif
-                                            @if (Route::has('logout'))
-                                            <li>
-                                                <a href="{{ route('logout') }}"
-                                                    onclick="event.preventDefault();
+                                            <ul>
+                                                @if (Route::has('myaccount.dashboard') ||
+                                                        Route::has('myaccount.reservation') ||
+                                                        Route::has('myaccount.profile') ||
+                                                        Route::has('myaccount.travel') ||
+                                                        Route::has('myaccount.security'))
+                                                    <li>
+                                                        <a href="{{ route('myaccount.dashboard') }}"
+                                                            class="d-block">{{ __('My Account') }}</a>
+                                                    </li>
+                                                @endif
+                                                @if (Route::has('logout'))
+                                                    <li>
+                                                        <a href="{{ route('logout') }}"
+                                                            onclick="event.preventDefault();
                                                         document.getElementById('logout-form').submit();"
-                                                    class="d-block text-danger">{{ __('Logout') }}</a>
-                                                <form id="logout-form" action="{{ route('logout') }}"
-                                                    method="POST" class="d-none">
-                                                    @csrf
-                                                </form>
-                                            </li>
-                                            @endif
-                                        </ul>
+                                                            class="d-block text-danger">{{ __('Logout') }}</a>
+                                                        <form id="logout-form" action="{{ route('logout') }}"
+                                                            method="POST" class="d-none">
+                                                            @csrf
+                                                        </form>
+                                                    </li>
+                                                @endif
+                                            </ul>
                                         @endguest
                                     </div>
                                 </li>
@@ -108,7 +120,7 @@
     </div>
 </header>
 
-<div class="mobile-menu d-sm-none">
+<div class="mobile-menu d-none">
     <ul>
         <li>
             <a href="{{ route('home') }}" class="{{ Request::is('home') ? 'active' : '' }}">
