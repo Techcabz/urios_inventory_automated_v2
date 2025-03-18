@@ -160,8 +160,15 @@
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label for="" class="form-label">Category</label>
-                                    <input type="text" wire:model="category_id" class="form-control"
-                                        id="category_id">
+                                    <select wire:model="category_id" class="form-control" id="category_id">
+                                        <option value="">-- Select Category --</option>
+                                        @foreach ($categories as $category)
+                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('category_id')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                     @error('category_id')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -227,7 +234,7 @@
                                 <img class="img-thumbnail" src="{{ asset('storage/' . $item_imageu_tmp) }}"
                                     alt="Existing Image" style="max-width: 100px; margin-top: 10px;">
                             @else
-                                <img class="img-thumbnail" src="{{ asset('images/no-image.webp') }}"
+                                <img class="img-thumbnail" src="{{ asset('images/not_available.jpg') }}"
                                     alt="No Image Available" style="max-width: 100px; margin-top: 10px;">
                             @endif
 

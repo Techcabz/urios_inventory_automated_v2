@@ -14,7 +14,8 @@ class Cart extends Model
     protected $fillable = [
         'item_id',
         'user_id',
-        'quantity'
+        'quantity',
+        'status'
     ];
 
     public function item()

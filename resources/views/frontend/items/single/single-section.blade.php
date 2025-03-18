@@ -50,6 +50,7 @@
                                 <hr>
                                 <p><strong>({{ $item->quantity }}) Available Quantity</strong></p>
 
+                                <p>Description: <strong>{{ $item->description }}</strong></p>
                                 <form wire:submit.prevent="savetoCart">
                                    
                                     <div class="mb-3">

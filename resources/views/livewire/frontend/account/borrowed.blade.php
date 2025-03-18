@@ -42,7 +42,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($reservationlists as $item)
+                                {{-- @foreach ($reservationlists as $item)
                                     @if ($item->status == 1)
                                         <tr>
 
@@ -71,7 +71,7 @@
                                             </td>
                                         </tr>
                                     @endif
-                                @endforeach
+                                @endforeach --}}
 
                             </tbody>
                         </table>
@@ -90,7 +90,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($reservationlists as $item)
+                                {{-- @foreach ($reservationlists as $item)
                                     @if ($item->status == 2)
                                         <tr>
 
@@ -120,7 +120,7 @@
                                             </td>
                                         </tr>
                                     @endif
-                                @endforeach
+                                @endforeach --}}
 
                             </tbody>
                         </table>
@@ -139,7 +139,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($reservationlists as $item)
+                                {{-- @foreach ($reservationlists as $item)
                                     @if ($item->status == 3)
                                         <tr>
 
@@ -169,7 +169,7 @@
                                             </td>
                                         </tr>
                                     @endif
-                                @endforeach
+                                @endforeach --}}
 
                             </tbody>
                         </table>

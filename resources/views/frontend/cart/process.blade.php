@@ -7,8 +7,8 @@
     </style>
     <div class="container">
         <div class="row g-4">
-            <div class="col-lg-7">
-                <form class="needs-validation" wire:submit.prevent="processReserv">
+            <div class="col-lg-6">
+                <form class="needs-validation" wire:submit.prevent="processBorrow">
 
                     <div id="billingAddress" class="row g-4">
                         @if (Auth::user()->role_as == 1)
@@ -87,14 +87,15 @@
                     <hr class="my-lg-5 my-4">
 
                     <button class="btn btn-solid-default mt-4" wire:click="goBack" type="button">GO BACK</button>
-                    <button class="btn btn-solid-default mt-4" id="saveSignature" type="submit">
+                    <button class="btn btn-solid-default mt-4" type="submit"
+                        @if (!$carts || $carts->isEmpty()) disabled @endif>
                         PLACE BORROW
                     </button>
 
                 </form>
             </div>
 
-            <div class="col-lg-5">
+            <div class="col-lg-6">
 
                 <div class="your-cart-box mt-5" style="position: static !important">
                     <h3 class="mb-3 d-flex text-capitalize">ITEMS LIST
@@ -106,52 +107,75 @@
                                 <th scope="col">Item</th>
                                 <th scope="col">Available</th>
                                 <th scope="col">Quantity</th>
+                                <th scope="col">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($cart_list as $cart)
-                                <tr>
-                                    <td class="d-flex align-items-center">
-                                        <img src="{{ asset($cart->item->image_path ? 'storage/' . $cart->item->image_path : 'images/not_available.jpg') }}"
-                                            alt="{{ $cart->item->name }}" class="img-thumbnail me-2"
-                                            style="width: 50px; height: 50px; object-fit: cover;">
-                                        <span>{{ ucfirst($cart->item->name) }}</span>
-                                    </td>
-                                    <td>{{ $cart->item->quantity }}</td>
-                                    <td>
-                                        <div class="qty-box">
-                                            <div class="input-group d-flex align-items-center">
-                                                <span class="input-group-prepend">
-                                                    <button type="button"
-                                                        wire:click="decrementItemQuantity({{ $cart->id }})"
-                                                        class="btn btn-sm">
-                                                        <i class="fas fa-minus"></i>
-                                                    </button>
-                                                </span>
 
-                                                <input type="number"
-                                                    class="form-control input-number w-25 text-center"
-                                                    wire:model.lazy="item_qty.{{ $cart->id }}" min="1"
-                                                    max="{{ $cart->quantity }}"
-                                                    wire:change="handleInputItemChange({{ $cart->id }}, $event.target.value)">
-
-                                                <span class="input-group-prepend">
-                                                    <button type="button"
-                                                        wire:click="incrementItemQuantity({{ $cart->id }})"
-                                                        class="btn btn-sm">
-                                                        <i class="fas fa-plus"></i>
-                                                    </button>
+                            <tbody>
+                                @if ($carts->isEmpty())
+                                    <tr>
+                                        <td colspan="4" class="text-center text-muted">
+                                            <i class="fas fa-shopping-cart fa-2x mb-2"></i>
+                                            <p>Your cart is empty.</p>
+                                        </td>
+                                    </tr>
+                                @else
+                                    @foreach ($carts as $cart)
+                                        <tr>
+                                            <td class="d-flex align-items-center">
+                                                <img src="{{ asset($cart->item->image_path ? 'storage/' . $cart->item->image_path : 'images/not_available.jpg') }}"
+                                                    alt="{{ $cart->item->name }}" class="img-thumbnail me-2"
+                                                    style="width: 50px; height: 50px; object-fit: cover;">
+                                                <span title="{{ ucfirst($cart->item->name) }}">
+                                                    {{ Str::limit(ucfirst($cart->item->name), 20, '...') }}
                                                 </span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
+                                            </td>
+                            
+                                            <td>{{ $cart->item->quantity }}</td>
+                                            <td>
+                                                <div class="qty-box">
+                                                    <div class="input-group d-flex align-items-center">
+                                                        <span class="input-group-prepend">
+                                                            <button type="button"
+                                                                wire:click="decrementItemQuantity({{ $cart->id }})"
+                                                                class="btn btn-sm">
+                                                                <i class="fas fa-minus"></i>
+                                                            </button>
+                                                        </span>
+                            
+                                                        <input type="number"
+                                                            class="form-control input-number w-25 text-center"
+                                                            wire:model.lazy="item_qty.{{ $cart->id }}" min="1"
+                                                            max="{{ $cart->quantity }}"
+                                                            wire:change="handleInputItemChange({{ $cart->id }}, $event.target.value)">
+                            
+                                                        <span class="input-group-prepend">
+                                                            <button type="button"
+                                                                wire:click="incrementItemQuantity({{ $cart->id }})"
+                                                                class="btn btn-sm">
+                                                                <i class="fas fa-plus"></i>
+                                                            </button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button type="button" wire:click="removeItemFromCart({{ $cart->id }})"
+                                                    class="btn btn-danger btn-sm">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                            
                         </tbody>
                     </table>
 
                     <div class="d-flex mt-3">
-                        {{-- {{ $cart_list->links(data: ['scrollTo' => false]) }} --}}
+                        {{ $carts->links(data: ['scrollTo' => false]) }}
                     </div>
 
                 </div>

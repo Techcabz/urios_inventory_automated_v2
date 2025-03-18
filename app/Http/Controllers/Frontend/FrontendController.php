@@ -46,9 +46,8 @@ class FrontendController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login.custom');
         }
-        $cart =  Cart::where('user_id', auth()->user()->id)->orderBy('created_at', 'DESC')->get();
-        
-        return view('frontend.cart.index', compact('cart'));
+       
+        return view('frontend.cart.index');
  
     }
 }

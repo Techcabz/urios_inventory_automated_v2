@@ -5,6 +5,7 @@ namespace App\Livewire\Frontend\Item;
 use App\Models\Cart;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Illuminate\Support\Facades\Session;
 
 
 class Details extends Component
@@ -26,15 +27,17 @@ class Details extends Component
             return redirect()->route('login.custom');
         }
 
-        $user = Auth::user();
-        if ($user->status == 'incompleted') {
-            $this->dispatch('messageModal', status: 'warning', position: 'top', message: 'Please complete your profile before borrowing items.');
-            $this->dispatch('redirectWithDelay', url: '/myaccount/profile', delay: 3000);
-            return;
+        if (auth()->user()->status == "incompleted") {
+            if (auth()->user()->status == "incompleted") {
+                Session::flash('status', 'warning');
+                Session::flash('message', 'Please complete your details before adding items under the profile page');
+                return redirect('/myaccount/profile');
+            }
         }
 
         $cartItem = Cart::where('user_id', Auth::id())
             ->where('item_id', $this->items->id)
+            ->where('status', 0)
             ->first();
 
         if ($cartItem) {

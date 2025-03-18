@@ -7,7 +7,9 @@
         <div class="container">
             <div class="row">
                 @include('frontend.account.sidebar')
-                <livewire:frontend.account.security />
+
+                <livewire:frontend.account.borrowed />
+
             </div>
         </div>
     </section>

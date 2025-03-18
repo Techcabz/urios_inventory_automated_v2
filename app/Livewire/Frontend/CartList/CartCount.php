@@ -13,7 +13,7 @@ class CartCount extends Component
     public function checkCartlistCount()
     {
         if (Auth::check()) {
-            return $this->cartlisCount = Cart::where('user_id', auth()->user()->id)->count();
+            return $this->cartlisCount = Cart::where('user_id', auth()->user()->id)->where('status', 0)->count();
         } else {
             return  $this->cartlisCount = 0;
         }

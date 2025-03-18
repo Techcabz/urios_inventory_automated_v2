@@ -14,7 +14,7 @@
                 </div>
                 <div class="product-details">
                     <div class="d-flex justify-content-between">
-                        <h3 class="theme-color">{{ Str::ucfirst($item->category->name) }}</h3>
+                        <h3 class="theme-color">{{ Str::ucfirst($item->name) }}</h3>
                         <span class="text-primary">{{ $item->quantity }}</span>
                     </div>
 

@@ -10,14 +10,17 @@ use Illuminate\Support\Str;
 class Borrowing extends Model
 {
     use HasFactory;
+    protected $table = 'borrowing';
 
     protected $fillable = [
         'uuid',
-        'reference',
-        'user_id',
+        'barcode_reference',
+        'due_date',
+        'returned_at',
+        'reason',
         'status',
-        'quantity',
-        'item_id'
+        'approved_by',
+        'user_id'
     ];
 
 
@@ -31,6 +34,11 @@ class Borrowing extends Model
         return $this->belongsTo(Item::class, 'item_id', 'id');
     }
 
+    public function borrowingCarts()
+    {
+        return $this->hasMany(Borrowing_cart::class, 'borrowing_id', 'id');
+    }
+
      /**
      * The "booting" method of the model.
      *
@@ -39,18 +47,18 @@ class Borrowing extends Model
     protected static function boot()
     {
         parent::boot();
-
+    
         static::creating(function ($item) {
-            // Generate a UUID before creating the item
             $item->uuid = Str::uuid();
     
-            // Generate a unique reference number
-            $item->reference = IdGenerator::generate([
-                'table' => 'items',
-                'field' => 'reference',
+            // This line is incorrect because the column name is `barcode_reference`, not `reference`
+            $item->barcode_reference = IdGenerator::generate([
+                'table' => 'borrowing',
+                'field' => 'barcode_reference',
                 'length' => 10,
                 'prefix' => 'BOR-',
             ]);
         });
     }
+    
 }

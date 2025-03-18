@@ -43,24 +43,22 @@
                                         <i data-feather="search"></i>
                                     </div>
                                 </li>
+                                @auth
                                 <li class="onhover-dropdown wislist-dropdown">
                                     <div class="cart-media">
-                                        @auth
+                                       
                                             <a href="{{ route('cart') }}">
                                                 <i data-feather="shopping-cart"></i>
                                                 <span id="cart-count" class="label label-theme rounded-pill">
                                                     <livewire:frontend.cart-list.cart-count />
                                                 </span>
                                             </a>
-                                        @else
-                                            <a href="{{ route('login.custom') }}">
-                                                <i data-feather="shopping-cart"></i>
-                                                <span class="label label-theme rounded-pill">0</span>
-                                            </a>
-                                        @endauth
-
+                                        
+                                       
                                     </div>
                                 </li>
+                                @endauth
+
                                 <li class="onhover-dropdown">
                                     <div class="cart-media name-usr">
                                         <i data-feather="user"></i>

@@ -19,28 +19,15 @@ class AccountController extends Controller
         return view('frontend.account.dashboard');
     }
 
- 
-
     public function profile()
     {
         return view('frontend.account.profile');
     }
 
-    public function travel()
+    public function borrowed()
     {
-        return view('frontend.account.travel');
+        return view('frontend.account.borrowed');
     }
-
-    public function security()
-    {
-        return view('frontend.account.security');
-    }
-
-    public function cart()
-    {
-        return view('frontend.account.security');
-    }
-    
    
 
 }

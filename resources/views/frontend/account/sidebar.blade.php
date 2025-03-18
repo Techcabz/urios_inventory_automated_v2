@@ -12,9 +12,9 @@
                     class="fas fa-angle-right"></i>Profile</a>
         </li>
 
-        {{-- <li class="nav-item">
-            <a class="nav-link font-light {{ Request::is('myaccount/security') ? 'active' : '' }}" href="{{ route('myaccount.security') }}"><i
-                    class="fas fa-angle-right"></i>Security</a>
-        </li> --}}
+        <li class="nav-item">
+            <a class="nav-link font-light {{ Request::is('myaccount/borrowed') ? 'active' : '' }}" href="{{ route('myaccount.borrowed') }}"><i
+                    class="fas fa-angle-right"></i>Borrowed</a>
+        </li>
     </ul>
 </div>

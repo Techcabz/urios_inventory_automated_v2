@@ -4,6 +4,6 @@
 
 @include('frontend.cart.banner')
 
-<livewire:frontend.borrower.index :cart="$cart" />
+<livewire:frontend.borrower.index  />
      
 @endsection

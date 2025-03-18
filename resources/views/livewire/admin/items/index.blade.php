@@ -30,7 +30,7 @@
                             <tr>
                                 <td> {{ $loop->index+1 }}</td>
                                 <td>
-                                    <img src="{{ $item->image_path ? asset('storage/' . $item->image_path) : asset('images/no-image.webp') }}"
+                                    <img src="{{ $item->image_path ? asset('storage/' . $item->image_path) : asset('images/not_available.jpg') }}"
                                         alt="{{ $item->name }}" class="img-thumbnail" style="max-width: 100px;">
                                 </td>
                                 <td>

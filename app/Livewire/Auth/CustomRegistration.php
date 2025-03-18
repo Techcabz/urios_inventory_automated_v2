@@ -32,6 +32,7 @@ class CustomRegistration extends Component
         ]);
 
         $this->dispatch('messageModal', status: 'info', position: 'top', message: 'Register successfully. Please wait for administrator approval. Thank you!.');
-        return $this->redirect('/', navigate: true);
+        $this->dispatch('redirectWithDelay', url: '/', delay: 3000);
+            
     }
 }

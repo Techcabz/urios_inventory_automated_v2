@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\CustomLoginController;
 use App\Http\Controllers\Auth\CustomRegistrationController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\Frontend\FrontendController;
+use App\Http\Controllers\PlaceBorrower;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 /*
@@ -49,11 +50,13 @@ Route::get('categories/{slug}', [FrontendController::class, 'categories_base'])-
 Route::prefix('myaccount')->middleware(['auth'])->group(function () {
     Route::get('dashboard', [AccountController::class, 'dashboard'])->name('myaccount.dashboard');
     Route::get('profile', [AccountController::class, 'profile'])->name('myaccount.profile');
-    Route::get('security', [AccountController::class, 'security'])->name('myaccount.security');
+
+    Route::get('borrowed', [AccountController::class, 'borrowed'])->name('myaccount.borrowed');
 });
 
 Route::middleware(['auth'])->group(function () {
     Route::get('borrowing', [FrontendController::class, 'cart'])->name('cart');
+    Route::get('place-borrowing/{uuid}', [PlaceBorrower::class, 'thankyou'])->name('cart.status');
    
     
 });
@@ -66,6 +69,7 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function () {
         Route::get('pending', [UsersController::class, 'pending'])->name('users.pending');
         Route::get('management', [UsersController::class, 'management'])->name('users.management');
         Route::get('myaccount', [UsersController::class, 'myaccount'])->name('users.myaccount');
+      
     });
    
     Route::fallback([ErrorsController::class, 'index']);
