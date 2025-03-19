@@ -20,20 +20,21 @@
                     <div class="col-lg-4 col-sm-6">
                         <div class="order-box">
                             <div class="order-box-image">
-                                <img src="{{ asset('assets_users/images/svg/sent.png') }} "
+                                <img src="{{ asset('assets_users/images/svg/box.png') }}"
                                     class="img-fluid blur-up lazyload" alt="">
+
                             </div>
                             <div class="order-box-contain">
-                                <img src="{{ asset('assets_users/images/svg/sent1.png') }}"
+                                <img src="{{ asset('assets_users/images/svg/box1.png') }}"
                                     class="img-fluid blur-up lazyload" alt="">
+
                                 <div>
-                                    <h5 class="font-light">total borrowing</h5>
-                                    <h3></h3>
+                                    <h5 class="font-light">pending</h5>
+                                    <h3>0</h3>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                     <div class="col-lg-4 col-sm-6">
                         <div class="order-box">
                             <div class="order-box-image">
@@ -46,12 +47,30 @@
                                     class="img-fluid blur-up lazyload" alt="">
 
                                 <div>
-                                    <h5 class="font-light">cancelled borrowed</h5>
-                                    <h3></h3>
+                                    <h5 class="font-light">cancelled</h5>
+                                    <h3>0</h3>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="order-box">
+                            <div class="order-box-image">
+                                <img src="{{ asset('assets_users/images/svg/sent.png') }} "
+                                    class="img-fluid blur-up lazyload" alt="">
+                            </div>
+                            <div class="order-box-contain">
+                                <img src="{{ asset('assets_users/images/svg/sent1.png') }}"
+                                    class="img-fluid blur-up lazyload" alt="">
+                                <div>
+                                    <h5 class="font-light">total borrowing</h5>
+                                    <h3>0</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    
 
 
                 </div>

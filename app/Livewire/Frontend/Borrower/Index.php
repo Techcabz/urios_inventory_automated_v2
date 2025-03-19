@@ -10,6 +10,7 @@ use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
 use Livewire\WithoutUrlPagination;
+use Milon\Barcode\DNS1D;
 
 class Index extends Component
 {
@@ -75,7 +76,6 @@ class Index extends Component
         Cart::where('id', $id)->update(['quantity' => $quantity]);
         $this->dispatch('cartlistUpdated');
         $this->dispatch('cartlistAddedUpdated');
-       
     }
 
     public function removeItemFromCart($id)
@@ -85,7 +85,7 @@ class Index extends Component
         $this->cart_list = Cart::where('user_id', Auth::id())->get();
 
         $this->dispatch('cartlistAddedUpdated');
-       
+
         $this->dispatch('cartlistUpdated');
         $this->dispatch('messageModal', status: 'success', position: 'top', message: 'Item removed from cart.');
     }
@@ -130,8 +130,8 @@ class Index extends Component
 
         $borrowing = Borrowing::create([
             'user_id' => $userId,
-            'due_date' => $this->dsto,
-            'returned_at' => $this->dsfrom,
+            'end_date' => $this->dsto,
+            'start_date' => $this->dsfrom,
             'reason' => $this->remarks,
         ]);
 
@@ -156,6 +156,7 @@ class Index extends Component
     }
 
 
+   
     public function render()
     {
         $users = UserDetails::where('users_id', auth()->user()->id)->first();

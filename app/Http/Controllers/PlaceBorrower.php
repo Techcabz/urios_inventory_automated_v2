@@ -42,7 +42,6 @@ class PlaceBorrower extends Controller
                
                 // $remarks = remarks::where('reservation_id', $reservation->id)->first();
                 $remarks = '';
-                // dd($referenceNumber);
                 $borID = $borrower->id;
                 
                 $users = UserDetails::where('users_id', $borrower->user_id)->first();

@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->unsigned()->constrained('users')->onDelete('cascade');
             $table->string('barcode_reference');
-            $table->dateTime('due_date')->nullable();
-            $table->dateTime('returned_at')->nullable();
+            $table->dateTime('start_date')->nullable();
+            $table->dateTime('end_date')->nullable();
             $table->text('reason')->nullable();
             $table->foreignId('approved_by')->nullable()->constrained('users')->onDelete('set null');
             $table->text('notes')->nullable();

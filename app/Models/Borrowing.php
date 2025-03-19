@@ -15,8 +15,8 @@ class Borrowing extends Model
     protected $fillable = [
         'uuid',
         'barcode_reference',
-        'due_date',
-        'returned_at',
+        'start_date',
+        'end_date',
         'reason',
         'status',
         'approved_by',
@@ -55,8 +55,8 @@ class Borrowing extends Model
             $item->barcode_reference = IdGenerator::generate([
                 'table' => 'borrowing',
                 'field' => 'barcode_reference',
-                'length' => 10,
-                'prefix' => 'BOR-',
+                'length' => 6,
+                'prefix' => 'B',
             ]);
         });
     }

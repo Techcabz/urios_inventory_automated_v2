@@ -21,14 +21,15 @@
 
                             <div class="success-contain">
                                 <h4 class="text-warning">Pending</h4>
-                                <h5 class="font-light">Your borrowing request has been successfully submitted and is
-                                    currently pending approval. Please wait for administrator review. Thank you!</h5>
-                                <h6 class="font-light ">You will receive a confirmation via email, or you can check here
-                                    periodically for updates on your request.</strong></h6>
+                                <h5 class="font-light">Your borrowing request has been successfully submitted. Please proceed to the facility and present your barcode for approval.</h5>
+                                <h6 class="font-light ">Note: If the requested date has passed and the item has not been approved, your request will be automatically canceled.</strong></h6>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
+
+                
             @elseif ($details->status == 2)
                 <div class="row">
                     <div class="col-12 p-0">
@@ -78,15 +79,7 @@
                 <div class="row">
                     <div class="col-12 p-0">
                         <div class="success-icon">
-                            <div class="main-container d-none">
-                                <div class="card mb-3">
-                                    <div class="card-body">
-                                       <img class="border p-2" id="barcodeImage"
-                                            src="data:image/png;base64,{{ DNS1D::getBarcodePNG($barcode, 'C39') }}"
-                                            alt="barcode" />
-                                    </div>
-                                </div>
-                            </div>
+
 
                             <div class="success-contain">
                                 <h4 class="p-3">Congratulation🎊</h4>
@@ -100,7 +93,7 @@
 
         </div>
     </section>
-    {{-- @if ($remarks != null && $remarks->remarks_msg != 'blank')
+    @if ($remarks != null && $remarks->remarks_msg != 'blank')
         <section class="section-b-space cart-section order-details-table">
             <div class="alert alert-warning alert-dismissible fade show m-3 text-center text-wrap" role="alert">
 
@@ -113,20 +106,26 @@
                     aria-label="Close"></button>
             </div>
         </section>
-    @endif --}}
+    @endif
     <!-- Order Success Section End -->
-    @if ($details->status != 3)
+    @if ( $details->status == 0)
         <section class="section-b-space cart-section order-details-table">
             <div class="container">
-                <div class="title title1 title-effect mb-1 title-left">
-                    {{-- <h2 class="mb-3">Printable Permit</h2><a target="_blank"
-                        href="{{ route('permit.download', ['reference' => $details->reference_num]) }}"
-                        class="mx-3 btn btn-sm btn-primary">PRINT</a> --}}
+                @livewire('frontend.borrower.bdownload', ['imageBarcode' => $barcode, 'expire' => $details->end_date])
 
+
+                <div class="main-container">
+                    <div class="card mb-3">
+                        <div class="card-body text-center">
+                            <p class="text-muted mb-2">
+                                Please present this barcode to the in-charge for approval of your borrowing request.
+                            </p>
+                            <img class="border p-2" id="barcodeImage"
+                                src="data:image/png;base64,{{ DNS1D::getBarcodePNG($barcode, 'C39') }}" alt="barcode" />
+                                <p class="mt-1">CODE: {{$barcode}}</p>
+                        </div>
+                    </div>
                 </div>
-
-
-
             </div>
         </section>
     @endif
@@ -147,9 +146,9 @@
                                 <h4>Summary </h4>
                                 <ul class="order-details">
                                     {{-- <li class="d-none">Reference: <strong>{{ $details->reference_num }}</strong></li> --}}
-                                    <li>Date: {{ \Carbon\Carbon::parse($details->date_from)->format('F j, Y') }}
+                                    <li>Date: {{ \Carbon\Carbon::parse($details->start_date)->format('F j, Y') }}
                                         -<br>
-                                        {{ \Carbon\Carbon::parse($details->date_to)->format('F j, Y') }}</li>
+                                        {{ \Carbon\Carbon::parse($details->end_date)->format('F j, Y') }}</li>
 
                                 </ul>
                             </div>
@@ -168,15 +167,15 @@
 
                             <div class="col-md-12" style="color:#333">
 
-                                {{-- <p>Purpose: <strong>{{ Str::ucfirst($details->purpose) }}</strong> <br></p>
-                                <p>Remarks: <strong>{{ Str::ucfirst($details->remarks) }}</strong></p> --}}
+                                <p>Remarks: <strong>{{ $details->reason ? Str::ucfirst($details->reason) : '?' }}</strong>
+                                </p>
 
                             </div>
 
                             <div class="col-md-12">
                                 <div class="delivery-sec">
                                     <h3>expected return date of Borrowed: <span>
-                                            {{ \Carbon\Carbon::parse($details->date_return)->format('F j, Y') }}</span>
+                                            {{ \Carbon\Carbon::parse($details->end_date)->format('F j, Y') }}</span>
                                     </h3>
                                     @livewire('frontend.borrower.thank', ['details' => $details])
 
@@ -193,3 +192,5 @@
 
     <!-- Order Details Section End -->
 @endsection
+
+
