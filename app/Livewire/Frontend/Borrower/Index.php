@@ -144,8 +144,8 @@ class Index extends Component
             $cart->update(['status' => 1]);
         }
         $this->dispatch('cartlistAddedUpdated');
-        $this->dispatch('messageModal', status: 'success', position: 'top', message: 'Borrowing request submitted successfully.');
-
+        $this->dispatch('messageModal', status: 'success',  position: 'top', message: 'The borrowed was successfully placed. Please wait for the administrators confirmation via email or check the page.');
+        return redirect()->route('cart.status', ['uuid' => $borrowing->uuid]);
         // Reset form fields
         $this->reset(['dsfrom', 'dsto', 'remarks']);
     }

@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Frontend\Borrower;
 
+use App\Models\Borrowing_cart;
+use App\Models\Cart;
 use App\Models\Item;
 use Livewire\Component;
 use Livewire\WithoutUrlPagination;
@@ -14,17 +16,20 @@ class Thank1 extends Component
     public $item_qty = [];
     public $editMode = false;
 
-    public function mount($borrowID)
+    public function mount($borID)
     {
-        $this->borrowID = $borrowID;
-        $items = Item::where('item_id', $this->borrowID)->get();
+        $this->borrowID = $borID;
+        $items = Cart::where('item_id', $this->borrowID)->get();
         foreach ($items as $item) {
             $this->item_qty[$item->id] = $item->quantity; 
         }
     }
 
+   
     public function render()
     {
-        return view('livewire.frontend.borrower.thank1');
+        $item = Borrowing_cart::where('borrowing_id', $this->borrowID)->paginate(5, pageName: 'Item-page');
+      
+        return view('livewire.frontend.borrower.thank1', ['item' => $item]);
     }
 }

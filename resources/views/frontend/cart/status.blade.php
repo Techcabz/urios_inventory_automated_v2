@@ -81,7 +81,9 @@
                             <div class="main-container d-none">
                                 <div class="card mb-3">
                                     <div class="card-body">
-                                        {{-- <h1> CODE: {{ $referenceNumber }}</h1> --}}
+                                       <img class="border p-2" id="barcodeImage"
+                                            src="data:image/png;base64,{{ DNS1D::getBarcodePNG($barcode, 'C39') }}"
+                                            alt="barcode" />
                                     </div>
                                 </div>
                             </div>
@@ -123,7 +125,7 @@
 
                 </div>
 
-              
+
 
             </div>
         </section>
@@ -135,7 +137,7 @@
                 <h2 class="mb-3">Borrowed Details</h2>
             </div>
             <div class="row g-4">
-                {{-- @livewire('frontend.borrower.thank1', ['reservationID' => $reservationID]) --}}
+                @livewire('frontend.borrower.thank1', ['borID' => $borID])
 
 
                 <div class="col-md-6">
@@ -149,7 +151,7 @@
                                         -<br>
                                         {{ \Carbon\Carbon::parse($details->date_to)->format('F j, Y') }}</li>
 
-                                   </ul>
+                                </ul>
                             </div>
 
                             <div class="col-sm-6">

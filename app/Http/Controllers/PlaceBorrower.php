@@ -38,16 +38,16 @@ class PlaceBorrower extends Controller
 
 
             if ($borrower) {
-                $barcode = $borrower->uuid;
+                $barcode = $borrower->barcode_reference;
                
                 // $remarks = remarks::where('reservation_id', $reservation->id)->first();
                 $remarks = '';
                 // dd($referenceNumber);
-                $reservationID = $borrower->id;
+                $borID = $borrower->id;
                 
                 $users = UserDetails::where('users_id', $borrower->user_id)->first();
 
-                return view('frontend.cart.status', ['remarks' =>  $remarks, 'barcode' => $barcode, 'reservationID' => $reservationID, 'details' => $borrower, 'users' => $users]);
+                return view('frontend.cart.status', ['remarks' =>  $remarks, 'barcode' => $barcode, 'borID' => $borID, 'details' => $borrower, 'users' => $users]);
             } else {
                 return redirect()->route('home');
             }
