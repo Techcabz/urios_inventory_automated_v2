@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\BorrowingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -65,6 +66,16 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('category', [DashboardController::class, 'category'])->name('category');
     Route::get('items', [DashboardController::class, 'items'])->name('items');
+    Route::prefix('borrowing')->group(function () {
+        Route::get('online', [BorrowingController::class, 'online'])->name('borrowing.online');
+        Route::get('walk-in', [BorrowingController::class, 'walkin'])->name('borrowing.walk-in');
+        
+        Route::get('pending', [BorrowingController::class, 'pending'])->name('borrowing.pending');
+        Route::get('approved', [BorrowingController::class, 'approved'])->name('borrowing.approved');
+        Route::get('cancel', [BorrowingController::class, 'cancel'])->name('borrowing.cancel');
+        Route::get('completed', [BorrowingController::class, 'completed'])->name('borrowing.completed');
+      
+    });
     Route::prefix('users')->group(function () {
         Route::get('pending', [UsersController::class, 'pending'])->name('users.pending');
         Route::get('management', [UsersController::class, 'management'])->name('users.management');

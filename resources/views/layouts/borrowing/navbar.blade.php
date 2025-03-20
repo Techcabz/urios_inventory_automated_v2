@@ -3,7 +3,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
                 <li class="breadcrumb-item text-sm"><a class="text-white    "
-                        href="javascript:;">{{ config('app.name', 'FUAMI') }}</a></li>
+                        href="javascript:;">FUAMI BORROWING TRANSACTION</a></li>
 
 
             </ol>
@@ -29,7 +29,7 @@
                         aria-labelledby="dropdownMenuButton">
                         <li class="mb-0">
                             {{-- profile --}}
-                            <a href="{{ route('users.myaccount') }}" class="btn  mb-0 btn-sm w-100 mb-2">Profile</a>
+                            <a href="{{ route('dashboard') }}" class="btn  mb-0 btn-sm w-100 mb-2">Inventory</a>
 
                         </li>
                         <li class="mb-0">
