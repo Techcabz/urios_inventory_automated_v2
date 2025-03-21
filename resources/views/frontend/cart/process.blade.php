@@ -101,17 +101,16 @@
                     <h3 class="mb-3 d-flex text-capitalize">ITEMS LIST
                     </h3>
 
-                    <table class="table cart-table">
-                        <thead>
-                            <tr class="table-head">
-                                <th scope="col">Item</th>
-                                <th scope="col">Available</th>
-                                <th scope="col">Quantity</th>
-                                <th scope="col">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
+                    <div class="table-responsive">
+                        <table class="table cart-table">
+                            <thead>
+                                <tr class="table-head">
+                                    <th scope="col">Item</th>
+                                    <th scope="col">Available</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
                             <tbody>
                                 @if ($carts->isEmpty())
                                     <tr>
@@ -125,13 +124,14 @@
                                         <tr>
                                             <td class="d-flex align-items-center">
                                                 <img src="{{ asset($cart->item->image_path ? 'storage/' . $cart->item->image_path : 'images/not_available.jpg') }}"
-                                                    alt="{{ $cart->item->name }}" class="img-thumbnail me-2"
+                                                    alt="{{ $cart->item->name }}"
+                                                    class="img-thumbnail me-2 img-fluid"
                                                     style="width: 50px; height: 50px; object-fit: cover;">
                                                 <span title="{{ ucfirst($cart->item->name) }}">
                                                     {{ Str::limit(ucfirst($cart->item->name), 20, '...') }}
                                                 </span>
                                             </td>
-                            
+
                                             <td>{{ $cart->item->quantity }}</td>
                                             <td>
                                                 <div class="qty-box">
@@ -143,13 +143,14 @@
                                                                 <i class="fas fa-minus"></i>
                                                             </button>
                                                         </span>
-                            
+
                                                         <input type="number"
-                                                            class="form-control input-number w-25 text-center"
-                                                            wire:model.lazy="item_qty.{{ $cart->id }}" min="1"
-                                                            max="{{ $cart->quantity }}"
-                                                            wire:change="handleInputItemChange({{ $cart->id }}, $event.target.value)">
-                            
+                                                            class="form-control input-number text-center"
+                                                            wire:model.lazy="item_qty.{{ $cart->id }}"
+                                                            min="1" max="{{ $cart->quantity }}"
+                                                            wire:change="handleInputItemChange({{ $cart->id }}, $event.target.value)"
+                                                            style="width: 60px;">
+
                                                         <span class="input-group-prepend">
                                                             <button type="button"
                                                                 wire:click="incrementItemQuantity({{ $cart->id }})"
@@ -161,7 +162,8 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <button type="button" wire:click="removeItemFromCart({{ $cart->id }})"
+                                                <button type="button"
+                                                    wire:click="removeItemFromCart({{ $cart->id }})"
                                                     class="btn btn-danger btn-sm">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
@@ -170,9 +172,9 @@
                                     @endforeach
                                 @endif
                             </tbody>
-                            
-                        </tbody>
-                    </table>
+                        </table>
+                    </div>
+
 
                     <div class="d-flex mt-3">
                         {{ $carts->links(data: ['scrollTo' => false]) }}

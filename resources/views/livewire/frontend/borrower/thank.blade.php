@@ -1,21 +1,16 @@
 <div>
-    <div class="d-flex mt-3">
-
+    <div class="d-flex flex-column flex-md-row align-items-center gap-2 mt-3">
         @if ($details->status == 0)
             <button type="button" data-bs-toggle="modal" data-bs-target="#frontCancel"
-                class="btn btn-sm bg-warning text-white ">
+                class="btn btn-sm bg-warning text-white w-100 w-md-auto">
                 Cancel Borrow
-
             </button>
-
-            <a class="mx-5" href="{{ route('myaccount.borrowed') }}">Go Back</a>
-        @else
-            <a href="{{ route('myaccount.borrowed') }}">Go Back</a>
         @endif
-
-
+        <a href="{{ route('myaccount.borrowed') }}" class="btn btn-sm btn-outline-secondary w-100 w-md-auto">
+            Go Back
+        </a>
     </div>
-
+    
 
     <div wire:ignore.self class="modal fade" role="dialog" id="frontCancel" tabindex="-1"
         aria-labelledby="cancelBorrowModalLabel" aria-hidden="true" data-bs-backdrop="static">

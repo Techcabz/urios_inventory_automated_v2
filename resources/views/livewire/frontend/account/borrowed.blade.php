@@ -1,4 +1,42 @@
-<div class="col-lg-9">
+<style>
+    /* Scoped styles for borrow tabs */
+    .borrow-tabs .nav-tabs {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .borrow-tabs .nav-tabs .nav-item {
+        flex: 1 1 auto;
+        text-align: center;
+    }
+
+    .borrow-tabs .nav-tabs .nav-linkx {
+        display: block;
+        padding: 10px;
+        text-align: center;
+        width: 100%;
+        font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+        .borrow-tabs .nav-tabs {
+            flex-wrap: wrap;
+        }
+
+        .borrow-tabs .nav-tabs .nav-item {
+            flex: 1 1 50%; /* Two items per row */
+        }
+
+        .borrow-tabs .table-responsive {
+            overflow-x: auto;
+        }
+    }
+</style>
+
+<div class="col-lg-9 borrow-tabs"> <!-- Added unique class here -->
     <div class="filter-button dash-filter dashboard">
         <button class="btn btn-solid-default btn-sm fw-bold filter-btn">Show Menu</button>
     </div>
@@ -7,7 +45,9 @@
         <div class="box-head mb-3">
             <h3>My Borrowed</h3>
         </div>
+
         <div x-data="{ activeTab: 'PENDING' }">
+            <!-- Responsive Tabs -->
             <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item">
                     <a class="nav-linkx" :class="{ 'active': activeTab === 'PENDING' }" x-on:click="activeTab = 'PENDING'">PENDING</a>
@@ -23,6 +63,7 @@
                 </li>
             </ul>
 
+            <!-- Tab Content -->
             <div class="tab-content">
                 @php
                     $tabs = [

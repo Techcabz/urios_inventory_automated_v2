@@ -200,9 +200,8 @@
 
         }
 
-        .main-menu {
-            padding: 10px !important;
-        }
+       
+        
     </style>
     @include('layouts.user.navbar')
 

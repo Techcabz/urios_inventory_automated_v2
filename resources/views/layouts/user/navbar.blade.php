@@ -27,14 +27,7 @@
                                                 <span class="mobile-back"><i class="fa fa-angle-left"></i></span>
                                             </div>
                                         </li>
-                                        <li>
-                                            <div class="cart-media">
-                                                <a href="{{ route('cart') }}">
-                                                    Cart (<livewire:frontend.cart-list.cart-count />)
-
-                                                </a>
-                                            </div>
-                                        </li>
+                                        
                                     </ul>
                                 </div>
                             </div>
