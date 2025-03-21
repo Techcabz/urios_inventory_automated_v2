@@ -26,8 +26,19 @@
                                                 Menu
                                                 <span class="mobile-back"><i class="fa fa-angle-left"></i></span>
                                             </div>
+
                                         </li>
-                                        
+                                        <li class="back-btn d-xl-none">
+                                            <a href="{{ route('cart') }}" class="d-flex justify-content-between">
+                                                Cart
+                                                <span class="mobile-back">
+                                                    <span id="cart-count" class="label label-theme rounded-pill">
+                                                        <livewire:frontend.cart-list.cart-count />
+                                                    </span>
+                                                </span>
+                                            </a>
+
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
