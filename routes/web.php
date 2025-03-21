@@ -69,6 +69,7 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function () {
     Route::prefix('borrowing')->group(function () {
         Route::get('online', [BorrowingController::class, 'online'])->name('borrowing.online');
         Route::get('walk-in', [BorrowingController::class, 'walkin'])->name('borrowing.walk-in');
+        Route::get('return', [BorrowingController::class, 'return'])->name('borrowing.return');
         
         Route::get('pending', [BorrowingController::class, 'pending'])->name('borrowing.pending');
         Route::get('approved', [BorrowingController::class, 'approved'])->name('borrowing.approved');

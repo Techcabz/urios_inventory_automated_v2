@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
-use Illuminate\Support\Str; 
+use Illuminate\Support\Str;
 
 class Borrowing extends Model
 {
@@ -39,7 +39,7 @@ class Borrowing extends Model
         return $this->hasMany(Borrowing_cart::class, 'borrowing_id', 'id');
     }
 
-     /**
+    /**
      * The "booting" method of the model.
      *
      * @return void
@@ -47,11 +47,10 @@ class Borrowing extends Model
     protected static function boot()
     {
         parent::boot();
-    
+
         static::creating(function ($item) {
             $item->uuid = Str::uuid();
-    
-            // This line is incorrect because the column name is `barcode_reference`, not `reference`
+
             $item->barcode_reference = IdGenerator::generate([
                 'table' => 'borrowing',
                 'field' => 'barcode_reference',
@@ -60,5 +59,4 @@ class Borrowing extends Model
             ]);
         });
     }
-    
 }

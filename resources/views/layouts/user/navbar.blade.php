@@ -5,15 +5,15 @@
                 <div class="col-lg-12">
                     <div class="main-menu">
                         <div class="menu-left">
-                            <div class="brand-logo">
-                                <a href="{{ url('/') }}" class="d-flex  align-items-center justify-content-evenly">
+                            <div class="brand-logo d-flex align-items-center">
+                                <a href="{{ url('/') }}" class="d-flex align-items-center">
                                     <img src="{{ asset('images/logo-clear.png') }}"
                                         class="h-logo img-fluid blur-up lazyload" alt="logo">
-                                    <h3 class="text-white">&nbsp; FR. URIOS ACADEMY OF MAGALLANES INC</h3>
+                                    <h3 class="text-white logo-full">FR. URIOS ACADEMY OF MAGALLANES INC</h3>
                                 </a>
                             </div>
-
                         </div>
+
                         <nav>
                             <div class="main-navbar">
                                 <div id="mainnav">
@@ -24,39 +24,41 @@
                                         <li class="back-btn d-xl-none">
                                             <div class="close-btn">
                                                 Menu
-                                                <span class="mobile-back"><i class="fa fa-angle-left"></i>
-                                                </span>
+                                                <span class="mobile-back"><i class="fa fa-angle-left"></i></span>
                                             </div>
                                         </li>
+                                        <li>
+                                            <div class="cart-media">
+                                                <a href="{{ route('cart') }}">
+                                                    Cart (<livewire:frontend.cart-list.cart-count />)
 
-
+                                                </a>
+                                            </div>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
                         </nav>
+
                         <div class="menu-right">
-
                             <ul>
-
                                 <li>
                                     <div class="search-box theme-bg-color">
                                         <i data-feather="search"></i>
                                     </div>
                                 </li>
+
                                 @auth
-                                <li class="onhover-dropdown wislist-dropdown">
-                                    <div class="cart-media">
-                                       
+                                    <li class="onhover-dropdown wislist-dropdown">
+                                        <div class="cart-media">
                                             <a href="{{ route('cart') }}">
                                                 <i data-feather="shopping-cart"></i>
                                                 <span id="cart-count" class="label label-theme rounded-pill">
                                                     <livewire:frontend.cart-list.cart-count />
                                                 </span>
                                             </a>
-                                        
-                                       
-                                    </div>
-                                </li>
+                                        </div>
+                                    </li>
                                 @endauth
 
                                 <li class="onhover-dropdown">
@@ -67,29 +69,19 @@
                                         @guest
                                             <ul>
                                                 @if (Route::has('login.custom'))
-                                                    <li>
-                                                        <a href="{{ route('login.custom') }}"
-                                                            class="d-block">{{ __('Login') }}</a>
-                                                    </li>
+                                                    <li><a href="{{ route('login.custom') }}"
+                                                            class="d-block">{{ __('Login') }}</a></li>
                                                 @endif
                                                 @if (Route::has('register.custom'))
-                                                    <li>
-                                                        <a href="{{ route('register.custom') }}"
-                                                            class="d-block">{{ __('Register') }}</a>
-                                                    </li>
+                                                    <li><a href="{{ route('register.custom') }}"
+                                                            class="d-block">{{ __('Register') }}</a></li>
                                                 @endif
                                             </ul>
                                         @else
                                             <ul>
-                                                @if (Route::has('myaccount.dashboard') ||
-                                                        Route::has('myaccount.reservation') ||
-                                                        Route::has('myaccount.profile') ||
-                                                        Route::has('myaccount.travel') ||
-                                                        Route::has('myaccount.security'))
-                                                    <li>
-                                                        <a href="{{ route('myaccount.dashboard') }}"
-                                                            class="d-block">{{ __('My Account') }}</a>
-                                                    </li>
+                                                @if (Route::has('myaccount.dashboard'))
+                                                    <li><a href="{{ route('myaccount.dashboard') }}"
+                                                            class="d-block">{{ __('My Account') }}</a></li>
                                                 @endif
                                                 @if (Route::has('logout'))
                                                     <li>
@@ -109,31 +101,12 @@
                                 </li>
                             </ul>
                         </div>
+
                         {{-- search --}}
-                        @livewire('frontend.search.index');
+                        @livewire('frontend.search.index')
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </header>
-
-<div class="mobile-menu d-none">
-    <ul>
-        <li>
-            <a href="{{ route('home') }}" class="{{ Request::is('home') ? 'active' : '' }}">
-                <i data-feather="home"></i>
-                <span>Home</span>
-            </a>
-        </li>
-
-
-        <li>
-            <a href="{{ route('myaccount.dashboard') }}"
-                class="{{ Request::is('myaccount/dashboard') ? 'active' : '' }}">
-                <i data-feather="user"></i>
-                <span>Account</span>
-            </a>
-        </li>
-    </ul>
-</div>

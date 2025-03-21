@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Borrowing;
+use App\Models\BorrowingReturn;
+use App\Models\Remarks;
 use App\Models\UserDetails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -24,8 +26,7 @@ class PlaceBorrower extends Controller
                 return redirect('/myaccount/profile');
             }
         }
-      //  return view('frontend.reservation_process.index');
-    }
+     }
 
     public function thankyou(Request $request, $uuid)
     {
@@ -40,13 +41,15 @@ class PlaceBorrower extends Controller
             if ($borrower) {
                 $barcode = $borrower->barcode_reference;
                
-                // $remarks = remarks::where('reservation_id', $reservation->id)->first();
-                $remarks = '';
+                $remarks = Remarks::where('borrowing_id', $borrower->id)->first();
+                $borreturn = BorrowingReturn::where('borrowing_id', $borrower->id)->first();
+                
+                //$remarks = '';
                 $borID = $borrower->id;
                 
                 $users = UserDetails::where('users_id', $borrower->user_id)->first();
 
-                return view('frontend.cart.status', ['remarks' =>  $remarks, 'barcode' => $barcode, 'borID' => $borID, 'details' => $borrower, 'users' => $users]);
+                return view('frontend.cart.status', ['borreturn'=>$borreturn,'remarks' =>  $remarks, 'barcode' => $barcode, 'borID' => $borID, 'details' => $borrower, 'users' => $users]);
             } else {
                 return redirect()->route('home');
             }

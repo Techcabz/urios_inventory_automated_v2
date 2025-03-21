@@ -21,15 +21,15 @@
 
                             <div class="success-contain">
                                 <h4 class="text-warning">Pending</h4>
-                                <h5 class="font-light">Your borrowing request has been successfully submitted. Please proceed to the facility and present your barcode for approval.</h5>
-                                <h6 class="font-light ">Note: If the requested date has passed and the item has not been approved, your request will be automatically canceled.</strong></h6>
+                                <h5 class="font-light">Your borrowing request has been successfully submitted. Please
+                                    proceed to the facility and present your barcode for approval.</h5>
+                                <h6 class="font-light ">Note: If the requested date has passed and the item has not been
+                                    approved, your request will be automatically canceled.</strong></h6>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
-
-                
             @elseif ($details->status == 2)
                 <div class="row">
                     <div class="col-12 p-0">
@@ -107,24 +107,47 @@
             </div>
         </section>
     @endif
+    @if ($borreturn != null && $borreturn->barcode_return != '' && $details->status == 1)
+        <section class="section-b-space cart-section order-details-table">
+            <div class="container">
+                @livewire('frontend.borrower.bdownload', ['imageBarcode' => $borreturn->barcode_return, 'expire' => $details->end_date])
+
+                <div class="main-container">
+                    <div class="card mb-3 barcode-card">
+                        <div class="card-body text-center">
+                            <p class="text-muted mb-2">
+                                Please present this barcode to the in-charge to process the return of your borrowed item.
+                            </p>
+                            <img class="border p-2 barcode-image" id="barcodeImage"
+                                src="data:image/png;base64,{{ DNS1D::getBarcodePNG($borreturn->barcode_return, 'C39') }}"
+                                alt="barcode" />
+                            <p class="mt-1">CODE: {{ $borreturn->barcode_return }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    @endif
+
     <!-- Order Success Section End -->
-    @if ( $details->status == 0)
+    @if ($details->status == 0)
         <section class="section-b-space cart-section order-details-table">
             <div class="container">
                 @livewire('frontend.borrower.bdownload', ['imageBarcode' => $barcode, 'expire' => $details->end_date])
 
 
                 <div class="main-container">
-                    <div class="card mb-3">
+                    <div class="card mb-3 barcode-card">
                         <div class="card-body text-center">
                             <p class="text-muted mb-2">
                                 Please present this barcode to the in-charge for approval of your borrowing request.
                             </p>
-                            <img class="border p-2" id="barcodeImage"
+                            <img class="border p-2 barcode-image" id="barcodeImage"
                                 src="data:image/png;base64,{{ DNS1D::getBarcodePNG($barcode, 'C39') }}" alt="barcode" />
-                                <p class="mt-1">CODE: {{$barcode}}</p>
+                            <p class="mt-1">CODE: {{ $barcode }}</p>
                         </div>
                     </div>
+
                 </div>
             </div>
         </section>
@@ -192,5 +215,3 @@
 
     <!-- Order Details Section End -->
 @endsection
-
-

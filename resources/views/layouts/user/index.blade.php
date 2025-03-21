@@ -63,6 +63,25 @@
             object-fit: cover;
             /* Ensures the image covers the container without stretching */
         }
+
+        @media (max-width: 768px) {
+            .logo-full {
+                display: none;
+                /* Hide full text on small screens */
+            }
+
+            .barcode-card .barcode-image {
+                max-width: 100%;
+                height: auto;
+                display: block;
+                margin: 0 auto;
+            }
+
+            .barcode-card .card-body {
+                padding: 10px;
+            }
+
+        }
     </style>
     <link rel="stylesheet" href="{{ asset('assets_users/css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('assets_users/css/custom.css') }}">

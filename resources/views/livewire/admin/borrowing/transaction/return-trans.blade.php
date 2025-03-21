@@ -26,15 +26,20 @@
                 </div>
             </div>
         </div>
+
         <div class="card shadow-sm p-3 mt-1 rounded-0" style="border-top: 15px solid #120D4F;">
+            <div class="alert alert-warning text-center m-0 p-2">
+                <i class="fa-solid fa-exclamation-circle"></i>
+                <strong>Reminder:</strong> Please verify that the listed items match the actual items being returned by
+                the borrower.
+            </div>
+            <hr>
             <table class="table cart-table">
                 <thead>
                     <tr class="table-head">
                         <th scope="col">Item</th>
-                        <th scope="col">Stock Quantity</th>
 
                         <th scope="col">Quantity</th>
-                        <th scope="col">Actions</th>
 
                     </tr>
                 </thead>
@@ -59,36 +64,12 @@
                                         {{ Str::limit(ucfirst($cart->item->name), 20, '...') }}
                                     </span>
                                 </td>
-                                <td>
-                                    {{ $cart->item->quantity }}
-                                </td>
+
                                 <td>
                                     {{ $cart->quantity }}
-                                    {{-- <div class="qty-box">
-                                        <div class="btn-group" role="group" aria-label="Basic example">
-                                            <button type="button" class="btn btn-link"
-                                                wire:click="decrementItemQuantity({{ $cart->id }})">
-                                                <i class="fas fa-minus"></i>
-                                            </button>
-                                            <input type="number" class="form-control input-number text-center"
-                                                style="width: 100px; height: 40px; border-radius:0px !important;"
-                                                wire:model.lazy="item_qty.{{ $cart->id }}" min="1"
-                                                max="{{ $cart->quantity }}"
-                                                wire:change="handleInputItemChange({{ $cart->id }}, $event.target.value)">
 
-                                            <button type="button" class="btn btn-link"
-                                                wire:click="incrementItemQuantity({{ $cart->id }})">
-                                                <i class="fas fa-plus"></i>
-                                            </button>
-                                        </div>
-                                    </div> --}}
                                 </td>
-                                <td>
-                                    <button type="button" wire:click="removeItemFromCart({{ $cart->id }})"
-                                        class="btn btn-danger btn-sm">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
+
 
                             </tr>
                         @endforeach
@@ -114,12 +95,6 @@
         </div>
         <div class="card shadow-sm mt-2 p-3 rounded-0 position-relative" style="border-top: 5px solid #120D4F;">
             <h6 class="mb-3 theme-color">BORROW DETAILS</h6>
-            {{-- <div class="mb-2">
-                <label for="start_date" class="form-label">CODE</label>
-                <input type="text" readonly class="form-control" id="start_date" name="start_date"
-                    value="{{ $borrowDetails?->barcode_reference ? $borrowDetails->barcode_reference : 'N/A' }}"
-                    placeholder="N/A">
-            </div> --}}
 
             <div class="mb-2">
                 <label for="start_date" class="form-label">DATE OF USAGE (FROM)</label>
@@ -134,28 +109,42 @@
                     value="{{ $borrowDetails?->end_date ? \Carbon\Carbon::parse($borrowDetails->end_date)->translatedFormat('F d, Y') : 'N/A' }}"
                     placeholder="N/A">
             </div>
-
             <div class="mb-2">
                 <label for="name" class="form-label">REMARKS</label>
                 <input type="text" readonly class="form-control" id="name" name="name"
                     value="{{ optional($borrowDetails) ? $borrowDetails?->reason : '' }}" placeholder="N/A">
             </div>
+            <!-- Overdue or Remaining Days Message -->
+            @if ($overdueDays > 0)
+                <div class="alert alert-danger text-center">
+                    <i class="fa-solid fa-exclamation-triangle"></i>
+                    This borrowing is <strong>{{ $overdueDays }} days overdue!</strong>
+                    Please return the items immediately.
+                </div>
+            @elseif ($remainingDays > 0)
+                <div class="alert alert-success text-center">
+                    <i class="fa-solid fa-clock"></i>
+                    You have <strong>{{ $remainingDays }} days left</strong> before the due date.
+                </div>
+            @else
+                <div class="alert alert-warning text-center">
+                    <i class="fa-solid fa-info-circle"></i>
+                    No due date information available.
+                </div>
+            @endif
+
+
         </div>
 
         <div class="card shadow-sm mt-2 p-3 rounded-0 position-relative">
             <div class="d-flex gap-2">
                 <button class="btn btn-primary w-100" wire:click="approveBorrowing" wire:loading.attr="disabled"
-                    wire:target="approveBorrowing" :disabled="@js(!$borrowDetails || $this->isApprovalDisabled())" x-data
+                    wire:target="approveBorrowing" :disabled="@js(!$borrowDetails)" x-data
                     @keydown.window.space="$wire.approveBorrowing()">
-                    APPROVED [SPACE]
+                    MARKS AS COMPLETE [SPACE]
                 </button>
 
 
-                <button class="btn btn-danger w-100" data-bs-toggle="modal" data-bs-target="#cancelModal"
-                    wire:loading.attr="disabled" wire:target="declinedBorrowing"
-                    :disabled="@js(!$borrowDetails)">
-                    DISAPPROVED
-                </button>
             </div>
         </div>
 
