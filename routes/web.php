@@ -71,10 +71,7 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function () {
         Route::get('walk-in', [BorrowingController::class, 'walkin'])->name('borrowing.walk-in');
         Route::get('return', [BorrowingController::class, 'return'])->name('borrowing.return');
         
-        Route::get('pending', [BorrowingController::class, 'pending'])->name('borrowing.pending');
-        Route::get('approved', [BorrowingController::class, 'approved'])->name('borrowing.approved');
-        Route::get('cancel', [BorrowingController::class, 'cancel'])->name('borrowing.cancel');
-        Route::get('completed', [BorrowingController::class, 'completed'])->name('borrowing.completed');
+        Route::get('history', [BorrowingController::class, 'history'])->name('borrowing.history');
       
     });
     Route::prefix('users')->group(function () {

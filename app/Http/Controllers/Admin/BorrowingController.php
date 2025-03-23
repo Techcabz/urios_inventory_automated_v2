@@ -12,6 +12,11 @@ class BorrowingController extends Controller
         return view('admin.borrowing.transaction.online.index');
     }
 
+    public function history()
+    {
+        return view('admin.borrowing.history.index');
+    }
+
     public function return()
     {
         return view('admin.borrowing.transaction.return.index');
