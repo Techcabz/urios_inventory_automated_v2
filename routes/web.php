@@ -51,7 +51,6 @@ Route::get('categories/{slug}', [FrontendController::class, 'categories_base'])-
 Route::prefix('myaccount')->middleware(['auth'])->group(function () {
     Route::get('dashboard', [AccountController::class, 'dashboard'])->name('myaccount.dashboard');
     Route::get('profile', [AccountController::class, 'profile'])->name('myaccount.profile');
-
     Route::get('borrowed', [AccountController::class, 'borrowed'])->name('myaccount.borrowed');
 });
 

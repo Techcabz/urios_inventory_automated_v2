@@ -10,6 +10,9 @@
             <button class="btn btn-primary rounded-0 mb-0 d-none" wire:navigate href="{{ route('borrowing.walk-in') }}">
                 BORROWING WALK-IN
             </button>
+            <button class="btn btn-primary rounded-0 mb-0 " wire:navigate href="{{ route('dashboard') }}">
+                INVENTORY
+            </button>
         </div>
     </div>
 

@@ -1,5 +1,14 @@
 @extends('layouts.admin.index')
 @section('content')
+<style>
+    .dropdown-toggle::after {
+      display: none !important;
+    }
+  
+    .dropdown-toggle i {
+      font-weight: bold !important;
+    }
+  </style>
     <div class="row">
         <div class="col-xl-12 col-sm-6 mb-xl-0 mb-4">
             <div class="card">

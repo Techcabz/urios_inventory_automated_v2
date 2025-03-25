@@ -1,6 +1,5 @@
 <div class="row g-1">
     @include('shared.offline')
-    @include('livewire.admin.borrowing.transaction.modal')
     <div class="col-md-8">
         <div class="card shadow-sm p-3 rounded-0" x-data="{ barcode: '' }">
             <div class="d-flex align-items-center gap-2 justify-content-between">

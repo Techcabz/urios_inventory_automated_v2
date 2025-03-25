@@ -1,7 +1,9 @@
 <div class="row g-1">
     @include('shared.offline')
-    @include('livewire.admin.borrowing.transaction.modal')
+    @include('livewire.global.admin.modal')
     <div class="col-md-8">
+                                              
+        {{-- <button wire:click="testD">test</button> --}}
         <div class="card shadow-sm p-3 rounded-0" x-data="{ barcode: '' }">
             <div class="d-flex align-items-center gap-2 justify-content-between">
                 <div style="width:130px !important;">
@@ -11,18 +13,17 @@
                     <span class="input-group-text text-body rounded-0">
                         <i class="fa-solid fa-barcode" aria-hidden="true"></i>
                     </span>
-                    <input type="text" class="form-control" style="border-radius: 0px !important;"
-                        x-ref="barcodeInput" x-model="barcode" wire:model.defer="barcode"
+                    <input type="text" class="form-control" x-ref="barcodeInput" x-model="barcode"
+                        wire:model.defer="barcode"
                         @keydown.window="
-                            if ($event.key === 'F8') { 
-                                $refs.barcodeInput.focus(); 
-                                barcode = ''; // Clear input for next scan
-                                $event.preventDefault(); 
-                            }"
-                        @input.debounce.500ms="$wire.processBarcode(barcode);"
-                        @keydown.enter.prevent="$wire.processBarcode(barcode); barcode = '';
-                        
-                       ">
+                        if ($event.key === 'F8') { 
+                            $refs.barcodeInput.focus(); 
+                            barcode = ''; 
+                            $event.preventDefault(); 
+                        }"
+                        @input.debounce.500ms="@this.call('processBarcode', barcode);"
+                        @keydown.enter.prevent="$dispatch('barcode-scanned', barcode); barcode = '';">
+
                 </div>
             </div>
         </div>

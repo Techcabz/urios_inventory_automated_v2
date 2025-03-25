@@ -38,7 +38,6 @@ class Thank extends Component
 
         $items = Borrowing_cart::where('borrowing_id', $this->bor_id)->get();
 
-
         $borrowing = Borrowing::where('id', $this->bor_id)->first();
         $users = User::where('id', $borrowing->users->id)->first();
         $admin = User::where('role_as', 1)->first();

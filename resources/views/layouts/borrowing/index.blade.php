@@ -96,7 +96,8 @@
     <!--   Core JS Files   -->
     <!-- include the script -->
 
-    @livewireScripts
+   
+    @livewire('global-event-handler')
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
@@ -117,6 +118,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
     <script src="{{ asset('assets_admin/js/datatable/table.js') }}"></script>
+    <script src="{{ asset('global/_init.js') }}"></script>
+    
     <!-- <script src="{{ asset('assets_admin/js/app.js') }}"></script> -->
     <script>
         // Define the asset URL in a Blade section
@@ -195,7 +198,7 @@
             }
         });
     </script>
-
+ @livewireScripts
 </body>
 
 </html>

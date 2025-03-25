@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Admin\Borrowing\Transaction;
+namespace App\Livewire\Global\Admin;
 
 use App\Models\Borrowing;
 use App\Models\Borrowing_cart;
@@ -12,6 +12,8 @@ use Livewire\Component;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use App\Events\BorrowingApproved;
+use App\Events\BorrowingNotify;
 
 class Online extends Component
 {
@@ -28,11 +30,12 @@ class Online extends Component
         $this->cartList = collect();
     }
 
-    public function testD(){
-        $this->dispatch('userStatusUpdatedJS');
-        $this->dispatch('userStatusUpdated')->to(\App\Livewire\Frontend\Borrower\Status::class);
-
+    public function testD()
+    {
+        event(new BorrowingNotify("test"));
     }
+
+    
     public function processBarcode($barcode)
     {
      
@@ -212,10 +215,9 @@ class Online extends Component
         // $this->dispatch('messageModal', status: 'info', position: 'top', message: 'Data has been reset.');
     }
 
-
     public function render()
     {
-        return view('livewire.admin.borrowing.transaction.online', [
+        return view('livewire.global.admin.online', [
             'userDetails' => $this->userDetails,
             'user' => $this->users,
             'borrowDetails' => $this->borrowDetails,
