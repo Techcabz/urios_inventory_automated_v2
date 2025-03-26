@@ -5,7 +5,7 @@
     <div class="card">
         <div class="card-body p-3">
             <h4 class="card-title">
-                <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5 class="m-0 font-weight-bold text-muted">BORROW MANAGEMENT / HISTORY</h5>
                 </div>
             </h4>
