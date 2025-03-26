@@ -1,5 +1,6 @@
 <div class="col-xl-12 col-md-12 col-sm-6 mb-xl-0 mb-4">
     @include('shared.offline')
+    @include('livewire.admin.borrowing._modal')
 
     <div class="card">
         <div class="card-body p-3">
@@ -8,8 +9,13 @@
                     <h5 class="m-0 font-weight-bold text-muted">BORROW MANAGEMENT / HISTORY</h5>
                 </div>
             </h4>
-            <div x-data="{ activeTab: 'PENDING' }">
-                <!-- Responsive Tabs -->
+            <div x-data="{
+                activeTab: window.location.hash ? window.location.hash.substring(1).toUpperCase() : 'PENDING',
+                changeTab(tab) {
+                    this.activeTab = tab;
+                    history.pushState(null, null, `#${tab.toLowerCase()}`);
+                }
+            }"> <!-- Responsive Tabs -->
                 <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item">
                         <a class="nav-linkx" :class="{ 'active': activeTab === 'PENDING' }"
@@ -45,15 +51,27 @@
                             <div id="{{ $tabName }}" x-show="activeTab === '{{ $tabName }}'" x-transition>
                                 <div class="table-responsive mt-2 w-100">
                                     @if ($borrowItems->isEmpty())
-                                        <div class="text-center p-4">
-                                            <p class="text-muted">No {{ strtolower($tabName) }} borrow requests found.
-                                            </p>
-                                        </div>
-                                    @else
-                                        <table id="datatable-{{ strtolower($tabName) }}" class="table table-borderless w-100">
+                                        <table id="datatable-{{ strtolower($tabName) }}"
+                                            class="table table-borderless w-100">
                                             <thead class="bg-gradient-primary text-white">
                                                 <tr class="table-head">
                                                     <th scope="col">Name</th>
+                                                    <th>Code</th>
+                                                    <th scope="col">Date Filed</th>
+                                                    <th scope="col">View</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    @else
+                                        <table id="datatable-{{ strtolower($tabName) }}"
+                                            class="table table-borderless w-100">
+                                            <thead class="bg-gradient-primary text-white">
+                                                <tr class="table-head">
+                                                    <th scope="col">Name</th>
+                                                    <th>Code</th>
                                                     <th scope="col">Date Filed</th>
                                                     <th scope="col">View</th>
                                                 </tr>
@@ -62,16 +80,23 @@
                                                 @foreach ($borrowItems as $item)
                                                     <tr>
                                                         <td>
-                                                            <p class="fs-6 m-0">{{Str::ucfirst($item->users->userDetail->firstname) . ' ' . Str::ucfirst($item->users->userDetail->middlename) . ' ' . Str::ucfirst($item->users->userDetail->lastname) }}</p>
+                                                            <p class="fs-6 m-0">
+                                                                {{ Str::ucfirst($item->users->userDetail->firstname) . ' ' . Str::ucfirst($item->users->userDetail->middlename) . ' ' . Str::ucfirst($item->users->userDetail->lastname) }}
+                                                            </p>
+                                                        </td>
+                                                        <td>
+                                                            {{ $item->barcode_reference }}
                                                         </td>
                                                         <td>{{ \Carbon\Carbon::parse($item->date_filled)->format('F j, Y') }}
                                                         </td>
-                                                        
+
                                                         <td>
-                                                            <a
-                                                                href="{{ route('cart.status', ['uuid' => $item->uuid]) }}">
-                                                                <i class="far fa-eye"></i>
-                                                            </a>
+                                                            <button type="button"
+                                                                wire:click="showBorrow({{ $item->id }}, {{ $item->status }})"
+                                                                data-bs-toggle="modal" data-bs-target="#viewDetailModal"
+                                                                class="btn btn-sm btn-warning "> <i
+                                                                    class="far fa-eye"></i></button>
+
                                                         </td>
                                                     </tr>
                                                 @endforeach

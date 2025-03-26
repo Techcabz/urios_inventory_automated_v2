@@ -3,6 +3,12 @@ $(document).ready(function () {
     let tableIds = ["datatable3", "datatable2", "datatable1", "datatable", "datatable-pending", "datatable-approved", "datatable-cancelled", "datatable-completed"];
 
     tableIds.forEach(id => {
+
+        if ($.fn.DataTable.isDataTable(`#${id}`)) {
+            // ✅ Destroy DataTable before reinitializing
+            $(`#${id}`).DataTable().destroy();
+        }
+
         if (document.getElementById(id)) {
             $(`#${id}`).DataTable({
                 dom: "l<br>Bfrtip",
