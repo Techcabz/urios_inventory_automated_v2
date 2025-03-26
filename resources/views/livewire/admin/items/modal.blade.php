@@ -66,7 +66,7 @@
                             </div>
                             <div class="col-lg-4">
                                 <div class="mb-3">
-                                    <label for="" class="form-label">Warranty Expire</label>
+                                    <label for="" class="form-label">Warranty Expired</label>
                                     <input type="date" wire:model="item_warranty" class="form-control"
                                         id="item_warranty">
                                     @error('item_warranty')
@@ -198,7 +198,7 @@
                             </div>
                             <div class="col-lg-4">
                                 <div class="mb-3">
-                                    <label for="" class="form-label">Warranty Expire</label>
+                                    <label for="" class="form-label">Warranty Expired</label>
                                     <input type="date" wire:model="item_warranty" class="form-control"
                                         id="item_warranty">
                                     @error('item_warranty')

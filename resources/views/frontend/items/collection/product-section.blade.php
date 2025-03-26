@@ -1,3 +1,7 @@
+@php
+    use Illuminate\Support\Facades\Storage;
+@endphp
+
 <div
     class="row g-sm-4 g-3 row-cols-lg-4 row-cols-md-3 row-cols-2 mt-1 custom-gy-5 product-style-2 ratio_asos product-list-section">
     @forelse ($items as $item)
@@ -5,11 +9,16 @@
             <div class="product-box">
                 <div class="img-wrapper">
                     <div class="front">
+                        @php
+                            // Check if image exists in storage
+                            $imagePath = $item->image_path && Storage::exists($item->image_path) 
+                                ? 'storage/' . $item->image_path 
+                                : 'images/not_available.jpg';
+                        @endphp
+
                         <a href="{{ route('user.item', ['uuid' => $item->uuid]) }}">
-                            <img src="{{ asset($item->image_path ? 'storage/' . $item->image_path : 'images/not_available.jpg') }}" 
-                                class="bg-img blur-up lazyload" alt="Item Image">
+                            <img src="{{ asset($imagePath) }}" class="bg-img blur-up lazyload" alt="Item Image">
                         </a>
-                        
                     </div>
                 </div>
                 <div class="product-details">
@@ -18,7 +27,6 @@
                         <span class="text-primary">{{ $item->quantity }}</span>
                     </div>
 
-                    <!-- Status Mapping -->
                     @php
                         $statusMap = [
                             0 => ['label' => 'Available', 'class' => 'bg-success'],

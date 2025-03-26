@@ -36,4 +36,8 @@ class DashboardController extends Controller
     {
         return view('admin.items.index');
     }
+
+    public function barcode(){
+        return view('admin.items.barcode');
+    }
 }

@@ -50,4 +50,11 @@ class FrontendController extends Controller
         return view('frontend.cart.index');
  
     }
+
+    public function search()
+    {
+       
+        return view('frontend.search.result');
+ 
+    }
 }

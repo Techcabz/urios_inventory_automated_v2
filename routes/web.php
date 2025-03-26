@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Frontend\AccountController;
 use App\Http\Controllers\Auth\CustomLoginController;
 use App\Http\Controllers\Auth\CustomRegistrationController;
+use App\Http\Controllers\BarcodeController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\Frontend\FrontendController;
 use App\Http\Controllers\PlaceBorrower;
@@ -48,6 +49,8 @@ Route::get('/', [FrontendController::class, 'index'])->name('home');
 Route::get('item/{uuid}', [FrontendController::class, 'item'])->name('user.item');
 Route::get('categories/{slug}', [FrontendController::class, 'categories_base'])->name('user.categories');
 
+Route::get('search', [FrontendController::class, 'search'])->name('user.search');
+
 Route::prefix('myaccount')->middleware(['auth'])->group(function () {
     Route::get('dashboard', [AccountController::class, 'dashboard'])->name('myaccount.dashboard');
     Route::get('profile', [AccountController::class, 'profile'])->name('myaccount.profile');
@@ -65,6 +68,9 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('category', [DashboardController::class, 'category'])->name('category');
     Route::get('items', [DashboardController::class, 'items'])->name('items');
+    Route::get('barcode', [DashboardController::class, 'barcode'])->name('barcode');
+    Route::get('/print-barcodes', [BarcodeController::class, 'printBarcodes'])->name('barcodes.print');
+
     Route::prefix('borrowing')->group(function () {
         Route::get('online', [BorrowingController::class, 'online'])->name('borrowing.online');
         Route::get('walk-in', [BorrowingController::class, 'walkin'])->name('borrowing.walk-in');

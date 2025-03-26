@@ -11,11 +11,7 @@ class Graph extends Component
     public function render()
     {
 
-        $borrow_completed = Borrowing::where('status', 3)->count(); // Completed Borrowings
-
-        $items = Item::count();
-
-        $monthlyData = Borrowing::selectRaw('MONTH(created_at) as month, YEAR(created_at) as year, status, COUNT(*) as count')
+       $monthlyData = Borrowing::selectRaw('MONTH(created_at) as month, YEAR(created_at) as year, status, COUNT(*) as count')
             ->groupBy('month', 'year', 'status')
             ->get();
 
