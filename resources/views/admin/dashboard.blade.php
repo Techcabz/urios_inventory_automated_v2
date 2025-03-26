@@ -26,7 +26,7 @@
                     </div>
                 </a>
             </div>
-        
+
             <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
                 <a href="{{ route('borrowing.history') }}#approved">
                     <div class="card ">
@@ -50,7 +50,7 @@
                     </div>
                 </a>
             </div>
-        
+
             <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
                 <a href="{{ route('borrowing.history') }}#cancelled">
                     <div class="card ">
@@ -75,7 +75,7 @@
                 </a>
             </div>
         </div>
-        
+
 
         <div class="col-xl-12 col-sm-6 mb-xl-0 mt-3 mb-5 row">
             <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
@@ -150,7 +150,16 @@
                     </div>
                 </a>
             </div>
-          
-            
+
+
         </div>
+
+        <div class="col-xl-12 col-sm-6 mb-xl-0 mt-3 mb-5 row">
+            
+            <livewire:global.graph />
+    
+
+        </div>
+
+   
     @endsection
