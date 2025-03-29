@@ -135,6 +135,24 @@ class History extends Component
         }
     }
 
+    public function isApprovalDisabled()
+    {
+        if (!$this->borrowDetails) {
+            return true;
+        }
+
+        foreach ($this->cartList as $cart) {
+            $data = Cart::find($cart->id);
+
+
+            if ($data && $data->quantity > $data->item->quantity) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
     public function declinedBorrowing()
     {
 

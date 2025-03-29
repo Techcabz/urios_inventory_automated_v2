@@ -52,6 +52,7 @@
                                     <thead>
                                         <tr class="table-head">
                                             <th scope="col">Item</th>
+                                            <th scope="col">Stock Quantity</th>
 
                                             <th scope="col">Quantity</th>
 
@@ -80,10 +81,13 @@
                                                     </td>
 
                                                     <td>
+                                                        {{ $cart->item->quantity }}
+
+                                                    </td>
+                                                    <td>
                                                         {{ $cart->quantity }}
 
                                                     </td>
-
 
                                                 </tr>
                                             @endforeach

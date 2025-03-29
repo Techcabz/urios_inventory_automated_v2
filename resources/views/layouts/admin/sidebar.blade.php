@@ -161,7 +161,7 @@
                      <span class="nav-link-text ms-1">Items</span>
                  </a>
              </li>
-             <li class="nav-item d-none">
+             <li class="nav-item ">
                 <a class="nav-link  {{ Request::is('admin/barcode') ? 'active' : '' }}"
                     href="{{ route('barcode') }}">
                     <div
