@@ -23,7 +23,7 @@ class Online extends Component
     public $cartList;
     public $item_qty = [];
 
-    protected $listeners = ['barcode-scanned' => 'processBarcode'];
+    // protected $listeners = ['barcode-scanned' => 'processBarcode'];
 
     public function mount()
     {

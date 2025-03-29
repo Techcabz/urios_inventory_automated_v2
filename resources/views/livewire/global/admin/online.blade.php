@@ -2,7 +2,7 @@
     @include('shared.offline')
     @include('livewire.global.admin.modal')
     <div class="col-md-8">
-                                              
+
         {{-- <button wire:click="testD">test</button> --}}
         <div class="card shadow-sm p-3 rounded-0" x-data="{ barcode: '' }">
             <div class="d-flex align-items-center gap-2 justify-content-between">
@@ -22,7 +22,8 @@
                             $event.preventDefault(); 
                         }"
                         @input.debounce.500ms="@this.call('processBarcode', barcode);"
-                        @keydown.enter.prevent="$dispatch('barcode-scanned', barcode); barcode = '';">
+                        @keydown.enter.prevent="$wire.processBarcode(barcode); barcode = '';
+                        ">
 
                 </div>
             </div>
