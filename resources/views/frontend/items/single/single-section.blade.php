@@ -19,8 +19,8 @@
                                 <div class="col-lg-10">
                                     <div class="details-image-1 ratio_asos">
                                         <div>
-                                            <img src="{{ asset($imagePath) }}" id="zoom_01"
-                                                data-zoom-image="{{ asset($imagePath) }}"
+                                            <img src="{{ $item->image_path ? asset('storage/' . $item->image_path) : asset('images/not_available.jpg') }}" id="zoom_01"
+                                                data-zoom-image="{{ $item->image_path ? asset('storage/' . $item->image_path) : asset('images/not_available.jpg') }}"
                                                 class="img-fluid w-100 image_zoom_cls-0 blur-up lazyload"
                                                 alt="Item Image">
                                         </div>

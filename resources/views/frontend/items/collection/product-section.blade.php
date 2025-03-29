@@ -17,7 +17,7 @@
                         @endphp
 
                         <a href="{{ route('user.item', ['uuid' => $item->uuid]) }}">
-                            <img src="{{ asset($imagePath) }}" class="bg-img blur-up lazyload" alt="Item Image">
+                            <img src="{{ $item->image_path ? asset('storage/' . $item->image_path) : asset('images/not_available.jpg') }}" class="bg-img blur-up lazyload" alt="Item Image">
                         </a>
                     </div>
                 </div>
