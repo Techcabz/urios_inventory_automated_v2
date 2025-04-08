@@ -4,8 +4,8 @@
     <div class="left-side-contain">
         <div class="banner-left">
 
-            <h1> BORROWING <span>INVENTORY </span></h1> 
-            <p>FR. URIOS ACADEMY OF MAGALLANES </p>
+            <h1 class="text-white"> BORROWING <span>INVENTORY </span></h1> 
+            <p class="text-white">FR. URIOS ACADEMY OF MAGALLANES </p>
 
         </div>
     </div>
