@@ -21,4 +21,9 @@ class BorrowingController extends Controller
     {
         return view('admin.borrowing.transaction.return.index');
     }
+
+    public function reports()
+    {
+        return view('admin.borrowing.reports.index');
+    }
 }

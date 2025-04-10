@@ -28,15 +28,15 @@ class Online extends Component
         $this->cartList = collect();
     }
 
-    public function testD(){
+    public function testD()
+    {
         $this->dispatch('userStatusUpdatedJS');
         $this->dispatch('userStatusUpdated')->to(\App\Livewire\Frontend\Borrower\Status::class);
-
     }
     public function processBarcode($barcode)
     {
-     
-       
+
+
         if (empty($barcode)) {
             // $this->resetData();
             return;
@@ -69,7 +69,7 @@ class Online extends Component
                     $this->cartList = collect();
                 }
 
-                
+
                 $this->borrowDetails = $borrow;
             } else {
                 $this->dispatch('messageModal', status: 'warning', position: 'top', message: 'Borrowing record not found or already processed.');
@@ -162,8 +162,9 @@ class Online extends Component
 
             BorrowingReturn::create([
                 'borrowing_id' => $borrow->id,
+                'notes' => 'Initial approval',
             ]);
-
+            
             $this->dispatch('messageModal', status: 'success', position: 'top', message: 'Borrowing request approved. Stock updated.');
             $this->resetData();
         } else {

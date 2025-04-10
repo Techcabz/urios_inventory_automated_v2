@@ -62,4 +62,7 @@
             </div>
         </div>
     </section>
+    <hr class="m-0">
+    @include('frontend.mv.index')
+   
 @endsection

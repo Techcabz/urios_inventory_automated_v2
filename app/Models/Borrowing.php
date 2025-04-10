@@ -34,6 +34,16 @@ class Borrowing extends Model
         return $this->belongsTo(Item::class, 'item_id', 'id');
     }
 
+    public function borrowingReturn()
+    {
+        return $this->hasOne(BorrowingReturn::class, 'borrowing_id');
+    }
+
+    public function borrowingReturns()
+    {
+        return $this->hasMany(BorrowingReturn::class, 'borrowing_id');
+    }
+
     public function borrowingCarts()
     {
         return $this->hasMany(Borrowing_cart::class, 'borrowing_id', 'id');

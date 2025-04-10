@@ -1,9 +1,16 @@
 $(document).ready(function () {
+    let tableIds = [
+        "datatable3",
+        "datatable2",
+        "datatable1",
+        "datatable",
+        "datatable-pending",
+        "datatable-approved",
+        "datatable-cancelled",
+        "datatable-completed",
+    ];
 
-    let tableIds = ["datatable3", "datatable2", "datatable1", "datatable", "datatable-pending", "datatable-approved", "datatable-cancelled", "datatable-completed"];
-
-    tableIds.forEach(id => {
-
+    tableIds.forEach((id) => {
         if ($.fn.DataTable.isDataTable(`#${id}`)) {
             // ✅ Destroy DataTable before reinitializing
             $(`#${id}`).DataTable().destroy();
@@ -46,7 +53,9 @@ $(document).ready(function () {
                                 .each(function (index) {
                                     $(this).css("background-color", "#D0D0D0");
                                 });
-                            $(win.document.body).find("h1").css("text-align", "center");
+                            $(win.document.body)
+                                .find("h1")
+                                .css("text-align", "center");
                         },
                     },
 
@@ -79,8 +88,6 @@ $(document).ready(function () {
             });
         }
     });
-
-
 
     var table = $("#datatable-def").DataTable({
         dom: "l<br>Bfrtip",
@@ -198,5 +205,94 @@ $(document).ready(function () {
         }
     });
 
+    $("#datatable_report").each(function () {
+        var table = $("#datatable_report").DataTable({
+            dom: "Brtip",
+            buttons: [
+                {
+                    extend: "print",
+                    text: "Print",
+                    title: "FUAMI BORROWING REPORT",
+                    exportOptions: { columns: ":not(.exclude-print)" },
+                },
+            ],
+            searching: true,
+            lengthChange: true,
+            info: false,
+            pageLength: 5,
+            lengthMenu: [5, 10, 25, 50, 100],
+            responsive: {
+                details: true,
+                breakpoints: [
+                    { name: "desktop", width: Infinity },
+                    { name: "tablet", width: 1024 },
+                    { name: "fablet", width: 768 },
+                    { name: "phone", width: 480 },
+                ],
+            },
+        });
 
+        var filterType = $("#filter-status");
+        var monthFilter = $("#month");
+        var weekFilter = $("#week-filter");
+
+        $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+            var typefilterValue = filterType.val().toLowerCase();
+            var monthFilterValue = monthFilter.val().toLowerCase();
+            var weekFilterValue = weekFilter.val();
+
+            var rowData = table.row(dataIndex).data();
+            var rowStatus = rowData[5].toLowerCase();
+            var rowDate = new Date(rowData[3]);
+            var rowMonth = convertDateToMonthName(rowDate).toLowerCase();
+            var rowWeek = getWeekNumber(rowDate);
+
+            if (
+                typefilterValue !== "all" &&
+                !rowStatus.includes(typefilterValue)
+            ) {
+                return false;
+            }
+
+            if (monthFilterValue !== "all" && rowMonth !== monthFilterValue) {
+                return false;
+            }
+
+            if (
+                weekFilterValue !== "all" &&
+                rowWeek !== parseInt(weekFilterValue)
+            ) {
+                return false;
+            }
+
+            return true;
+        });
+
+        function convertDateToMonthName(date) {
+            return date.toLocaleString("en-US", { month: "long" });
+        }
+
+        function getWeekNumber(date) {
+            var firstDayOfMonth = new Date(
+                date.getFullYear(),
+                date.getMonth(),
+                1
+            );
+            var dayOfWeek = firstDayOfMonth.getDay();
+            var weekNumber = Math.ceil((date.getDate() + dayOfWeek) / 7);
+            return weekNumber;
+        }
+
+        filterType.on("change", function () {
+            table.draw();
+        });
+        monthFilter.on("change", function () {
+            table.draw();
+        });
+        weekFilter.on("change", function () {
+            table.draw();
+        });
+
+        table.draw();
+    });
 });

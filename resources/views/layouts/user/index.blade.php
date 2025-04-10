@@ -92,7 +92,7 @@
     <style>
         .poster-section {
             height: 600px;
-            background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)), url('{{ asset('images/hero.jpg') }}');
+            background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5)), url('{{ asset('images/hero.jpg') }}');
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center;

@@ -129,7 +129,6 @@ class History extends Component
             $this->dispatch('messageModal', status: 'success', position: 'top', message: 'Borrowing request approved. Stock updated.');
             $this->resetData();
             $this->dispatch('closeModal');
-
         } else {
             $this->dispatch('messageModal', status: 'warning', position: 'top', message: 'This request has already been approved or does not exist.');
         }
@@ -152,7 +151,7 @@ class History extends Component
 
         return false;
     }
-    
+
     public function declinedBorrowing()
     {
 
@@ -195,7 +194,7 @@ class History extends Component
             foreach ($this->cartList as $cart) {
                 $item = $cart->item;
                 if ($item) {
-                    $item->increment('quantity', $cart->quantity); 
+                    $item->increment('quantity', $cart->quantity);
                 }
             }
 
@@ -203,10 +202,23 @@ class History extends Component
 
             $this->borrowDetails->status = 3;
 
+            if ($borrow->borrowingReturn) {
+                $borrow->borrowingReturn->update([
+                    'returned_at' => now(),
+                    'notes' => 'Items returned in good condition'
+                ]);
+            } else {
+                // Create new return record
+                $borrow->borrowingReturn()->create([
+                    'borrowing_id' => $borrow->id,
+                    'returned_at' => now(),
+                    'notes' => 'Items returned in good condition'
+                ]);
+            }
+
             $this->dispatch('messageModal', status: 'success', position: 'top', message: 'Borrowing request approved. Stock updated.');
             $this->resetData();
             $this->dispatch('closeModal');
-
         } else {
             $this->dispatch('messageModal', status: 'warning', position: 'top', message: 'This request has already been approved or does not exist.');
         }

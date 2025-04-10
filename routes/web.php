@@ -77,6 +77,7 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function () {
         Route::get('return', [BorrowingController::class, 'return'])->name('borrowing.return');
         
         Route::get('history', [BorrowingController::class, 'history'])->name('borrowing.history');
+        Route::get('reports', [BorrowingController::class, 'reports'])->name('borrowing.reports');
       
     });
     Route::prefix('users')->group(function () {
