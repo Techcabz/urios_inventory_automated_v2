@@ -14,7 +14,7 @@
                         <label class="form-control-plaintext">FILTER OPTIONS:</label>
                     </div>
                     <div class="col-auto">
-                        <div class="input-group input-group-sm p-1">
+                        <div class="input-group input-group-sm p-1 d-none">
                             <select class="form-select" id="filter-status" style="width: 12em">
                                 <option value="all">All Status</option>
                                 <option value="cancelled">Cancelled</option>
@@ -28,7 +28,7 @@
                         <div class="input-group input-group-sm p-1">
                             <select class="form-select" id="month" style="width: 12em">
                                 <option value="all">All Month</option>
-                                @foreach(['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] as $month)
+                                @foreach (['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] as $month)
                                     <option value="{{ $month }}">{{ $month }}</option>
                                 @endforeach
                             </select>
@@ -52,21 +52,87 @@
                 <table id="datatable_report" class="table table-borderless">
                     <thead class="bg-gradient-primary text-white">
                         <tr>
-                            <th style="width:50px">#</th>
-                            <th>BORROWER</th>
+                            <th>ITEM BORROWED</th>
                             <th>DATE OF USAGE (FROM - TO)</th>
                             <th>DATE RETURNED</th>
+                            <th class="d-none exclude-print">DATE RETURNED RAW</th>
+                            <th class="d-none exclude-print">STATUS</th>
+                            <th>BORROWER</th>
+
                         </tr>
                     </thead>
                     <tbody>
-                       
+
                         @foreach ($borrowings as $data)
-                        {{-- @dd($data->borrowingReturns) --}}
+                        {{-- @dd($data->borrowingCarts) --}}
                             <tr>
-                                <td></td>
-                                <td>{{ optional($data->users->userDetail)->firstname ? Str::ucfirst($data->users->userDetail->firstname) . ' ' . Str::ucfirst($data->users->userDetail->middlename) . ' ' . Str::ucfirst($data->users->userDetail->lastname) : '' }}</td>
-                                <td>{{ $data?->start_date ? \Carbon\Carbon::parse($data->start_date)->translatedFormat('F d, Y') : 'N/A' }} - {{ $data?->end_date ? \Carbon\Carbon::parse($data->end_date)->translatedFormat('F d, Y') : 'N/A' }}</td>
-                                <td></td>
+                                <td>
+                                    @forelse ($data->borrowingCarts as $borrowingCart)
+                                        @if($borrowingCart->cart && $borrowingCart->cart->item)
+                                            <div class="text-truncate" style="max-width: 200px;" title="{{ $borrowingCart->cart->item->name }} (Qty: {{ $borrowingCart->cart->quantity }})">
+                                                {{ Str::ucfirst($borrowingCart->cart->item->name) }} (Qty: {{ $borrowingCart->cart->quantity }})
+                                            </div>
+                                        @endif
+                                    @empty
+                                        <div class="text-truncate" style="max-width: 200px;">No items</div>
+                                    @endforelse
+                                </td>
+                                </td>
+                                <td>{{ $data?->start_date ? \Carbon\Carbon::parse($data->start_date)->translatedFormat('F d, Y') : 'N/A' }}
+                                    -
+                                    {{ $data?->end_date ? \Carbon\Carbon::parse($data->end_date)->translatedFormat('F d, Y') : 'N/A' }}
+                                </td>
+                                <td>
+                                    @forelse ($data->borrowingReturns ?? [] as $return)
+                                        @php
+                                            $returnDate = $return->returned_at
+                                                ? \Carbon\Carbon::parse($return->returned_at)->translatedFormat(
+                                                    'F d, Y',
+                                                )
+                                                : 'Not returned';
+                                        @endphp
+                                        <span
+                                            data-date="{{ $return->returned_at ? \Carbon\Carbon::parse($return->returned_at)->toISOString() : '' }}">
+                                            {{ $returnDate }}
+                                        </span>
+                                        @if (!$loop->last)
+                                            <br>
+                                        @endif
+                                    @empty
+                                        Not returned
+                                    @endforelse
+
+                                </td>
+                                <td class="d-none">
+                                    {{ $data->borrowingReturn->returned_at }}
+                                </td>
+                                <td class="d-none">
+                                    @switch($data->status ?? null)
+                                        @case(2)
+                                            <span class="text-danger">Cancelled</span>
+                                        @break
+
+                                        @case(3)
+                                            <span class="text-success">Completed</span>
+                                        @break
+
+                                        @default
+                                            {{ $data->status ?? 'N/A' }}
+                                    @endswitch
+                                </td>
+                                <td>
+                                    @php
+                                        $userName = 'N/A';
+                                        if ($data->users->userDetail ?? false) {
+                                            $firstName = Str::ucfirst($data->users->userDetail->firstname ?? '');
+                                            $middleName = Str::ucfirst($data->users->userDetail->middlename ?? '');
+                                            $lastName = Str::ucfirst($data->users->userDetail->lastname ?? '');
+                                            $userName = trim("{$firstName} {$middleName} {$lastName}") ?: 'N/A';
+                                        }
+                                    @endphp
+                                    {{ $userName }}
+                                </td>
+
                             </tr>
                         @endforeach
                     </tbody>

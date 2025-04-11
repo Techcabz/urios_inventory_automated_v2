@@ -242,11 +242,12 @@ $(document).ready(function () {
             var weekFilterValue = weekFilter.val();
 
             var rowData = table.row(dataIndex).data();
-            var rowStatus = rowData[5].toLowerCase();
+            var rowStatus = rowData[4].toLowerCase();
             var rowDate = new Date(rowData[3]);
             var rowMonth = convertDateToMonthName(rowDate).toLowerCase();
             var rowWeek = getWeekNumber(rowDate);
 
+            console.log(rowData[3])
             if (
                 typefilterValue !== "all" &&
                 !rowStatus.includes(typefilterValue)

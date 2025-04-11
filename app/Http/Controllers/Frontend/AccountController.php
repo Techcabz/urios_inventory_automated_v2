@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Frontend;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ExpirationChecker;
+use App\Models\Borrowing;
+use Illuminate\Support\Facades\Auth;
 
 class AccountController extends Controller
 {
@@ -15,7 +17,7 @@ class AccountController extends Controller
 
     public function dashboard()
     {
-      
+       
         return view('frontend.account.dashboard');
     }
 
@@ -28,7 +30,4 @@ class AccountController extends Controller
     {
         return view('frontend.account.borrowed');
     }
-   
-
 }
-

@@ -30,7 +30,7 @@
 
                                 <div>
                                     <h5 class="font-light">pending</h5>
-                                    <h3>0</h3>
+                                    <h3>{{ $borrow_pending }}</h3>
                                 </div>
                             </div>
                         </div>
@@ -48,7 +48,7 @@
 
                                 <div>
                                     <h5 class="font-light">cancelled</h5>
-                                    <h3>0</h3>
+                                    <h3>{{ $borrow_cancel }}</h3>
                                 </div>
                             </div>
                         </div>
@@ -64,7 +64,7 @@
                                     class="img-fluid blur-up lazyload" alt="">
                                 <div>
                                     <h5 class="font-light">total borrowing</h5>
-                                    <h3>0</h3>
+                                    <h3>{{$borrow_total}}</h3>
                                 </div>
                             </div>
                         </div>
