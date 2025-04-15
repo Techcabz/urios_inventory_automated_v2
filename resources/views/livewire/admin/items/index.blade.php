@@ -36,12 +36,12 @@
                                 <td>
                                     <span class="text-truncate d-inline-block" style="max-width: 120px;"
                                         data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ $item->name }}">
-                                        {{ Str::limit($item->name, 20) }}
+                                        {{ Str::limit($item->name, 30) }}
                                     </span>
                                 </td>
 
                                 <td>
-                                    <span class="text-truncate d-inline-block" style="max-width: 150px;"
+                                    <span class="text-truncate d-inline-block" style="max-width: 120px;"
                                         data-bs-toggle="tooltip" data-bs-placement="bottom"
                                         title="{{ $item->description }}">
                                         {{ Str::limit($item->description, 30) }}
@@ -53,7 +53,7 @@
                                     {{ $item->quantity }}
                                 </td>
                                 <td>
-                                    <span class="text-truncate d-inline-block" style="max-width: 120px;"
+                                    <span class="text-truncate d-inline-block" style="max-width: 150px;"
                                         data-bs-toggle="tooltip" data-bs-placement="bottom"
                                         title="{{ $item->category->name }}">
                                         {{ Str::limit($item->category->name, 20) }}
