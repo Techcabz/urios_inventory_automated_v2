@@ -14,7 +14,7 @@
                 <table id="datatable" class="table table-borderless">
                     <thead class="bg-gradient-primary text-white">
                         <tr>
-                            <th  >#</th>
+                            <th>#</th>
                             <th>Thumbnail</th>
                             <th>Name</th>
                             <th>Description</th>
@@ -28,23 +28,39 @@
                     <tbody>
                         @foreach ($items as $item)
                             <tr>
-                                <td> {{ $loop->index+1 }}</td>
+                                <td> {{ $loop->index + 1 }}</td>
                                 <td>
                                     <img src="{{ $item->image_path ? asset('storage/' . $item->image_path) : asset('images/not_available.jpg') }}"
                                         alt="{{ $item->name }}" class="img-thumbnail" style="max-width: 100px;">
                                 </td>
                                 <td>
-                                    {{ $item->name }}
+                                    <span class="text-truncate d-inline-block" style="max-width: 120px;"
+                                        data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ $item->name }}">
+                                        {{ Str::limit($item->name, 20) }}
+                                    </span>
                                 </td>
+
                                 <td>
-                                    {{ $item->description }}
+                                    <span class="text-truncate d-inline-block" style="max-width: 150px;"
+                                        data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                        title="{{ $item->description }}">
+                                        {{ Str::limit($item->description, 30) }}
+                                    </span>
                                 </td>
+
+
                                 <td>
                                     {{ $item->quantity }}
                                 </td>
                                 <td>
-                                    {{ $item->category->name }}
+                                    <span class="text-truncate d-inline-block" style="max-width: 120px;"
+                                        data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                        title="{{ $item->category->name }}">
+                                        {{ Str::limit($item->category->name, 20) }}
+                                    </span>
                                 </td>
+
+
                                 <td>
                                     <span
                                         class="badge 
@@ -74,13 +90,11 @@
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                             <div class="dropdown-item">
                                                 <div class="d-flex align-items-center gap-3">
-                                                    <button type="button"
-                                                        wire:click="editItem({{ $item->id }})"
+                                                    <button type="button" wire:click="editItem({{ $item->id }})"
                                                         data-bs-toggle="modal" data-bs-target="#updateItemModal"
                                                         class="btn btn-sm btn-warning "><i
                                                             class="fa fa-pencil-square-o"></i></button>
-                                                    <button data-bs-toggle="modal"
-                                                        data-bs-target="#deleteItemModal"
+                                                    <button data-bs-toggle="modal" data-bs-target="#deleteItemModal"
                                                         wire:click="deleteItem({{ $item->id }})"
                                                         class="btn btn-sm btn-danger"><i
                                                             class="fa fa-trash-o"></i></button>
