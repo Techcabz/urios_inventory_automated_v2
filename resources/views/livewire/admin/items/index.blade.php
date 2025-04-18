@@ -62,19 +62,28 @@
 
 
                                 <td>
-                                    <span
-                                        class="badge 
-                                    @if ($item->status == 0) bg-success 
-                                    @elseif($item->status == 1) bg-warning 
-                                    @elseif($item->status == 2) bg-danger @endif">
-                                        @if ($item->status == 0)
-                                            Available
-                                        @elseif($item->status == 1)
-                                            Borrowed
-                                        @elseif($item->status == 2)
-                                            Damaged
-                                        @endif
-                                    </span>
+                                    @if($editingStatus === $item->id)
+                                        <select wire:model="itemStatus" class="form-select form-select-sm" wire:change="updateStatus({{ $item->id }})">
+                                            <option value="0" @if($item->status == 0) selected @endif>Available</option>
+                                            <option value="1" @if($item->status == 1) selected @endif>Borrowed</option>
+                                            <option value="2" @if($item->status == 2) selected @endif>Damaged</option>
+                                        </select>
+                                    @else
+                                        <span class="badge 
+                                            @if ($item->status == 0) bg-success 
+                                            @elseif($item->status == 1) bg-warning 
+                                            @elseif($item->status == 2) bg-danger @endif"
+                                            wire:click="editStatus({{ $item->id }})"
+                                            style="cursor: pointer;">
+                                            @if ($item->status == 0)
+                                                Available
+                                            @elseif($item->status == 1)
+                                                Borrowed
+                                            @elseif($item->status == 2)
+                                                Damaged
+                                            @endif
+                                        </span>
+                                    @endif
                                 </td>
                                 <td>
                                     {{ $item->created_at->format('F j, Y g:i A') }}

@@ -17,9 +17,7 @@ class FrontendController extends Controller
 
     public function index()
     {
-        $categories = Category::orderBy('created_at', 'DESC')->get();
-        $items = Item::where('status', '0')->orderBy('created_at', 'DESC')->get();
-        return view('frontend.index', compact('categories', 'items'));
+        return view('frontend.index');
     }
 
     public function item($uuid)

@@ -51,7 +51,7 @@
         </style>
         <div class="row g-sm-4 g-3">
 
-            <livewire:frontend.item.general :items="$items" :categories="$categories" />
+            <livewire:frontend.item.general  />
         </div>
     </div>
 </section>

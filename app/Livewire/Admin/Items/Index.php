@@ -15,13 +15,38 @@ class Index extends Component
     use WithFileUploads;
 
     public $imageBarcode, $imagePath, $item_name, $item_image, $item_imageu, $item_imageu_tmp, $item_price, $item_warranty, $item_purchase, $item_qty, $item_description, $category_id, $i_id;
-
+    public $editingStatus = null;
+    public $itemStatus;
     public function render()
     {
         $items = Item::orderBy('created_at', 'DESC')->get();
         $categories = Category::orderBy('created_at', 'DESC')->get();
         return view('livewire.admin.items.index', compact('categories', 'items'));
     }
+
+    // Add these methods
+    public function editStatus($itemId)
+    {
+        $this->editingStatus = $itemId;
+        $item = Item::find($itemId);
+        $this->itemStatus = $item->status;
+    }
+
+    public function updateStatus($itemId)
+    {
+        $validated = $this->validate([
+            'itemStatus' => 'required|in:0,1,2',
+        ]);
+
+        $item = Item::findOrFail($itemId);
+        $item->update(['status' => $this->itemStatus]);
+
+        $this->editingStatus = null;
+        $this->itemStatus = null;
+
+        $this->dispatch('saveModal', status: 'success',  position: 'top', message: 'Item status update successfully.');
+    }
+
     public function updatedItemImageu()
     {
         if ($this->item_imageu) {
@@ -187,57 +212,56 @@ class Index extends Component
             $this->dispatch('saveModal', status: 'warning', position: 'top', message: 'No barcode available to download.');
             return;
         }
-    
+
         $barcode = new DNS1D();
         $barcodeData = base64_decode($barcode->getBarcodePNG($this->imageBarcode, 'C39'));
-    
+
         $width = 400;
         $height = 200;
         $image = imagecreatetruecolor($width, $height);
         $white = imagecolorallocate($image, 255, 255, 255);
         $black = imagecolorallocate($image, 0, 0, 0);
-    
-       
+
+
         imagefilledrectangle($image, 0, 0, $width, $height, $white);
-    
+
         // Load Barcode Image
         $barcodeImage = imagecreatefromstring($barcodeData);
         $barcodeWidth = imagesx($barcodeImage);
         $barcodeHeight = imagesy($barcodeImage);
-    
-      
+
+
         $barcodeX = ($width - $barcodeWidth) / 2;
         $barcodeY = ($height - $barcodeHeight) / 3;
-    
+
         // Draw Border Around Barcode
         $borderPadding = 5;
         imagerectangle(
             $image,
             $barcodeX - $borderPadding,
-            $barcodeY - $borderPadding, 
-            $barcodeX + $barcodeWidth + $borderPadding, 
-            $barcodeY + $barcodeHeight + $borderPadding, 
+            $barcodeY - $borderPadding,
+            $barcodeX + $barcodeWidth + $borderPadding,
+            $barcodeY + $barcodeHeight + $borderPadding,
             $black
         );
-    
-        
+
+
         imagecopy($image, $barcodeImage, $barcodeX, $barcodeY, 0, 0, $barcodeWidth, $barcodeHeight);
-    
+
         // Add Item Name at Bottom
         $fontSize = 5;
         $textWidth = imagefontwidth($fontSize) * strlen($this->item_name);
         $textX = ($width - $textWidth) / 2;
         $textY = $height - 25;
-    
+
         imagestring($image, $fontSize, $textX, $textY, $this->item_name, $black);
-    
+
         // Output Image as a Download
         $fileName = 'barcode_' . $this->imageBarcode . '.png';
         $filePath = storage_path('app/public/' . $fileName);
         imagepng($image, $filePath);
         imagedestroy($image);
-    
+
         return response()->download($filePath)->deleteFileAfterSend();
     }
-    
 }

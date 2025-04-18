@@ -19,7 +19,8 @@
                                 <div class="col-lg-10">
                                     <div class="details-image-1 ratio_asos">
                                         <div>
-                                            <img src="{{ $item->image_path ? asset('storage/' . $item->image_path) : asset('images/not_available.jpg') }}" id="zoom_01"
+                                            <img src="{{ $item->image_path ? asset('storage/' . $item->image_path) : asset('images/not_available.jpg') }}"
+                                                id="zoom_01"
                                                 data-zoom-image="{{ $item->image_path ? asset('storage/' . $item->image_path) : asset('images/not_available.jpg') }}"
                                                 class="img-fluid w-100 image_zoom_cls-0 blur-up lazyload"
                                                 alt="Item Image">
@@ -71,11 +72,22 @@
                                     <input type="hidden" wire:model="item_id" value="{{ $item->id }}">
 
                                     <div class="product-buttons">
-                                        <button type="submit" class="btn btn-solid hover-solid btn-animation">
+                                        @php
+                                            $isDisabled = in_array($item->status, [1, 2]);
+                                            $buttonText = match ($item->status) {
+                                                1 => 'Already Borrowed',
+                                                2 => 'Item Damaged',
+                                                default => 'Borrow',
+                                            };
+                                        @endphp
+
+                                        <button type="submit" class="btn btn-solid hover-solid btn-animation"
+                                            @if ($isDisabled) disabled @endif>
                                             <i class="fa fa-shopping-cart"></i>
-                                            <span>Borrow</span>
+                                            <span>{{ $buttonText }}</span>
                                         </button>
-                                        <button type="button" wire:navigate href="{{ route('home') }}" class="btn btn-solid hover-solid btn-animation">
+                                        <button type="button" wire:navigate href="{{ route('home') }}"
+                                            class="btn btn-solid hover-solid btn-animation">
                                             <i class="fa-solid fa-arrow-left"></i><span>Go Back</span>
                                         </button>
                                     </div>

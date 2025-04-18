@@ -20,16 +20,16 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@admin.com',
             'status' => "completed",
             'role_as' => 1,
-            'status' => 0,
+            'user_status' => 0,
             'password' => Hash::make('admin123'),
         ]);
 
         User::create([
             'username' => 'testuser',
             'email' => 'user@test.com',
-            'status' => "completed",
+            'status' => "incompleted",
             'role_as' => 0, 
-            'status' => 'incompleted',
+            'user_status' => 0,
             'password' => Hash::make('user1234'),
         ]);
     }

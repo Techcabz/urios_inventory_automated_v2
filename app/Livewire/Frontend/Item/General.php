@@ -3,24 +3,24 @@
 namespace App\Livewire\Frontend\Item;
 
 use App\Models\Category;
+use App\Models\Item;
 use Livewire\Component;
-use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
+use Livewire\WithoutUrlPagination;
 
 class General extends Component
 {
-
-    public $items, $categories;
     use WithPagination, WithoutUrlPagination;
-    public function mount($items, $categories)
-    {
-        $this->items = $items;
-        $this->categories = $categories;
-    }
 
+
+    public $categories;
     public function render()
     {
-      
-        return view('livewire.frontend.item.general', ['items' => $this->items, 'categories' => $this->categories]);
+
+        $this->categories = Category::orderBy('created_at', 'DESC')->get();
+        return view('livewire.frontend.item.general', [
+            'items' => Item::orderBy('created_at', 'DESC')->get(), 
+            'categories' => $this->categories
+        ]);
     }
 }
