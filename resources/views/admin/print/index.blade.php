@@ -68,7 +68,7 @@
                 </td>
 
                 @if (($index + 1) % 3 == 0)
-                    </tr><tr> <!-- Every 3 items, start a new row -->
+                    </tr><tr> 
                 @endif
             @endforeach
         </tr>

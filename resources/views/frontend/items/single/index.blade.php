@@ -110,6 +110,6 @@
 </style>
 @include('frontend.items.single.banner')
 <livewire:frontend.item.details :item="$item" />
-{{-- <livewire:frontend.active-borrower />
-         --}}
+<livewire:frontend.active-borrower :item="$item"/>
+        
 @endsection
