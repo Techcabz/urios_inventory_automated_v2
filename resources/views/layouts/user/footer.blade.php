@@ -1,4 +1,4 @@
-<footer class="footer-sm-space mt-5">
+<footer class="footer-sm-space ">
     <div class="main-footer">
         <div class="container">
             <div class="row gy-4">
