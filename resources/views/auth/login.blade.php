@@ -4,7 +4,7 @@
     <style>
         .login-bg-wrapper {
             background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)),
-                        url('{{ asset('images/hero.jpg') }}') no-repeat center center;
+                        url('{{ asset('images/hero.webp') }}') no-repeat center center;
             background-size: cover;
             background-attachment: fixed;
         }
