@@ -59,15 +59,7 @@
                     </div>
                     <hr>
                     Change Password
-                    <hr>
-                    <div class="mb-3">
-                        <label for="old_password" class="form-label">Old Password</label>
-                        <input type="password" wire:model="old_password" class="form-control" id="old_password">
-                        @error('old_password')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-
+                  
                     <div class="mb-3">
                         <label for="firstname" class="form-label">New Password <span
                                 class="text-danger">*</span></label>

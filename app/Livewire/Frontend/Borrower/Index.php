@@ -156,11 +156,11 @@ class Index extends Component
     }
 
 
-   
+
     public function render()
     {
         $users = UserDetails::where('users_id', auth()->user()->id)->first();
-        $cart = Cart::where('status', 0)->paginate($this->cartPerPage, pageName: 'Cart-page');
+        $cart = Cart::where('status', 0)->where('user_id', Auth::id())->paginate($this->cartPerPage, pageName: 'Cart-page');
 
         return view('livewire.frontend.borrower.index', [
             'carts' => $cart,

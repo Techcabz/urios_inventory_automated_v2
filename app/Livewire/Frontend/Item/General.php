@@ -10,8 +10,14 @@ use Livewire\WithoutUrlPagination;
 
 class General extends Component
 {
-    use WithPagination, WithoutUrlPagination;
 
+    public $items;
+
+    public function mount($items)
+    {
+        $this->items = $items;
+     
+    }
 
     public $categories;
     public function render()
@@ -19,7 +25,7 @@ class General extends Component
 
         $this->categories = Category::orderBy('created_at', 'DESC')->get();
         return view('livewire.frontend.item.general', [
-            'items' => Item::orderBy('created_at', 'DESC')->get(), 
+            'items' => $this->items, 
             'categories' => $this->categories
         ]);
     }

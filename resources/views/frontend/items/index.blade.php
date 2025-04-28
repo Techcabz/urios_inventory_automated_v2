@@ -8,7 +8,7 @@
                 <div class="title-3 text-center">
                     <h2>
                         @if ($categoryName)
-                        Available {{ ucfirst($categoryName) }} for Borrowing
+                            Available {{ ucfirst($categoryName) }} for Borrowing
                         @else
                             Available for Borrowing
                         @endif
@@ -49,9 +49,9 @@
                 }
             }
         </style>
+       
         <div class="row g-sm-4 g-3">
-
-            <livewire:frontend.item.general  />
+            <livewire:frontend.item.general :items="$items" />
         </div>
     </div>
 </section>

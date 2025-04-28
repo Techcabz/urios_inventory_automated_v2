@@ -35,7 +35,7 @@ class CustomLogin extends Component
 
         if ($user_check) {
 
-            if ($user_check->user_status == 0) {
+            if ($user_check->user_status == 0 || $user_check->user_status == 2) {
                 if (Auth::attempt($credentials)) {
                     $user = Auth::user();
 

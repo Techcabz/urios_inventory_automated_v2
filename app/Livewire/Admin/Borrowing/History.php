@@ -14,7 +14,8 @@ use Livewire\Component;
 use Livewire\WithoutUrlPagination as LivewireWithoutUrlPagination;
 use Livewire\WithPagination as LivewireWithPagination;
 use WithPagination, WithoutUrlPagination;
-
+use App\Notifications\CustomerNotification;
+use Illuminate\Support\Facades\Notification;
 
 class History extends Component
 {
@@ -27,11 +28,71 @@ class History extends Component
 
     protected $PerPage = 3;
 
+    public $damagedQuantities = [];
     use LivewireWithPagination, LivewireWithoutUrlPagination;
+
+
+
+
     public function mount()
     {
         $this->cartList = collect();
     }
+
+    public function markItemsAsDamaged()
+    {
+        // foreach ($this->cartList as $cart) {
+        //     $item = $cart->item;
+        //     $borrowedQty = $cart->quantity;
+        //     $damagedQty = $this->damagedQuantities[$item->id] ?? 0;
+
+        //     // Safety check: cannot damage more than borrowed
+        //     if ($damagedQty > $borrowedQty) {
+        //         $damagedQty = $borrowedQty;
+        //     }
+
+        //     $returnedQty = $borrowedQty - $damagedQty;
+
+        //     // Update the item stock:
+        //     if ($returnedQty > 0) {
+        //         $item->quantity += $returnedQty; // Only return non-damaged quantity
+        //     }
+
+        //     // Handle damaged items
+        //     if ($damagedQty > 0) {
+        //         // You can log it, or update a separate 'damaged_quantity' field if you want
+        //         // For example:
+        //         // $item->damaged_quantity += $damagedQty;
+        //     }
+
+        //     $item->save();
+        // }
+
+        // Update borrowing status
+        $this->borrowDetails->status = 3;
+        $this->borrowDetails->save();
+
+        // Close modal
+        $this->dispatch('destroyModal', status: 'success', position: 'top', message: 'Borrowing request complete. Stock updated.', modal: '#confirmMarkDoneModal');
+
+        $this->resetData();
+    }
+
+    public function continueWithRestriction()
+    {
+        // $this->completeBorrowing();
+    }
+
+    public function continueRemoveRestriction()
+    {
+        //  $this->completeBorrowing();
+        $this->users->update([
+            'user_status' => 0, // restricted
+            'restricted_until' => Null,
+        ]);
+    }
+
+
     public function showBorrow($id, $status)
     {
 
@@ -126,9 +187,20 @@ class History extends Component
                 'borrowing_id' => $borrow->id,
             ]);
 
-            $this->dispatch('messageModal', status: 'success', position: 'top', message: 'Borrowing request approved. Stock updated.');
+            $users = User::find($borrow->user_id);
+
+            $link = route('cart.status', ['uuid' => $borrow->uuid]);
+            $details = [
+                'greeting' => "Borrowing Approved",
+                'body' => "Your borrowing request has been approved by the administrator.",
+                'lastline' => '',
+                'regards' => "Please visit: $link"
+            ];
+
+            Notification::send($users, new CustomerNotification($details));
+
+            $this->dispatch('destroyModal', status: 'success', position: 'top', message: 'Borrowing request approved. Stock updated.', modal: '#viewDetailModal');
             $this->resetData();
-            $this->dispatch('closeModal');
         } else {
             $this->dispatch('messageModal', status: 'warning', position: 'top', message: 'This request has already been approved or does not exist.');
         }
@@ -173,8 +245,20 @@ class History extends Component
 
             $this->borrowDetails->status = 2; // Update UI without reloading
 
+            $users = User::find($borrow->user_id);
 
-            $this->dispatch('messageModal', status: 'success', position: 'top', message: 'Borrowing Declined.');
+            $link = route('cart.status', ['uuid' => $borrow->uuid]);
+            $details = [
+                'greeting' => "Borrowing Approved",
+                'body' => "Your borrowing request  has been cancelled by the administrator. For more information, please visit the office. . <br> Sorry for the inconvenience.",
+                'lastline' => '',
+                'regards' => "Please visit: $link"
+            ];
+
+            Notification::send($users, new CustomerNotification($details));
+
+
+            $this->dispatch('destroyModal', status: 'success', position: 'top', message: 'Borrowing Declined.', modal: '#viewDetailModal');
             $this->resetData();
         } else {
             $this->dispatch('messageModal', status: 'warning', position: 'top', message: 'Already declined or not found.');
@@ -216,9 +300,8 @@ class History extends Component
                 ]);
             }
 
-            $this->dispatch('messageModal', status: 'success', position: 'top', message: 'Borrowing request approved. Stock updated.');
+            $this->dispatch('destroyModal', status: 'success', position: 'top', message: 'Borrowing request approved. Stock updated.', modal: '#confirmMarkDoneModal');
             $this->resetData();
-            $this->dispatch('closeModal');
         } else {
             $this->dispatch('messageModal', status: 'warning', position: 'top', message: 'This request has already been approved or does not exist.');
         }

@@ -204,7 +204,7 @@
         
     </style>
     @include('layouts.user.navbar')
-
+    @include('shared.restrict')
     @yield('content')
 
     @include('layouts.user.footer')

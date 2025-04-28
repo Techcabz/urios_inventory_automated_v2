@@ -62,29 +62,33 @@
 
 
                                 <td>
-                                    @if($editingStatus === $item->id)
-                                        <select wire:model="itemStatus" class="form-select form-select-sm" wire:change="updateStatus({{ $item->id }})">
-                                            <option value="0" @if($item->status == 0) selected @endif>Available</option>
-                                            <option value="1" @if($item->status == 1) selected @endif>Borrowed</option>
-                                            <option value="2" @if($item->status == 2) selected @endif>Damaged</option>
+                                    @if ($editingStatus === $list->id)
+                                        <select wire:model="itemStatus" class="form-select form-select-sm"
+                                            wire:change="updateStatus({{ $list->id }})">
+                                            <!-- Only allow Granted (0) and Restricted (2) for editing -->
+                                            <option value="0" @if ($list->user_status == 0) selected @endif>
+                                                Granted</option>
+                                            <option value="2" @if ($list->user_status == 2) selected @endif>
+                                                Restricted</option>
                                         </select>
                                     @else
-                                        <span class="badge 
-                                            @if ($item->status == 0) bg-success 
-                                            @elseif($item->status == 1) bg-warning 
-                                            @elseif($item->status == 2) bg-danger @endif"
-                                            wire:click="editStatus({{ $item->id }})"
-                                            style="cursor: pointer;">
-                                            @if ($item->status == 0)
-                                                Available
-                                            @elseif($item->status == 1)
-                                                Borrowed
-                                            @elseif($item->status == 2)
-                                                Damaged
+                                        <span
+                                            class="badge 
+                                            @if ($list->user_status == 0) bg-success 
+                                            @elseif($list->user_status == 1) bg-warning 
+                                            @elseif($list->user_status == 2) bg-danger @endif"
+                                            wire:click="editStatus({{ $list->id }})" style="cursor: pointer;">
+                                            @if ($list->user_status == 0)
+                                                Granted
+                                            @elseif($list->user_status == 1)
+                                                Pending
+                                            @elseif($list->user_status == 2)
+                                                Restricted
                                             @endif
                                         </span>
                                     @endif
                                 </td>
+
                                 <td>
                                     {{ $item->created_at->format('F j, Y g:i A') }}
 

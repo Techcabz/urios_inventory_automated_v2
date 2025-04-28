@@ -10,12 +10,52 @@ use Illuminate\Support\Facades\Hash;
 class Management extends Component
 {
     public  $id, $username, $email, $password, $old_password;
+    public $editingStatus = null; // Keeps track of the item being edited
+    public $itemStatus = null; // Holds the status to be updated
 
     public function render()
     {
-        $usersList = User::where('role_as', '0')->where('user_status', '0')->get();
+        $usersList = User::where('role_as', '0')
+            ->where(function ($query) {
+                $query->where('user_status', 0)
+                    ->orWhere(function ($subQuery) {
+                        $subQuery->where('user_status', 2)
+                            ->whereNotNull('restricted_until'); // Adjust this condition based on your actual data
+                    });
+            })
+            ->get();
+
         return view('livewire.admin.user.management', ['usersList' => $usersList]);
     }
+    // When user clicks to edit the status
+    public function editStatus($userId)
+    {
+        $this->editingStatus = $userId; // Set the ID of the user being edited
+        $user = User::find($userId);
+        $this->itemStatus = $user->user_status; // Set the current user status for editing
+    }
+
+    public function updateStatus($userId)
+    {
+        $user = User::find($userId);
+
+        if ($user) {
+            if ($this->itemStatus == 0) {
+                $user->restricted_until = null;
+            }
+
+            $user->user_status = $this->itemStatus;
+            $user->save();
+            $this->editingStatus = null;
+
+            $this->render();
+
+            $this->dispatch('saveModal', status: 'success', position: 'top', message: 'Information updated successfully');
+        }
+    }
+
+
+
 
     public function userID($id)
     {
@@ -28,7 +68,6 @@ class Management extends Component
         $user->delete();
 
         $this->dispatch('saveModal', status: 'error', position: 'top', message: 'Delete user successfully');
-
     }
 
     public function editLoginDetails(int $id)
@@ -48,39 +87,25 @@ class Management extends Component
     {
         $user = User::findOrFail($this->id);
 
+        // Validate the username and email
         $this->validate([
             'username' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255'],
-            'password' => ['nullable', 'string', 'min:8'],
-            'old_password' => ['nullable', 'string', function ($attribute, $value, $fail) use ($user) {
-                if (!empty($this->password)) {
-                    if (!Hash::check($value, $user->password)) {
-                        $fail('The old password is incorrect.');
-                    }
-                }
-            }],
+            'password' => ['nullable', 'string', 'min:8'], // Make password optional
         ]);
 
-        // Check if the old password is provided and correct
-        if (empty($this->old_password) || Hash::check($this->old_password, auth()->user()->password)) {
-            $user->update([
-                'username' => $this->username,
-                'email' => $this->email,
-                'password' => empty($this->password) ? $user->password : Hash::make($this->password),
-            ]);
+        // Update user details
+        $user->update([
+            'username' => $this->username,
+            'email' => $this->email,
+            // Update password if provided, else keep the existing one
+            'password' => empty($this->password) ? $user->password : Hash::make($this->password),
+        ]);
 
-            $this->dispatch('saveModal', status: 'success', position: 'top', message: 'Information updated successfully');
-        } else {
-            $user->update([
-                'username' => $this->username,
-                'email' => $this->email,
-            ]);
-
-            $this->dispatch('saveModal', status: 'success', position: 'top', message: 'Information updated successfully');
-        }
-
-        // return $this->redirect('/admin/users/management', navigate: true);
+        // Dispatch success message
+        $this->dispatch('saveModal', status: 'success', position: 'top', message: 'Information updated successfully');
     }
+
 
     public function closeModal()
     {

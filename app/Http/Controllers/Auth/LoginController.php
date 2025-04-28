@@ -34,7 +34,7 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            if ($user->user_status == 0) {
+            if ($user->user_status == 0 || $user->user_status == 2) {
                 if ($user->role_as == '1') {
                     return redirect('admin/dashboard')->with('status', 'Welcome to Dashboard')->header('Cache-Control', 'no-cache, no-store, must-revalidate')
                         ->header('Pragma', 'no-cache')

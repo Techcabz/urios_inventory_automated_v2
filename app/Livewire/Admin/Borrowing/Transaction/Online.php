@@ -12,6 +12,8 @@ use Livewire\Component;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\CustomerNotification;
+use Illuminate\Support\Facades\Notification;
 
 class Online extends Component
 {
@@ -164,7 +166,19 @@ class Online extends Component
                 'borrowing_id' => $borrow->id,
                 'notes' => 'Initial approval',
             ]);
-            
+
+            $users = User::find($borrow->user_id);
+
+            $link = route('cart.status', ['uuid' => $borrow->uuid]);
+            $details = [
+                'greeting' => "Borrowing Approved",
+                'body' => "Your borrowing request has been approved by the administrator.",
+                'lastline' => '',
+                'regards' => "Please visit: $link"
+            ];
+
+            Notification::send($users, new CustomerNotification($details));
+
             $this->dispatch('messageModal', status: 'success', position: 'top', message: 'Borrowing request approved. Stock updated.');
             $this->resetData();
         } else {
@@ -191,7 +205,20 @@ class Online extends Component
                 ]);
             }
 
-            $this->borrowDetails->status = 2; // Update UI without reloading
+            $this->borrowDetails->status = 2;
+
+
+            $users = User::find($borrow->user_id);
+
+            $link = route('cart.status', ['uuid' => $borrow->uuid]);
+            $details = [
+                'greeting' => "Borrowing Approved",
+                'body' => "Your borrowing request  has been cancelled by the administrator. For more information, please visit the office. . <br> Sorry for the inconvenience.",
+                'lastline' => '',
+                'regards' => "Please visit: $link"
+            ];
+
+            Notification::send($users, new CustomerNotification($details));
 
 
             $this->dispatch('messageModal', status: 'success', position: 'top', message: 'Borrowing Declined.');
@@ -200,6 +227,7 @@ class Online extends Component
             $this->dispatch('messageModal', status: 'warning', position: 'top', message: 'Already declined or not found.');
         }
     }
+
 
     public function resetData()
     {

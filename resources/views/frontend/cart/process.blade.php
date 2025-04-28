@@ -87,8 +87,9 @@
                     <hr class="my-lg-5 my-4">
 
                     <button class="btn btn-solid-default mt-4" wire:click="goBack" type="button">GO BACK</button>
+
                     <button class="btn btn-solid-default mt-4" type="submit"
-                        @if (!$carts || $carts->isEmpty()) disabled @endif>
+                        @if (!$carts || $carts->isEmpty() || (auth()->check() && auth()->user()->user_status == 2)) disabled @endif>
                         PLACE BORROW
                     </button>
 

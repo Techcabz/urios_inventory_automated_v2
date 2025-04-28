@@ -7,12 +7,23 @@ use App\Http\Controllers\Controller;
 use App\Models\Borrowing;
 use App\Models\Item;
 use App\Models\User;
+use App\Services\BorrowingService;
 
 class DashboardController extends Controller
 {
+    protected $borrowingService; 
+
+    public function __construct(BorrowingService $borrowingService)
+    {
+        $this->borrowingService = $borrowingService; 
+    }
+
     public function index()
     {
 
+        $this->borrowingService->autoCancelBorrowings(); 
+        $this->borrowingService->sendBorrowingDeadlineReminders(); 
+        
         $userPending = User::where('user_status', 1)->count();
         $user = User::where('role_as', 0)->count();
 

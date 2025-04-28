@@ -1,3 +1,49 @@
+<div wire:ignore.self class="modal fade" id="confirmMarkDoneModal" tabindex="-1" aria-labelledby="markModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <form wire:submit.prevent="completeBorrowing">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Returned Borrowing - Check Damages</h1>
+                </div>
+                <div class="modal-body">
+
+                    <div class="mt-2">
+                        <h6>Specify damaged/defective quantity for each item:</h6>
+                        @foreach ($cartList as $cart)
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    {{ $cart->item->name }} (Borrowed: {{ $cart->quantity }})
+                                </label>
+                                <input type="number" wire:model.defer="damagedQuantities.{{ $cart->item->id }}"
+                                    min="0" max="{{ $cart->quantity }}" class="form-control"
+                                    placeholder="Enter damaged quantity (0 if none)">
+                            </div>
+                        @endforeach
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+
+                    @if ($users?->user_status == 2)
+                        <button type="submit" class="btn btn-secondary" wire:click="continueWithRestriction">
+                            leave the restriction
+                        </button>
+                        <button type="submit" class="btn btn-primary" wire:click="continueRemoveRestriction">
+                            remove the restriction
+                        </button>
+                    @else
+                        <button type="submit" class="btn btn-primary">
+                           Submit
+                        </button>
+                    @endif
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 <div wire:ignore.self class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel"
     aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog">
@@ -125,13 +171,15 @@
 
                                 <div class="mb-2">
                                     <label for="end_date" class="form-label">DATE OF USAGE (TO)</label>
-                                    <input type="text" readonly class="form-control" id="end_date" name="end_date"
+                                    <input type="text" readonly class="form-control" id="end_date"
+                                        name="end_date"
                                         value="{{ $borrowDetails?->end_date ? \Carbon\Carbon::parse($borrowDetails->end_date)->translatedFormat('F d, Y') : 'N/A' }}"
                                         placeholder="N/A">
                                 </div>
                                 <div class="mb-2">
                                     <label for="name" class="form-label">REMARKS</label>
-                                    <input type="text" readonly class="form-control" id="name" name="name"
+                                    <input type="text" readonly class="form-control" id="name"
+                                        name="name"
                                         value="{{ optional($borrowDetails) ? $borrowDetails?->reason : '' }}"
                                         placeholder="N/A">
                                 </div>
@@ -168,7 +216,8 @@
                         wire:click="resetData">Close</button>
                     @if ($borrowDetails?->status != 3 && $borrowDetails?->status != 2 && $borrowDetails?->status != 1)
                         <button type="button" data-bs-toggle="modal" data-bs-target="#cancelModal"
-                        wire:loading.attr="disabled" wire:target="declinedBorrowing" class="btn btn-danger">DISAPPROVED</button>
+                            wire:loading.attr="disabled" wire:target="declinedBorrowing"
+                            class="btn btn-danger">DISAPPROVED</button>
                     @endif
 
                     @if ($borrowDetails?->status == 0)
@@ -177,9 +226,12 @@
                     @endif
 
                     @if ($borrowDetails?->status == 1)
-                        <button type="button" wire:click="completeBorrowing" wire:loading.attr="disabled"
-                        wire:target="completeBorrowing" class="btn btn-primary">Mark as Done</button>
+                        <button type="button" data-bs-target="#confirmMarkDoneModal" data-bs-toggle="modal"
+                            data-bs-dismiss="modal" class="btn btn-primary">
+                            Mark as Done
+                        </button>
                     @endif
+
 
 
 

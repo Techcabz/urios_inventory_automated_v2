@@ -5,19 +5,31 @@ namespace App\Http\Controllers\Frontend;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Cart;
+
 use App\Models\Category;
 use App\Models\Item;
+use App\Services\BorrowingService;
 use Illuminate\Support\Facades\Auth;
+
 
 
 class FrontendController extends Controller
 {
-    public function __construct() {}
+    protected $borrowingService; 
+
+    public function __construct(BorrowingService $borrowingService)
+    {
+        $this->borrowingService = $borrowingService; 
+    }
 
     public function index()
     {
-        return view('frontend.index');
+        $this->borrowingService->autoCancelBorrowings(); 
+        $this->borrowingService->sendBorrowingDeadlineReminders(); 
+        
+        $items = Item::orderBy('created_at', 'DESC')
+        ->get();
+        return view('frontend.index', compact('items'));
     }
 
     public function item($uuid)
@@ -29,14 +41,13 @@ class FrontendController extends Controller
 
     public function categories_base($slug)
     {
-        $categories = Category::orderBy('created_at', 'DESC')->get();
         $category = Category::where('name', $slug)->firstOrFail();
-
         $items = Item::where('category_id', $category->id)
-            ->where('status', '0')
             ->orderBy('created_at', 'DESC')
             ->get();
-        return view('frontend.index', compact('categories', 'items'));
+
+           
+        return view('frontend.index', compact( 'items'));
     }
 
     public function cart()
@@ -55,4 +66,8 @@ class FrontendController extends Controller
         return view('frontend.search.result');
  
     }
+
+    
+   
+
 }

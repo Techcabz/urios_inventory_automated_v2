@@ -1,6 +1,5 @@
 <section class="section-b-space">
     <div class="container">
-  
         <div class="row">
             @include('frontend.items.collection.category')
             

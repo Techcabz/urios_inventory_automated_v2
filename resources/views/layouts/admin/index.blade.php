@@ -120,7 +120,7 @@
         // Define the asset URL in a Blade section dada
         var tableScriptUrl = "{{ asset('assets_admin/js/datatable/table.js') }}";
 
-      
+
 
         function triggerFileInput() {
             document.getElementById('fileInput').click();
@@ -146,6 +146,16 @@
         }
 
         document.addEventListener('livewire:init', () => {
+
+            // Livewire.on('show-confirm-mark-done-modal', () => {
+
+            //     var firstModal = new bootstrap.Modal(document.getElementById('viewDetailModal'));
+            //     firstModal.hide();
+            //     console.log(firstModal);
+            //     // var modal = new bootstrap.Modal(document.getElementById('confirmMarkDoneModal'));
+            //     // modal.show();
+            // });
+
             Livewire.on('closeModal', (event) => {
                 loadScript(tableScriptUrl);
             });
