@@ -64,11 +64,18 @@
                             </span>
                         @endif
 
-                        <!-- Check if user is restricted -->
-                        @if ($list->user_status == 2 && $list->restricted_until && \Carbon\Carbon::parse($list->restricted_until)->isFuture())
-                            <span class="restricted-badge">Restricted Until:
-                                {{ \Carbon\Carbon::parse($list->restricted_until)->format('Y-m-d') }}</span>
+                        @if ($list->user_status == 2)
+                            @if ($list->restricted_until && \Carbon\Carbon::parse($list->restricted_until)->isFuture())
+                                <span class="restricted-badge">Restricted Until:
+                                    {{ \Carbon\Carbon::parse($list->restricted_until)->format('Y-m-d') }}</span>
+                            @elseif ($list->restricted_until && \Carbon\Carbon::parse($list->restricted_until)->isPast())
+                                <span class="restricted-badge">Restriction Expired On:
+                                    {{ \Carbon\Carbon::parse($list->restricted_until)->format('Y-m-d') }}</span>
+                            @else
+                                <span class="restricted-badge">Permanently Restricted</span>
+                            @endif
                         @endif
+
                     </td>
 
                     <td>

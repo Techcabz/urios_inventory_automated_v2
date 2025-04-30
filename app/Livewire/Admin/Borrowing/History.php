@@ -291,14 +291,16 @@ class History extends Component
                     'returned_at' => now(),
                     'notes' => 'Items returned in good condition'
                 ]);
-            } else {
-                // Create new return record
-                $borrow->borrowingReturn()->create([
-                    'borrowing_id' => $borrow->id,
-                    'returned_at' => now(),
-                    'notes' => 'Items returned in good condition'
-                ]);
-            }
+            } 
+            
+            // else {
+            //     // Create new return record
+            //     $borrow->borrowingReturn()->create([
+            //         'borrowing_id' => $borrow->id,
+            //         'returned_at' => now(),
+            //         'notes' => 'Items returned in good condition'
+            //     ]);
+            // }
 
             $this->dispatch('destroyModal', status: 'success', position: 'top', message: 'Borrowing request approved. Stock updated.', modal: '#confirmMarkDoneModal');
             $this->resetData();

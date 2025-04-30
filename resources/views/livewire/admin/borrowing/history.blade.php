@@ -57,6 +57,7 @@
                                                 <tr class="table-head">
                                                     <th scope="col">Name</th>
                                                     <th>Code</th>
+                                                    <th>User Type</th>
                                                     <th scope="col">Date Filed</th>
                                                     <th scope="col">View</th>
                                                 </tr>
@@ -72,6 +73,7 @@
                                                 <tr class="table-head">
                                                     <th scope="col">Name</th>
                                                     <th>Code</th>
+                                                    <th>User Type</th>
                                                     <th scope="col">Date Filed</th>
                                                     <th scope="col">View</th>
                                                 </tr>
@@ -86,6 +88,11 @@
                                                         </td>
                                                         <td>
                                                             {{ $item->barcode_reference }}
+                                                        </td>
+                                                        <td>
+                                                            <p class="fs-6 m-0">
+                                                                {{ Str::ucfirst($item->users->userDetail->position) }}
+                                                            </p>
                                                         </td>
                                                         <td>{{ \Carbon\Carbon::parse($item->date_filled)->format('F j, Y') }}
                                                         </td>

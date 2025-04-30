@@ -16,18 +16,13 @@ class Management extends Component
     public function render()
     {
         $usersList = User::where('role_as', '0')
-            ->where(function ($query) {
-                $query->where('user_status', 0)
-                    ->orWhere(function ($subQuery) {
-                        $subQuery->where('user_status', 2)
-                            ->whereNotNull('restricted_until'); // Adjust this condition based on your actual data
-                    });
-            })
-            ->get();
+        ->whereIn('user_status', [0, 2]) // Only Granted and Restricted
+        ->get();
+    
 
         return view('livewire.admin.user.management', ['usersList' => $usersList]);
     }
-    // When user clicks to edit the status
+  
     public function editStatus($userId)
     {
         $this->editingStatus = $userId; // Set the ID of the user being edited

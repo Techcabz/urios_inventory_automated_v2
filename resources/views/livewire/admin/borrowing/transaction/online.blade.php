@@ -1,6 +1,6 @@
 <div class="row g-1">
     @include('shared.offline')
-    @include('livewire.global.admin.modal')
+    @include('livewire.admin.borrowing.transaction.modal')
     <div class="col-md-8">
 
         {{-- <button wire:click="testD">test</button> --}}
@@ -110,6 +110,12 @@
                 <label for="name" class="form-label">NAME</label>
                 <input type="text" readonly class="form-control" id="name" name="name"
                     value="{{ optional($userDetails)->firstname ? Str::ucfirst($userDetails->firstname) . ' ' . Str::ucfirst($userDetails->middlename) . ' ' . Str::ucfirst($userDetails->lastname) : '' }}"
+                    placeholder="N/A">
+            </div>
+            <div class="mb-2">
+                <label for="name" class="form-label">User Type</label>
+                <input type="text" readonly class="form-control" id="name" name="name"
+                    value="{{ optional($userDetails)->position  }}"
                     placeholder="N/A">
             </div>
 

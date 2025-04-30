@@ -21,6 +21,7 @@ class UserDetails extends Model
         'grade',
         'address',
         'contact',
+        'position'
     ];
 
 

@@ -27,7 +27,8 @@
         }
 
         .borrow-tabs .nav-tabs .nav-item {
-            flex: 1 1 50%; /* Two items per row */
+            flex: 1 1 50%;
+            /* Two items per row */
         }
 
         .borrow-tabs .table-responsive {
@@ -46,20 +47,30 @@
             <h3>My Borrowed</h3>
         </div>
 
-        <div x-data="{ activeTab: 'PENDING' }">
+        <div x-data="{
+            activeTab: window.location.hash ? window.location.hash.substring(1).toUpperCase() : 'PENDING',
+            changeTab(tab) {
+                this.activeTab = tab;
+                history.pushState(null, null, `#${tab.toLowerCase()}`);
+            }
+        }">
             <!-- Responsive Tabs -->
             <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-linkx" :class="{ 'active': activeTab === 'PENDING' }" x-on:click="activeTab = 'PENDING'">PENDING</a>
+                    <a class="nav-linkx" :class="{ 'active': activeTab === 'PENDING' }"
+                        x-on:click="activeTab = 'PENDING'">PENDING</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-linkx" :class="{ 'active': activeTab === 'APPROVED' }" x-on:click="activeTab = 'APPROVED'">APPROVED</a>
+                    <a class="nav-linkx" :class="{ 'active': activeTab === 'APPROVED' }"
+                        x-on:click="activeTab = 'APPROVED'">APPROVED</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-linkx" :class="{ 'active': activeTab === 'CANCELLED' }" x-on:click="activeTab = 'CANCELLED'">CANCELLED</a>
+                    <a class="nav-linkx" :class="{ 'active': activeTab === 'CANCELLED' }"
+                        x-on:click="activeTab = 'CANCELLED'">CANCELLED</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-linkx" :class="{ 'active': activeTab === 'COMPLETED' }" x-on:click="activeTab = 'COMPLETED'">COMPLETED</a>
+                    <a class="nav-linkx" :class="{ 'active': activeTab === 'COMPLETED' }"
+                        x-on:click="activeTab = 'COMPLETED'">COMPLETED</a>
                 </li>
             </ul>
 
@@ -70,7 +81,7 @@
                         'PENDING' => $borrow_pending,
                         'APPROVED' => $borrow_approved,
                         'CANCELLED' => $borrow_cancel,
-                        'COMPLETED' => $borrow_complete
+                        'COMPLETED' => $borrow_complete,
                     ];
                 @endphp
 

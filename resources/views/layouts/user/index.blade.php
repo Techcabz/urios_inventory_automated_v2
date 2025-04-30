@@ -355,8 +355,7 @@
             $('[data-bs-toggle="tooltip"]').tooltip()
         });
     </script>
-    @livewire('global-event-handler')
-
+   
     @livewireScripts
 </body>
 

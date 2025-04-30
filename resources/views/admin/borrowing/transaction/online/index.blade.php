@@ -2,6 +2,6 @@
 
 @section('content')
     <div class="container-fluid">
-        @livewire('global.admin.online')
+        @livewire('admin.borrowing.transaction.online')
     </div>
 @endsection

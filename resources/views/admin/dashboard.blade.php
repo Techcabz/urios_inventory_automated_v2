@@ -157,7 +157,7 @@
 
         <div class="col-xl-12 col-sm-6 mb-xl-0 mt-3 mb-5 row">
             
-            <livewire:global.graph />
+            <livewire:admin.dashboard.dashboard-graph />
     
 
         </div>

@@ -154,7 +154,7 @@ class Online extends Component
             foreach ($this->cartList as $cart) {
                 $item = $cart->item;
                 if ($item) {
-                    $item->decrement('quantity', $cart->quantity); // Subtract borrowed quantity
+                    $item->decrement('quantity', $cart->quantity);
                 }
             }
 

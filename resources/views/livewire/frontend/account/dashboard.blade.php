@@ -18,59 +18,68 @@
             <div class="order-box-contain my-4">
                 <div class="row g-4">
                     <div class="col-lg-4 col-sm-6">
-                        <div class="order-box">
-                            <div class="order-box-image">
-                                <img src="{{ asset('assets_users/images/svg/box.png') }}"
-                                    class="img-fluid blur-up lazyload" alt="">
+                        <a href="{{ route('myaccount.borrowed') }}#pending">
+                            <div class="order-box">
+                                <div class="order-box-image">
+                                    <img src="{{ asset('assets_users/images/svg/box.png') }}"
+                                        class="img-fluid blur-up lazyload" alt="">
 
-                            </div>
-                            <div class="order-box-contain">
-                                <img src="{{ asset('assets_users/images/svg/box1.png') }}"
-                                    class="img-fluid blur-up lazyload" alt="">
+                                </div>
+                                <div class="order-box-contain">
+                                    <img src="{{ asset('assets_users/images/svg/box1.png') }}"
+                                        class="img-fluid blur-up lazyload" alt="">
 
-                                <div>
-                                    <h5 class="font-light">pending</h5>
-                                    <h3>{{ $borrow_pending }}</h3>
+                                    <div>
+                                        <h5 class="font-light">pending</h5>
+                                        <h3 class="text-dark">{{ $borrow_pending }}</h3>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                     <div class="col-lg-4 col-sm-6">
-                        <div class="order-box">
-                            <div class="order-box-image">
-                                <img src="{{ asset('assets_users/images/svg/box.png') }}"
-                                    class="img-fluid blur-up lazyload" alt="">
+                        <a href="{{ route('myaccount.borrowed') }}#cancelled">
 
-                            </div>
-                            <div class="order-box-contain">
-                                <img src="{{ asset('assets_users/images/svg/box1.png') }}"
-                                    class="img-fluid blur-up lazyload" alt="">
+                            <div class="order-box">
+                                <div class="order-box-image">
+                                    <img src="{{ asset('assets_users/images/svg/box.png') }}"
+                                        class="img-fluid blur-up lazyload" alt="">
 
-                                <div>
-                                    <h5 class="font-light">cancelled</h5>
-                                    <h3>{{ $borrow_cancel }}</h3>
+                                </div>
+                                <div class="order-box-contain">
+                                    <img src="{{ asset('assets_users/images/svg/box1.png') }}"
+                                        class="img-fluid blur-up lazyload" alt="">
+
+                                    <div>
+                                        <h5 class="font-light">cancelled</h5>
+                                        <h3 class="text-dark">{{ $borrow_cancel }}</h3>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                     <div class="col-lg-4 col-sm-6">
-                        <div class="order-box">
-                            <div class="order-box-image">
-                                <img src="{{ asset('assets_users/images/svg/sent.png') }} "
-                                    class="img-fluid blur-up lazyload" alt="">
-                            </div>
-                            <div class="order-box-contain">
-                                <img src="{{ asset('assets_users/images/svg/sent1.png') }}"
-                                    class="img-fluid blur-up lazyload" alt="">
-                                <div>
-                                    <h5 class="font-light">total borrowing</h5>
-                                    <h3>{{$borrow_total}}</h3>
+                        <a href="{{ route('myaccount.borrowed') }}#completed">
+
+                            <div class="order-box">
+                                <div class="order-box-image">
+                                    <img src="{{ asset('assets_users/images/svg/sent.png') }} "
+                                        class="img-fluid blur-up lazyload" alt="">
+                                </div>
+                                <div class="order-box-contain">
+                                    <img src="{{ asset('assets_users/images/svg/sent1.png') }}"
+                                        class="img-fluid blur-up lazyload" alt="">
+                                    <div>
+                                        <h5 class="font-light">total borrowing</h5>
+                                        <h3 class="text-dark">{{ $borrow_total }}</h3>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+
+                        </a>
                     </div>
 
-                    
+
 
 
                 </div>

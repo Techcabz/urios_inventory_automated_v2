@@ -155,6 +155,12 @@
                                         value="{{ optional($userDetails)->firstname ? Str::ucfirst($userDetails->firstname) . ' ' . Str::ucfirst($userDetails->middlename) . ' ' . Str::ucfirst($userDetails->lastname) : '' }}"
                                         placeholder="N/A">
                                 </div>
+                                <div class="mb-2">
+                                    <label for="name" class="form-label">User Type</label>
+                                    <input type="text" readonly class="form-control" id="name" name="name"
+                                        value="{{ optional($userDetails)->position  }}"
+                                        placeholder="N/A">
+                                </div>
 
                             </div>
                             <div class="card shadow-sm mt-2 p-3 rounded-0 position-relative"

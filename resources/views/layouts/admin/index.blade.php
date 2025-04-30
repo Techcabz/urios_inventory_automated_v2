@@ -94,8 +94,7 @@
     <!-- include the script -->
 
     @livewireScripts
-    @livewire('global-event-handler')
-
+  
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
@@ -112,6 +111,9 @@
     <script src="{{ asset('assets_admin/js/plugins/smooth-scrollbar.min.js') }}"></script>
     <script src="{{ asset('assets_admin/js/soft-ui-dashboard.min.js?v=1.0.7') }}"></script>
     <script src="{{ asset('assets_admin/js/plugins/chartjs.min.js') }}"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
     <script src="{{ asset('assets_admin/js/datatable/table.js') }}"></script>
     <script src="{{ asset('global/_init.js') }}"></script>

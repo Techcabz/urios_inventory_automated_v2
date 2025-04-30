@@ -12,11 +12,11 @@ use Illuminate\Support\Facades\Hash;
 
 class Profile extends Component
 {
-    public $contact, $address, $firstname, $lastname, $middlename, $department_id, $position_id, $ud_id, $username, $email, $password, $old_password;
+    public $contact, $address, $firstname, $lastname, $middlename, $department_id, $position, $ud_id, $username, $email, $password, $old_password;
 
     public function render()
     {
-       
+
         $users = UserDetails::where('users_id', auth()->user()->id)->first();
 
         // If UserDetails for the current user doesn't exist, use User model
@@ -35,12 +35,15 @@ class Profile extends Component
                 'middlename' => 'nullable|string|min:2',
                 'address' => 'required|string|min:10',
                 'contact' => ['required', 'string', 'min:10', 'regex:/^(09|\+639)\d{9}$/'],
+                'position' => 'required|in:Student,Teacher,Staff'
             ], [
                 'firstname.required' => 'The first name field is required.',
                 'lastname.required' => 'The last name field is required.',
                 'address.required' => 'Please enter your complete address.',
                 'contact.required' => 'The contact field is required.',
                 'contact.regex' => 'The contact number format is invalid. It should be either +639123456789 or 09123456789.',
+                'position.required' => 'The position field is required.',
+                'position.in' => 'Invalid position selected.'
             ]);
 
 
@@ -53,6 +56,7 @@ class Profile extends Component
                     'middlename' => $this->middlename,
                     'contact' => $this->contact,
                     'address' => $this->address,
+                    'position' => $this->position
                 ]);
             } else {
 
@@ -64,6 +68,7 @@ class Profile extends Component
                     'middlename' => $this->middlename,
                     'contact' => $this->contact,
                     'address' => $this->address,
+                    'position' => $this->position
                 ]);
                 User::where('id', auth()->user()->id)->update(['status' => 'completed']);
             }
@@ -124,7 +129,8 @@ class Profile extends Component
             $this->lastname = $users->lastname  ?? '';
             $this->middlename = $users->middlename  ?? '';
             $this->address = $users->address  ?? '';
-          
+            $this->position = $users->position  ?? '';
+
             $this->contact = $users->contact  ?? '';
 
             $this->dispatch('editModal');

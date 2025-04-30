@@ -17,7 +17,7 @@ class BorrowingService
     public function autoCancelBorrowings()
     {
         $now = Carbon::now();
-       
+
         $pendingBorrowings = Borrowing::where('status', 0)->get();
 
         foreach ($pendingBorrowings as $borrow) {
@@ -62,23 +62,22 @@ class BorrowingService
     public function sendBorrowingDeadlineReminders()
     {
         $now = Carbon::now();
-    
+
         $borrowings = Borrowing::where('status', 1)->get(); // status 1 = borrowed
-    
+
         foreach ($borrowings as $borrow) {
-            $deadline = $borrow->end_date ;
+            $deadline = $borrow->end_date;
             $deadlineDate = Carbon::parse($deadline);
             $user = User::find($borrow->user_id);
-    
+
             if (!$user) {
                 continue;
             }
-    
+
             $link = route('cart.status', ['uuid' => $borrow->uuid]);
-    
+
             try {
                 if ($now->isSameDay($deadlineDate)) {
-                    // Deadline is today
                     $details = [
                         'greeting' => "Borrowing Reminder",
                         'body' => "Reminder: Your borrowing deadline is today. Please return or renew your borrowed items.",
@@ -86,9 +85,7 @@ class BorrowingService
                         'regards' => "View your borrowing status: $link"
                     ];
                     Notification::send($user, new CustomerNotification($details));
-    
                 } elseif ($now->diffInDays($deadlineDate, false) === 1) {
-                    // Deadline is tomorrow
                     $details = [
                         'greeting' => "Borrowing Reminder",
                         'body' => "Heads up! Your borrowing deadline is tomorrow. Please prepare to return or renew your borrowed items.",
@@ -96,19 +93,15 @@ class BorrowingService
                         'regards' => "View your borrowing status: $link"
                     ];
                     Notification::send($user, new CustomerNotification($details));
-    
                 } elseif ($now->greaterThan($deadlineDate)) {
-                    // Deadline already passed (Overdue)
                     $overdueDays = $now->diffInDays($deadlineDate);
-    
-                    // If user is not restricted yet
-                    if ($user->user_status != 2) {
-                        $user->update([
-                            'user_status' => 2, // restricted
-                            'restricted_until' => $now->copy()->addDays(5),
-                        ]);
-                    }
-    
+
+                    $user->update([
+                        'user_status' => 2,
+                        'restricted_until' => $now->copy()->addDays(5),
+                    ]);
+
+
                     $details = [
                         'greeting' => "Borrowing Overdue",
                         'body' => "Your borrowing deadline has passed by {$overdueDays} day(s). Your borrowing privileges are now restricted for 5 days.",
@@ -119,6 +112,52 @@ class BorrowingService
                 }
             } catch (\Exception $e) {
                 \Log::error("Error processing borrowing ID {$borrow->id}: " . $e->getMessage());
+            }
+        }
+    }
+
+    public function removeRestrictionsForClearedUsers()
+    {
+        $restrictedUsers = User::where('user_status', 2)
+            ->whereNotNull('restricted_until')
+            ->get();
+    
+        foreach ($restrictedUsers as $user) {
+            $activeBorrowings = Borrowing::where('user_id', $user->id)
+                ->where('status', 1) // active
+                ->get();
+    
+            $now = Carbon::now()->toDateString();
+    
+            if ($activeBorrowings->isEmpty()) {
+                // No active borrowings, check if any past borrowings are NOT overdue
+                $pastBorrowings = Borrowing::where('user_id', $user->id)
+                    ->where('status', '!=', 1)
+                    ->whereNotNull('end_date')
+                    ->get();
+    
+                $hasOnlyOverdue = $pastBorrowings->every(function ($borrow) use ($now) {
+                    return Carbon::parse($borrow->end_date)->toDateString() < $now;
+                });
+    
+                if ($hasOnlyOverdue) {
+                    $user->update([
+                        'user_status' => 0, // back to active
+                        'restricted_until' => null,
+                    ]);
+                }
+            } else {
+                // Has active borrowings, check if any are overdue
+                $hasOverdue = $activeBorrowings->contains(function ($borrow) use ($now) {
+                    return Carbon::parse($borrow->end_date)->toDateString() < $now;
+                });
+    
+                if (!$hasOverdue) {
+                    $user->update([
+                        'user_status' => 1,
+                        'restricted_until' => null,
+                    ]);
+                }
             }
         }
     }

@@ -11,29 +11,29 @@ use App\Services\BorrowingService;
 
 class DashboardController extends Controller
 {
-    protected $borrowingService; 
+    protected $borrowingService;
 
     public function __construct(BorrowingService $borrowingService)
     {
-        $this->borrowingService = $borrowingService; 
+        $this->borrowingService = $borrowingService;
     }
 
     public function index()
     {
-
-        $this->borrowingService->autoCancelBorrowings(); 
-        $this->borrowingService->sendBorrowingDeadlineReminders(); 
-        
+        $this->borrowingService->removeRestrictionsForClearedUsers();
+       
+        $this->borrowingService->autoCancelBorrowings();
+        $this->borrowingService->sendBorrowingDeadlineReminders();
         $userPending = User::where('user_status', 1)->count();
         $user = User::where('role_as', 0)->count();
 
         $borrow_pending = Borrowing::where('status', 0)->count();
         $borrow_approved = Borrowing::where('status', 1)->count();
         $borrow_cancel = Borrowing::where('status', 2)->count();
-       
+
         $items = Item::count();
 
-       
+
 
         return view('admin.dashboard', compact('items', 'userPending', 'borrow_pending', 'borrow_approved', 'borrow_cancel', 'user'));
     }
@@ -48,7 +48,8 @@ class DashboardController extends Controller
         return view('admin.items.index');
     }
 
-    public function barcode(){
+    public function barcode()
+    {
         return view('admin.items.barcode');
     }
 }

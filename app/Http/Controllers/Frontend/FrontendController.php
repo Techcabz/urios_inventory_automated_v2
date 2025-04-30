@@ -24,9 +24,11 @@ class FrontendController extends Controller
 
     public function index()
     {
+        $this->borrowingService->removeRestrictionsForClearedUsers();
+       
         $this->borrowingService->autoCancelBorrowings(); 
         $this->borrowingService->sendBorrowingDeadlineReminders(); 
-        
+       
         $items = Item::orderBy('created_at', 'DESC')
         ->get();
         return view('frontend.index', compact('items'));

@@ -247,7 +247,6 @@ $(document).ready(function () {
             var rowMonth = convertDateToMonthName(rowDate).toLowerCase();
             var rowWeek = getWeekNumber(rowDate);
 
-            console.log(rowData[3])
             if (
                 typefilterValue !== "all" &&
                 !rowStatus.includes(typefilterValue)

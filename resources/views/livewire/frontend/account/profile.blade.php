@@ -30,8 +30,8 @@
                 </div>
             </li>
 
-           
-            
+
+
             <li>
                 <div class="left">
                     <h6 class="font-light">Contact #</h6>
@@ -40,6 +40,15 @@
                     <h6>{{ Str::ucfirst($users->contact ?? '?') }}</h6>
                 </div>
             </li>
+            <li>
+                <div class="left">
+                    <h6 class="font-light">User Type</h6>
+                </div>
+                <div class="right">
+                    <h6>{{ Str::ucfirst($users->position ?? '?') }}</h6>
+                </div>
+            </li>
+
             <li>
                 <div class="left">
                     <h6 class="font-light">Address</h6>
@@ -143,16 +152,38 @@
 
 
                         </div>
-                       
-                        <div class="mb-3">
-                            <label for="contact" class="form-label">Contact # <span
-                                    class="text-danger">*</span></label>
-                            <input type="text" wire:model="contact" class="form-control" id="contact">
-                            @error('contact')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
 
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label for="contact" class="form-label">Contact # <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" wire:model="contact" class="form-control" id="contact">
+                                    @error('contact')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+
+                                </div>
+
+
+                            </div>
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label for="position" class="form-label">User Type <span
+                                            class="text-danger">*</span></label>
+                                    <select wire:model="position" id="position" class="form-control">
+                                        <option value="">Select User Type</option>
+                                        <option value="Student">Student</option>
+                                        <option value="Teacher">Teacher</option>
+                                        <option value="Staff">Staff</option>
+                                    </select>
+                                    @error('position')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
                         </div>
+
                         <div class="mb-3">
                             <label for="address" class="form-label">Complete Address <span
                                     class="text-danger">*</span></label>
@@ -187,7 +218,7 @@
                         <div class="mb-3">
                             <label for="firstname" class="form-label">Username <span
                                     class="text-danger">*</span></label>
-                            <input type="text" wire:model="username" class="form-control" id="username">
+                            <input type="text" wire:model="username" class="form-control" id="username" readonly>
                             @error('username')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -195,7 +226,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="firstname" class="form-label">Email</label>
-                            <input type="text" wire:model="email" class="form-control" id="email" readonly>
+                            <input type="text" wire:model="email" class="form-control" id="email" >
                             @error('email')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror

@@ -46,6 +46,12 @@
 
                         <div class="menu-right">
                             <ul>
+                                @auth
+                                    <li>
+                                        @livewire('frontend.navbar-hello')
+
+                                    </li>
+                                @endauth
                                 <li>
                                     <div class="search-box theme-bg-color">
                                         <i data-feather="search"></i>
@@ -53,6 +59,7 @@
                                 </li>
 
                                 @auth
+
                                     <li class="onhover-dropdown wislist-dropdown">
                                         <div class="cart-media">
                                             <a href="{{ route('cart') }}">
