@@ -39,6 +39,7 @@ class Graph extends Component
             ->join('items', 'cart.item_id', '=', 'items.id')
             ->join('borrowing', 'borrowing_cart.borrowing_id', '=', 'borrowing.id')
             ->select('items.name', DB::raw('COUNT(items.id) as total_borrowed'))
+            ->where('borrowing.status', 3) // Only completed borrowings
             ->groupBy('items.id', 'items.name')
             ->orderByDesc('total_borrowed');
 

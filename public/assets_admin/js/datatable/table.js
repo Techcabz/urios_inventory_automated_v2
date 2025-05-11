@@ -12,7 +12,6 @@ $(document).ready(function () {
 
     tableIds.forEach((id) => {
         if ($.fn.DataTable.isDataTable(`#${id}`)) {
-            // ✅ Destroy DataTable before reinitializing
             $(`#${id}`).DataTable().destroy();
         }
 
@@ -166,11 +165,9 @@ $(document).ready(function () {
                         .draw();
                 });
 
-            // Get the Status values a specific way since the status is a anchor/image
             if (isStatusColumn) {
                 var statusItems = [];
 
-                /* ### IS THERE A BETTER/SIMPLER WAY TO GET A UNIQUE ARRAY OF <TD> data-filter ATTRIBUTES? ### */
                 table
                     .column(i)
                     .nodes()
@@ -188,9 +185,7 @@ $(document).ready(function () {
                         '<option value="' + item + '">' + item + "</option>"
                     );
                 });
-            }
-            // All other non-Status columns (like the example)
-            else {
+            } else {
                 table
                     .column(i)
                     .data()
@@ -286,6 +281,87 @@ $(document).ready(function () {
         filterType.on("change", function () {
             table.draw();
         });
+        monthFilter.on("change", function () {
+            table.draw();
+        });
+        weekFilter.on("change", function () {
+            table.draw();
+        });
+
+        table.draw();
+    });
+
+    $("#datatable_report1").each(function () {
+        var table = $("#datatable_report1").DataTable({
+            dom: "Brtip",
+            buttons: [
+                {
+                    extend: "print",
+                    text: "Print",
+                    title: "FUAMI BORROWING REPORT DAMAGE",
+                    exportOptions: { columns: ":not(.exclude-print)" },
+                },
+            ],
+            searching: true,
+            lengthChange: true,
+            info: false,
+            pageLength: 5,
+            lengthMenu: [5, 10, 25, 50, 100],
+            responsive: {
+                details: true,
+                breakpoints: [
+                    { name: "desktop", width: Infinity },
+                    { name: "tablet", width: 1024 },
+                    { name: "fablet", width: 768 },
+                    { name: "phone", width: 480 },
+                ],
+            },
+        });
+
+        var monthFilter = $("#dmonth");
+        var weekFilter = $("#weekfilter");
+
+        $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+            var monthFilterValue = monthFilter.val().toLowerCase();
+            var weekFilterValue = weekFilter.val();
+
+            var rowData = table.row(dataIndex).data();
+            var rowDate = new Date(rowData[4]);
+
+            console.log(rowData[3]);
+            var rowMonth = convertDateToMonthName(rowDate).toLowerCase();
+            var rowWeek = getWeekNumber(rowDate);
+
+            if (monthFilterValue !== "all" && rowMonth !== monthFilterValue) {
+                return false;
+            }
+
+            if (
+                weekFilterValue !== "all" &&
+                rowWeek !== parseInt(weekFilterValue)
+            ) {
+                return false;
+            }
+
+            return true;
+        });
+
+        function convertDateToMonthName(date) {
+            return date.toLocaleString("en-US", { month: "long" });
+        }
+
+        function getWeekNumber(date) {
+            var firstDayOfMonth = new Date(
+                date.getFullYear(),
+                date.getMonth(),
+                1
+            );
+            var dayOfWeek = firstDayOfMonth.getDay();
+            var weekNumber = Math.ceil((date.getDate() + dayOfWeek) / 7);
+            return weekNumber;
+        }
+
+       
         monthFilter.on("change", function () {
             table.draw();
         });

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
-use Illuminate\Support\Str; 
+use Illuminate\Support\Str;
 
 class Item extends Model
 {
@@ -31,6 +31,10 @@ class Item extends Model
         return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 
+    public function damagedLogs()
+    {
+        return $this->hasMany(DamagedItem::class);
+    }
 
     /**
      * The "booting" method of the model.

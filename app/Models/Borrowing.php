@@ -49,6 +49,12 @@ class Borrowing extends Model
         return $this->hasMany(Borrowing_cart::class, 'borrowing_id', 'id');
     }
 
+    public function damagedItems()
+    {
+        return $this->hasMany(DamagedItem::class);
+    }
+
+
     /**
      * The "booting" method of the model.
      *

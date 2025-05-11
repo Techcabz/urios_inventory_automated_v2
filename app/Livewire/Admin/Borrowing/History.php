@@ -16,6 +16,8 @@ use Livewire\WithPagination as LivewireWithPagination;
 use WithPagination, WithoutUrlPagination;
 use App\Notifications\CustomerNotification;
 use Illuminate\Support\Facades\Notification;
+use App\Models\DamagedItem;
+
 
 class History extends Component
 {
@@ -27,69 +29,30 @@ class History extends Component
     public $overdueDays = 0;
 
     protected $PerPage = 3;
-
+    public $damageNotes = [];
     public $damagedQuantities = [];
     use LivewireWithPagination, LivewireWithoutUrlPagination;
-
-
-
 
     public function mount()
     {
         $this->cartList = collect();
     }
 
-    public function markItemsAsDamaged()
-    {
-        // foreach ($this->cartList as $cart) {
-        //     $item = $cart->item;
-        //     $borrowedQty = $cart->quantity;
-        //     $damagedQty = $this->damagedQuantities[$item->id] ?? 0;
 
-        //     // Safety check: cannot damage more than borrowed
-        //     if ($damagedQty > $borrowedQty) {
-        //         $damagedQty = $borrowedQty;
-        //     }
-
-        //     $returnedQty = $borrowedQty - $damagedQty;
-
-        //     // Update the item stock:
-        //     if ($returnedQty > 0) {
-        //         $item->quantity += $returnedQty; // Only return non-damaged quantity
-        //     }
-
-        //     // Handle damaged items
-        //     if ($damagedQty > 0) {
-        //         // You can log it, or update a separate 'damaged_quantity' field if you want
-        //         // For example:
-        //         // $item->damaged_quantity += $damagedQty;
-        //     }
-
-        //     $item->save();
-        // }
-
-        // Update borrowing status
-        $this->borrowDetails->status = 3;
-        $this->borrowDetails->save();
-
-        // Close modal
-        $this->dispatch('destroyModal', status: 'success', position: 'top', message: 'Borrowing request complete. Stock updated.', modal: '#confirmMarkDoneModal');
-
-        $this->resetData();
-    }
 
     public function continueWithRestriction()
     {
-        // $this->completeBorrowing();
+        $this->completeBorrowing();
     }
 
     public function continueRemoveRestriction()
     {
-        //  $this->completeBorrowing();
+
         $this->users->update([
-            'user_status' => 0, // restricted
+            'user_status' => 0,
             'restricted_until' => Null,
         ]);
+        $this->completeBorrowing();
     }
 
 
@@ -274,40 +237,57 @@ class History extends Component
 
         $borrow = Borrowing::find($this->borrowDetails->id);
         if ($borrow && $borrow->status !== 3) {
-            // Reduce item stock quantity
+            $hasDamagedItems = false;
+
             foreach ($this->cartList as $cart) {
                 $item = $cart->item;
-                if ($item) {
-                    $item->increment('quantity', $cart->quantity);
+                $borrowedQty = $cart->quantity;
+                $damagedQty = (int) ($this->damagedQuantities[$item->id] ?? 0);
+
+                if ($damagedQty > $borrowedQty) {
+                    $this->dispatch('messageModal', status: 'error', position: 'top', message: "Damaged quantity for {$item->name} exceeds borrowed quantity.");
+                    return; 
+                }
+
+                $note = $this->damageNotes[$item->id] ?? 'Reported on return';
+                $returnedQty = $borrowedQty - $damagedQty;
+
+                if ($returnedQty > 0) {
+                    $item->increment('quantity', $returnedQty);
+                }
+
+                if ($damagedQty > 0) {
+                    DamagedItem::create([
+                        'borrowing_id' => $borrow->id,
+                        'item_id' => $item->id,
+                        'quantity' => $damagedQty,
+                        'note' => $note,
+                    ]);
+                    $hasDamagedItems = true;
                 }
             }
 
             $borrow->update(['status' => 3, 'approved_by' => Auth::id()]);
-
             $this->borrowDetails->status = 3;
 
             if ($borrow->borrowingReturn) {
                 $borrow->borrowingReturn->update([
                     'returned_at' => now(),
-                    'notes' => 'Items returned in good condition'
+                    'notes' => $hasDamagedItems ? 'Items returned with damage' : 'All items returned in good condition',
                 ]);
-            } 
-            
-            // else {
-            //     // Create new return record
-            //     $borrow->borrowingReturn()->create([
-            //         'borrowing_id' => $borrow->id,
-            //         'returned_at' => now(),
-            //         'notes' => 'Items returned in good condition'
-            //     ]);
-            // }
+            }
 
-            $this->dispatch('destroyModal', status: 'success', position: 'top', message: 'Borrowing request approved. Stock updated.', modal: '#confirmMarkDoneModal');
+            $message = $hasDamagedItems
+                ? 'Borrowing completed. Damaged items recorded.'
+                : 'Borrowing completed successfully. No damage reported.';
+
+           $this->dispatch('destroyModal', status: 'success', position: 'top', message: $message, modal: '#confirmMarkDoneModal');
             $this->resetData();
         } else {
-            $this->dispatch('messageModal', status: 'warning', position: 'top', message: 'This request has already been approved or does not exist.');
+            $this->dispatch('messageModal', status: 'warning', position: 'top', message: 'Already completed or not found.');
         }
     }
+
 
 
     public function render()

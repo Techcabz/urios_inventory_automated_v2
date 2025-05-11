@@ -12,6 +12,7 @@ use Livewire\Component;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use App\Models\DamagedItem;
 
 class ReturnTrans extends Component
 {
@@ -23,10 +24,31 @@ class ReturnTrans extends Component
     public $remainingDays = 0;
     public $overdueDays = 0;
 
+    public $damageNotes = [];
+    public $damagedQuantities = [];
+
+
     public function mount()
     {
         $this->cartList = collect();
     }
+
+
+    public function continueWithRestriction()
+    {
+        $this->approveBorrowing();
+    }
+
+    public function continueRemoveRestriction()
+    {
+
+        $this->users->update([
+            'user_status' => 0,
+            'restricted_until' => Null,
+        ]);
+        $this->approveBorrowing();
+    }
+
 
     public function processBarcode($barcode)
     {
@@ -93,7 +115,7 @@ class ReturnTrans extends Component
     }
 
 
-    public function approveBorrowing()
+    public function completeBorrowing()
     {
         if (!$this->borrowDetails) {
             $this->dispatch('messageModal', status: 'warning', position: 'top', message: 'No borrowing record found. Please scan a valid barcode.');
@@ -102,38 +124,58 @@ class ReturnTrans extends Component
 
         $borrow = Borrowing::find($this->borrowDetails->id);
         if ($borrow && $borrow->status !== 3) {
-            // Reduce item stock quantity
+            $hasDamagedItems = false;
+
             foreach ($this->cartList as $cart) {
                 $item = $cart->item;
-                if ($item) {
-                    $item->increment('quantity', $cart->quantity); 
+                $borrowedQty = $cart->quantity;
+                $damagedQty = (int) ($this->damagedQuantities[$item->id] ?? 0);
+
+                if ($damagedQty > $borrowedQty) {
+                    $this->dispatch('messageModal', status: 'error', position: 'top', message: "Damaged quantity for {$item->name} exceeds borrowed quantity.");
+                    return; // ⛔ Stop here, modal won't close
+                }
+
+                $note = $this->damageNotes[$item->id] ?? 'Reported on return';
+                $returnedQty = $borrowedQty - $damagedQty;
+
+                if ($returnedQty > 0) {
+                    $item->increment('quantity', $returnedQty);
+                }
+
+                if ($damagedQty > 0) {
+                    DamagedItem::create([
+                        'borrowing_id' => $borrow->id,
+                        'item_id' => $item->id,
+                        'quantity' => $damagedQty,
+                        'note' => $note,
+                    ]);
+                    $hasDamagedItems = true;
                 }
             }
 
             $borrow->update(['status' => 3, 'approved_by' => Auth::id()]);
-
             $this->borrowDetails->status = 3;
 
             if ($borrow->borrowingReturn) {
                 $borrow->borrowingReturn->update([
                     'returned_at' => now(),
-                    'notes' => 'Items returned in good condition'
-                ]);
-            } else {
-                // Create new return record
-                $borrow->borrowingReturn()->create([
-                    'borrowing_id' => $borrow->id,
-                    'returned_at' => now(),
-                    'notes' => 'Items returned in good condition'
+                    'notes' => $hasDamagedItems ? 'Items returned with damage' : 'All items returned in good condition',
                 ]);
             }
-            
-            $this->dispatch('messageModal', status: 'success', position: 'top', message: 'Borrowing request approved. Stock updated.');
+
+            $message = $hasDamagedItems
+                ? 'Borrowing completed. Damaged items recorded.'
+                : 'Borrowing completed successfully. No damage reported.';
+
+            // ✅ Only dispatch modal close if all OK
+            $this->dispatch('destroyModal', status: 'success', position: 'top', message: $message, modal: '#confirmMarkDoneModal');
             $this->resetData();
         } else {
-            $this->dispatch('messageModal', status: 'warning', position: 'top', message: 'This request has already been approved or does not exist.');
+            $this->dispatch('messageModal', status: 'warning', position: 'top', message: 'Already completed or not found.');
         }
     }
+
 
     public function resetData()
     {

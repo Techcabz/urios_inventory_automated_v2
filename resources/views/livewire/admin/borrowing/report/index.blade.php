@@ -76,7 +76,7 @@
                             </div>
                         </div>
                         <div class="table-responsived">
-                            <table id="datatable_report" class="table table-borderless">
+                            <table id="datatable_report" class="table table-borderless w-100">
                                 <thead class="bg-gradient-primary text-white">
                                     <tr>
                                         <th>ITEM BORROWED</th>
@@ -182,6 +182,11 @@
         <div x-show="activeTab === 'frequently-borrowed'">
             <div class="card">
                 <livewire:admin.borrowing.report.graph />
+            </div>
+        </div>
+        <div x-show="activeTab === 'defects-issues'">
+            <div class="card">
+                <livewire:admin.borrowing.report.damage-report />
             </div>
         </div>
     </div>

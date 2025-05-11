@@ -17,10 +17,16 @@
                                 </label>
                                 <input type="number" wire:model.defer="damagedQuantities.{{ $cart->item->id }}"
                                     min="0" max="{{ $cart->quantity }}" class="form-control"
+                                    oninput="this.value = Math.min(this.max, Math.max(this.min, this.value));"
                                     placeholder="Enter damaged quantity (0 if none)">
+
+                                <input type="text" wire:model.defer="damageNotes.{{ $cart->item->id }}"
+                                    class="form-control mt-1"
+                                    placeholder="Optional note about the damage (e.g. broken screen)">
                             </div>
                         @endforeach
                     </div>
+
 
                 </div>
                 <div class="modal-footer">
@@ -34,7 +40,7 @@
                         </button>
                     @else
                         <button type="submit" class="btn btn-primary">
-                           Submit
+                            Submit
                         </button>
                     @endif
 
@@ -43,6 +49,7 @@
         </form>
     </div>
 </div>
+
 
 <div wire:ignore.self class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel"
     aria-hidden="true" data-bs-backdrop="static">
@@ -151,14 +158,15 @@
                                 <h6 class="mb-3 theme-color">BORROWER DETAILS </h6>
                                 <div class="mb-2">
                                     <label for="name" class="form-label">NAME</label>
-                                    <input type="text" readonly class="form-control" id="name" name="name"
+                                    <input type="text" readonly class="form-control" id="name"
+                                        name="name"
                                         value="{{ optional($userDetails)->firstname ? Str::ucfirst($userDetails->firstname) . ' ' . Str::ucfirst($userDetails->middlename) . ' ' . Str::ucfirst($userDetails->lastname) : '' }}"
                                         placeholder="N/A">
                                 </div>
                                 <div class="mb-2">
                                     <label for="name" class="form-label">User Type</label>
-                                    <input type="text" readonly class="form-control" id="name" name="name"
-                                        value="{{ optional($userDetails)->position  }}"
+                                    <input type="text" readonly class="form-control" id="name"
+                                        name="name" value="{{ optional($userDetails)->position }}"
                                         placeholder="N/A">
                                 </div>
 

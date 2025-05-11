@@ -1,5 +1,7 @@
 <div class="row g-1">
     @include('shared.offline')
+    @include('livewire.admin.borrowing.transaction.modal-return')
+
     <div class="col-md-8">
         <div class="card shadow-sm p-3 rounded-0" x-data="{ barcode: '' }">
             <div class="d-flex align-items-center gap-2 justify-content-between">
@@ -141,17 +143,22 @@
         </div>
 
         <div class="card shadow-sm mt-2 p-3 rounded-0 position-relative">
-            <div class="d-flex gap-2">
-                <button class="btn btn-primary w-100" wire:click="approveBorrowing" wire:loading.attr="disabled"
-                    wire:target="approveBorrowing" :disabled="@js(!$borrowDetails)" x-data
-                    @keydown.window.space="$wire.approveBorrowing()">
-                    MARKS AS COMPLETE [SPACE]
+
+            <div x-data
+                @keydown.window.f2.prevent="
+                if (!{{ $borrowDetails ? 'false' : 'true' }}) {
+                    new bootstrap.Modal(document.getElementById('confirmMarkDoneModal')).show()
+                }
+            ">
+                <button class="btn btn-primary w-100" data-bs-target="#confirmMarkDoneModal" data-bs-toggle="modal"
+                    data-bs-dismiss="modal" :disabled="@js(!$borrowDetails)">
+                    MARK AS COMPLETE [F2]
                 </button>
-
-
             </div>
-        </div>
 
+        </div>
     </div>
+
+</div>
 
 </div>

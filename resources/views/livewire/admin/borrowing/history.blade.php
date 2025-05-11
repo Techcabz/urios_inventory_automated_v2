@@ -16,24 +16,25 @@
                     history.pushState(null, null, `#${tab.toLowerCase()}`);
                 }
             }"> <!-- Responsive Tabs -->
-                <ul class="nav nav-tabs" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-linkx" :class="{ 'active': activeTab === 'PENDING' }"
-                            x-on:click="activeTab = 'PENDING'">PENDING</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-linkx" :class="{ 'active': activeTab === 'APPROVED' }"
-                            x-on:click="activeTab = 'APPROVED'">APPROVED</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-linkx" :class="{ 'active': activeTab === 'CANCELLED' }"
-                            x-on:click="activeTab = 'CANCELLED'">CANCELLED</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-linkx" :class="{ 'active': activeTab === 'COMPLETED' }"
-                            x-on:click="activeTab = 'COMPLETED'">COMPLETED</a>
-                    </li>
-                </ul>
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-linkx" :class="{ 'active': activeTab === 'PENDING' }"
+                       x-on:click="changeTab('PENDING')">PENDING</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-linkx" :class="{ 'active': activeTab === 'APPROVED' }"
+                       x-on:click="changeTab('APPROVED')">APPROVED</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-linkx" :class="{ 'active': activeTab === 'CANCELLED' }"
+                       x-on:click="changeTab('CANCELLED')">CANCELLED</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-linkx" :class="{ 'active': activeTab === 'COMPLETED' }"
+                       x-on:click="changeTab('COMPLETED')">COMPLETED</a>
+                </li>
+            </ul>
+            
 
                 <!-- Tab Content -->
                 <div class="tab-content">

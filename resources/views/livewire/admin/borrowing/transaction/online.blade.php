@@ -115,8 +115,7 @@
             <div class="mb-2">
                 <label for="name" class="form-label">User Type</label>
                 <input type="text" readonly class="form-control" id="name" name="name"
-                    value="{{ optional($userDetails)->position  }}"
-                    placeholder="N/A">
+                    value="{{ optional($userDetails)->position }}" placeholder="N/A">
             </div>
 
         </div>
@@ -154,8 +153,8 @@
             <div class="d-flex gap-2">
                 <button class="btn btn-primary w-100" wire:click="approveBorrowing" wire:loading.attr="disabled"
                     wire:target="approveBorrowing" :disabled="@js(!$borrowDetails || $this->isApprovalDisabled())" x-data
-                    @keydown.window.space="$wire.approveBorrowing()">
-                    APPROVED [SPACE]
+                    @keydown.window.f2="$wire.approveBorrowing()">
+                    APPROVED [F2]
                 </button>
 
 
