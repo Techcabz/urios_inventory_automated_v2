@@ -165,34 +165,32 @@ class Index extends Component
         $this->dispatch('updateModal', status: 'success',  position: 'top', message: 'Item update successfully.');
     }
 
-    public function deleteCategory(int $id)
+    public function deleteItem(int $id)
     {
         $this->i_id = $id;
-        $this->dispatch('editModal');
+        $this->dispatch('deleteItemModal');
     }
 
 
-    public function destroyCategory()
+    public function destroyItem()
     {
+        $item = Item::find($this->i_id);
 
-        $checker = Category::find($this->c_id);
-
-        if (!$checker) {
-            $this->dispatch('destroyModal', status: 'warning', position: 'top', message: 'Category not found!', modal: '#deleteCategoryModal');
+        if (!$item) {
+            $this->dispatch('destroyModal', status: 'warning', position: 'top', message: 'Item not found!', modal: '#deleteItemModal');
             return;
         }
 
-        $count = Category::count();
-        if ($count === 1) {
-            $this->dispatch('destroyModal', status: 'warning', position: 'top', message: 'You can only edit, but you cannot delete the only remaining category.', modal: '#deleteCategoryModal');
-            return;
+        if ($item->image_path && Storage::disk('public')->exists($item->image_path)) {
+            Storage::disk('public')->delete($item->image_path);
         }
 
-        // Delete the category
-        $checker->delete();
+        $item->delete();
 
-        $this->dispatch('destroyModal', status: 'warning',  position: 'top', message: 'Category delete successfully.', modal: '#deleteCategoryModal');
+        $this->i_id = null;
+        $this->dispatch('destroyModal', status: 'success', position: 'top', message: 'Item deleted successfully.', modal: '#deleteItemModal');
     }
+
 
 
     public function closeModal()

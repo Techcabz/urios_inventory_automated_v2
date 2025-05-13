@@ -45,7 +45,8 @@
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label for="" class="form-label">Quantity</label>
-                                    <input type="number" min="1"  wire:model="item_qty" class="form-control" id="item_qty">
+                                    <input type="number" min="1" wire:model="item_qty" class="form-control"
+                                        id="item_qty">
                                     @error('item_qty')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -130,10 +131,11 @@
                     <div class="row">
                         <div class="col-lg-12 d-flex align-items-center gap-3">
                             <label for="" class="form-label">BARCODE: </label>
-                            <img class="border p-2" id="barcodeImage" 
+                            <img class="border p-2" id="barcodeImage"
                                 src="data:image/png;base64,{{ DNS1D::getBarcodePNG($imageBarcode, 'C39') }}"
                                 alt="barcode" />
-                            <button type="button" class="btn btn-success btn-sm mt-3"  wire:click="downloadBarcode">Save
+                            <button type="button" class="btn btn-success btn-sm mt-3"
+                                wire:click="downloadBarcode">Save
                                 Barcode</button>
                             <hr>
                         </div>
@@ -177,7 +179,8 @@
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label for="" class="form-label">Quantity</label>
-                                    <input type="number" min="1"  wire:model="item_qty" class="form-control" id="item_qty">
+                                    <input type="number" min="1" wire:model="item_qty" class="form-control"
+                                        id="item_qty">
                                     @error('item_qty')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -256,25 +259,27 @@
     </div>
 </div>
 
-<div wire:ignore.self class="modal fade" role="dialog" id="deleteCategoryModal" tabindex="-1"
-    aria-labelledby="deleteCategoryModalLabel" aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog ">
-        <form wire:submit.prevent="destroyCategory">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="deleteCategorytModalLabel">Category</h1>
-                </div>
-                <div class="modal-body">
-                    <h6 class="text-danger">Are you sure you want to delete this category?</h6>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                    <button type="submit" class="btn btn-danger">Yes</button>
-                </div>
+<!-- Delete Item Modal -->
+<div wire:ignore.self class="modal fade" id="deleteItemModal" tabindex="-1" aria-labelledby="deleteItemModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header  ">
+                <h5 class="modal-title" id="deleteItemModalLabel">Delete Item</h5>
+                <button type="button" class="btn-close text-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
-        </form>
+            <div class="modal-body">
+                Are you sure you want to delete this item? This action cannot be undone.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button wire:click="destroyItem" type="button" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
     </div>
 </div>
+
 <script>
     function downloadBarcode() {
         var barcode = document.getElementById("barcodeImage").src;
