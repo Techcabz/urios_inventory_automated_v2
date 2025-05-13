@@ -36,7 +36,7 @@ class ReturnTrans extends Component
 
     public function continueWithRestriction()
     {
-        $this->approveBorrowing();
+        $this->completeBorrowing();
     }
 
     public function continueRemoveRestriction()
@@ -46,7 +46,7 @@ class ReturnTrans extends Component
             'user_status' => 0,
             'restricted_until' => Null,
         ]);
-        $this->approveBorrowing();
+        $this->completeBorrowing();
     }
 
 
@@ -117,10 +117,10 @@ class ReturnTrans extends Component
 
     public function completeBorrowing()
     {
-        if (!$this->borrowDetails) {
-            $this->dispatch('messageModal', status: 'warning', position: 'top', message: 'No borrowing record found. Please scan a valid barcode.');
-            return;
-        }
+        // if (!$this->borrowDetails) {
+        //     $this->dispatch('messageModal', status: 'warning', position: 'top', message: 'No borrowing record found. Please scan a valid barcode.');
+        //     return;
+        // }
 
         $borrow = Borrowing::find($this->borrowDetails->id);
         if ($borrow && $borrow->status !== 3) {
