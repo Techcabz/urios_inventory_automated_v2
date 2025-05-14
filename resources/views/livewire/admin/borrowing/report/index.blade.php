@@ -74,6 +74,17 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-lg-auto row">
+                                <div class="input-group input-group-sm p-1">
+                                    <select class="form-select" id="usertype-filter" style="width: 12em">
+                                        <option value="all">All UserType</option>
+                                        <option value="student">Students</option>
+                                        <option value="teacher">Teacher</option>
+                                        <option value="staff">Staff</option>
+
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                         <div class="table-responsived">
                             <table id="datatable_report" class="table table-borderless w-100">
@@ -84,6 +95,7 @@
                                         <th>DATE RETURNED</th>
                                         <th class="d-none exclude-print">DATE RETURNED RAW</th>
                                         <th class="d-none exclude-print">STATUS</th>
+                                        <th>USERTYPE</th>
                                         <th>BORROWER</th>
 
                                     </tr>
@@ -149,6 +161,7 @@
                                                         {{ $data->status ?? 'N/A' }}
                                                 @endswitch
                                             </td>
+                                            <td>{{ $data->users->userDetail->position }}</td>
                                             <td>
                                                 @php
                                                     $userName = 'N/A';

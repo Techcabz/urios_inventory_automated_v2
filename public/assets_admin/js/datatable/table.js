@@ -200,14 +200,21 @@ $(document).ready(function () {
         }
     });
 
-    $("#datatable_report").each(function () {
-        var table = $("#datatable_report").DataTable({
-            dom: "Brtip",
+    let tableIDReport = [
+        "datatable_report",
+        "datatable_report1",
+        "datatable_report2",
+        "datatable_report3",
+    ];
+
+    tableIDReport.forEach(function (id) {
+        var table = $("#" + id).DataTable({
+            dom: "Bfrtip",
             buttons: [
                 {
                     extend: "print",
                     text: "Print",
-                    title: "FUAMI BORROWING REPORT",
+                    title: "MCES BORROWING REPORT",
                     exportOptions: { columns: ":not(.exclude-print)" },
                 },
             ],
@@ -227,41 +234,132 @@ $(document).ready(function () {
             },
         });
 
-        var filterType = $("#filter-status");
-        var monthFilter = $("#month");
-        var weekFilter = $("#week-filter");
+        if (id === "datatable_report") {
+            var monthFilter = $("#month");
+            var weekFilter = $("#week-filter");
+            var userTypeFilter = $("#usertype-filter");
 
-        $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
-            var typefilterValue = filterType.val().toLowerCase();
-            var monthFilterValue = monthFilter.val().toLowerCase();
-            var weekFilterValue = weekFilter.val();
-
-            var rowData = table.row(dataIndex).data();
-            var rowStatus = rowData[4].toLowerCase();
-            var rowDate = new Date(rowData[3]);
-            var rowMonth = convertDateToMonthName(rowDate).toLowerCase();
-            var rowWeek = getWeekNumber(rowDate);
-
-            if (
-                typefilterValue !== "all" &&
-                !rowStatus.includes(typefilterValue)
+            $.fn.dataTable.ext.search.push(function (
+                settings,
+                data,
+                dataIndex
             ) {
-                return false;
-            }
+                if (settings.nTable.id !== 'datatable_report') {
+                    return true;
+                }
 
-            if (monthFilterValue !== "all" && rowMonth !== monthFilterValue) {
-                return false;
-            }
+                var monthFilterValue = monthFilter.val().toLowerCase();
+                var weekFilterValue = weekFilter.val();
+                var userTypeFilterValue = userTypeFilter.val().toLowerCase();
 
-            if (
-                weekFilterValue !== "all" &&
-                rowWeek !== parseInt(weekFilterValue)
+                var rowData = table.row(dataIndex).data();
+                if (!rowData) return true;
+                
+                var rowType = rowData[5]?.toLowerCase();
+                var rowDate = new Date(rowData[3]);
+                var rowMonth = convertDateToMonthName(rowDate).toLowerCase();
+                var rowWeek = getWeekNumber(rowDate);
+
+                if (
+                    userTypeFilterValue !== "all" &&
+                    !rowType.includes(userTypeFilterValue)
+                ) {
+                    return false;
+                }
+
+                if (
+                    monthFilterValue !== "all" &&
+                    rowMonth !== monthFilterValue
+                ) {
+                    return false;
+                }
+
+                if (
+                    weekFilterValue !== "all" &&
+                    rowWeek !== parseInt(weekFilterValue)
+                ) {
+                    return false;
+                }
+
+                return true;
+            });
+
+            monthFilter.on("change", function () {
+                table.draw();
+            });
+            weekFilter.on("change", function () {
+                table.draw();
+            });
+            userTypeFilter.on("change", function () {
+                table.draw();
+            });
+
+            table.draw();
+        }
+
+        if (id === "datatable_report1") {
+            
+            var monthFilter = $("#dmonth1");
+            var weekFilter = $("#week1filter");
+            var userTypeFilter = $("#usertype1-filter");
+
+            $.fn.dataTable.ext.search.push(function (
+                settings,
+                data,
+                dataIndex
             ) {
-                return false;
-            }
+                if (settings.nTable.id !== 'datatable_report1') return true;
 
-            return true;
-        });
+                var monthFilterValue = monthFilter.val().toLowerCase();
+                var weekFilterValue = weekFilter.val();
+                var userTypeFilterValue = userTypeFilter.val().toLowerCase();
+
+                var rowData = table.row(dataIndex).data();
+                if (!rowData) return true;
+                
+               
+                var rowType = rowData[4]?.toLowerCase();
+                var rowDate = new Date(rowData[6]);
+                
+                var rowMonth = convertDateToMonthName(rowDate).toLowerCase();
+                var rowWeek = getWeekNumber(rowDate);
+               
+                if (
+                    userTypeFilterValue !== "all" &&
+                    !rowType.includes(userTypeFilterValue)
+                ) {
+                    return false;
+                }
+
+                if (
+                    monthFilterValue !== "all" &&
+                    rowMonth !== monthFilterValue
+                ) {
+                    return false;
+                }
+
+                if (
+                    weekFilterValue !== "all" &&
+                    rowWeek !== parseInt(weekFilterValue)
+                ) {
+                    return false;
+                }
+
+                return true;
+            });
+
+            monthFilter.on("change", function () {
+                table.draw();
+            });
+            weekFilter.on("change", function () {
+                table.draw();
+            });
+            userTypeFilter.on("change", function () {
+                table.draw();
+            });
+
+            table.draw();
+        }
 
         function convertDateToMonthName(date) {
             return date.toLocaleString("en-US", { month: "long" });
@@ -277,98 +375,5 @@ $(document).ready(function () {
             var weekNumber = Math.ceil((date.getDate() + dayOfWeek) / 7);
             return weekNumber;
         }
-
-        filterType.on("change", function () {
-            table.draw();
-        });
-        monthFilter.on("change", function () {
-            table.draw();
-        });
-        weekFilter.on("change", function () {
-            table.draw();
-        });
-
-        table.draw();
-    });
-
-    $("#datatable_report1").each(function () {
-        var table = $("#datatable_report1").DataTable({
-            dom: "Brtip",
-            buttons: [
-                {
-                    extend: "print",
-                    text: "Print",
-                    title: "FUAMI BORROWING REPORT DAMAGE",
-                    exportOptions: { columns: ":not(.exclude-print)" },
-                },
-            ],
-            searching: true,
-            lengthChange: true,
-            info: false,
-            pageLength: 5,
-            lengthMenu: [5, 10, 25, 50, 100],
-            responsive: {
-                details: true,
-                breakpoints: [
-                    { name: "desktop", width: Infinity },
-                    { name: "tablet", width: 1024 },
-                    { name: "fablet", width: 768 },
-                    { name: "phone", width: 480 },
-                ],
-            },
-        });
-
-        var monthFilter = $("#dmonth");
-        var weekFilter = $("#weekfilter");
-
-        $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
-            var monthFilterValue = monthFilter.val().toLowerCase();
-            var weekFilterValue = weekFilter.val();
-
-            var rowData = table.row(dataIndex).data();
-            var rowDate = new Date(rowData[4]);
-
-            console.log(rowData[3]);
-            var rowMonth = convertDateToMonthName(rowDate).toLowerCase();
-            var rowWeek = getWeekNumber(rowDate);
-
-            if (monthFilterValue !== "all" && rowMonth !== monthFilterValue) {
-                return false;
-            }
-
-            if (
-                weekFilterValue !== "all" &&
-                rowWeek !== parseInt(weekFilterValue)
-            ) {
-                return false;
-            }
-
-            return true;
-        });
-
-        function convertDateToMonthName(date) {
-            return date.toLocaleString("en-US", { month: "long" });
-        }
-
-        function getWeekNumber(date) {
-            var firstDayOfMonth = new Date(
-                date.getFullYear(),
-                date.getMonth(),
-                1
-            );
-            var dayOfWeek = firstDayOfMonth.getDay();
-            var weekNumber = Math.ceil((date.getDate() + dayOfWeek) / 7);
-            return weekNumber;
-        }
-
-       
-        monthFilter.on("change", function () {
-            table.draw();
-        });
-        weekFilter.on("change", function () {
-            table.draw();
-        });
-
-        table.draw();
     });
 });

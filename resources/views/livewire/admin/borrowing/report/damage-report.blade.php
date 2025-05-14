@@ -16,7 +16,7 @@
                     </div>
                     <div class="col-auto">
                         <div class="input-group input-group-sm p-1">
-                            <select class="form-select" wire:model="selectedMonth" id="dmonth" style="width: 12em">
+                            <select class="form-select" id="dmonth1" style="width: 12em">
                                 <option value="all">All Month</option>
                                 @foreach (['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] as $month)
                                     <option value="{{ $month }}">{{ $month }}</option>
@@ -27,13 +27,24 @@
                 </div>
                 <div class="col-lg-auto row">
                     <div class="input-group input-group-sm p-1">
-                        <select class="form-select" wire:model="selectedWeek" id="weekfilter" style="width: 12em">
+                        <select class="form-select" id="week1filter" style="width: 12em">
                             <option value="all">All Weeks</option>
                             <option value="1">Week 1</option>
                             <option value="2">Week 2</option>
                             <option value="3">Week 3</option>
                             <option value="4">Week 4</option>
                             <option value="5">Week 5</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-auto row">
+                    <div class="input-group input-group-sm p-1">
+                        <select class="form-select" id="usertype1-filter" style="width: 12em">
+                            <option value="all">All UserType</option>
+                            <option value="student">Students</option>
+                            <option value="teacher">Teacher</option>
+                            <option value="staff">Staff</option>
+
                         </select>
                     </div>
                 </div>
@@ -48,7 +59,9 @@
                             <th>Damaged Quantity</th>
                             <th>Note</th>
                             <th>Borrower</th>
+                            <th>Usertype</th>
                             <th>Date Reported</th>
+                            <th class="d-none exclude-print">Date </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -66,7 +79,11 @@
                                     @endphp
                                     {{ $name }}
                                 </td>
+                                <td>{{ $damage->borrowing->users->userDetail->position }}</td>
+
                                 <td>{{ \Carbon\Carbon::parse($damage->created_at)->format('F d, Y') }}</td>
+                                <td class="d-none">{{ $damage->created_at }}</td>
+                            
                             </tr>
                         @empty
                             <tr>

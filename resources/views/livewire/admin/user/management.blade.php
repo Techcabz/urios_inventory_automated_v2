@@ -29,6 +29,7 @@
                 <th>Username</th>
                 <th>Email</th>
                 <th>Status</th>
+                <th>User Type</th>
                 <th style="width:160px">Action</th>
             </tr>
         </thead>
@@ -77,7 +78,7 @@
                         @endif
 
                     </td>
-
+                    <td>{{ $list->userDetail?->position }}</td>
                     <td>
                         <div class="dropdown d-flex justify-content-center">
                             <button class="btn btn-secondary btn-custom btn-sm dropdown-toggle" type="button"
